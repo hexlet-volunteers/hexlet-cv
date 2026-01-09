@@ -14,6 +14,7 @@ import { TrainingPrograms, type TrainingCardDto } from '@widgets/training-progra
 import { Communities } from '@widgets/communities'
 import { KnowledgeBaseAndInterviews } from '@widgets/knowledge-base-and-interviews'
 import { Webinars } from '@widgets/webinars'
+import { TotaAi } from '@widgets/tota-ai' 
 import { Articles, type IArticle } from '@widgets/articles'
 import { PerformanceReview, type PerformanceCardDto } from '@widgets/performance-review'
 // import { Link } from '@inertiajs/react'
@@ -63,6 +64,7 @@ const Index: React.FC<IndexProps> = (props) => {
         <PerformanceReview performanceReview={performanceReview} />
         <KnowledgeBaseAndInterviews />
         <Webinars />
+        <TotaAi />
         <Articles articles={articles} />
         <Communities />
         {/* <Link href="/account">Personal Cabinet</Link> */}
