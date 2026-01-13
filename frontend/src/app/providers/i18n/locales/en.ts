@@ -107,6 +107,10 @@ export default {
         title: 'Webinars with HR and Experts',
         viewSchedule: 'View Schedule',
       },
+      successStories: {
+        title: 'Stories that end with an offer',
+        button: 'View',
+      },
       ourTeam: {
         sectionTitle: 'Our Team',
         aboutBadge: 'About Us',

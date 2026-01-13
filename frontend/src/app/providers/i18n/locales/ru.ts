@@ -109,6 +109,10 @@ export default {
         title: 'Вебинары с HR и экспертами',
         viewSchedule: 'Смотреть расписание',
       },
+      successStories: {
+        title: 'Истории, которые заканчиваются оффером',
+        button: 'Смотреть',
+      },
       ourTeam: {
         sectionTitle: 'Наша команда',
         aboutBadge: 'О нас',

@@ -3,6 +3,7 @@ import type { IArticle } from '@widgets/articles'
 import { inertiaJson } from '@mocks/inertia'
 import type { PerformanceCardDto } from '@widgets/performance-review'
 import type { TrainingCardDto } from '@widgets/training-programs'
+import type { SuccessCardDto } from '@widgets/success-stories/types'
 import type { OurTeamCardDto } from '@widgets/our-team'
 
 const performanceReview: PerformanceCardDto[] = [
@@ -32,6 +33,34 @@ const trainingPrograms: TrainingCardDto[] = [
   {
     description: 'Рынки, площадки, подготовка профилей и откликов на английском.',
     title: 'Как искать валютную работу',
+  },
+]
+
+const successStories: SuccessCardDto[] = [
+  {
+    description: 'Сняли рутину, сфокусировались на собесах — 7 интервью и 2 оффера.',
+    id: 1,
+    title: 'Кейс Семёна: оффер за 3 недели',
+  },
+  {
+    description: 'Автоотклики + точные правки резюме.',
+    id: 2,
+    title: '3 оффера за 10 мин в день',
+  },
+  {
+    description: 'Поделись историей — оформим и покажем на сайте.',
+    id: 3,
+    title: 'Здесь может быть твой кейс',
+  },
+  {
+    description: 'Путь от джуна до оффера.',
+    id: 4,
+    title: 'Ещё кейс',
+  },
+  {
+    description: 'Ещё одна история успеха.',
+    id: 5,
+    title: 'Дополнительный кейс',
   },
 ]
 
@@ -91,6 +120,7 @@ export const handlers = [
       props: {
         trainingPrograms,
         performanceReview,
+        successStories,
         articles,
         ourTeam,
         errors: {},
