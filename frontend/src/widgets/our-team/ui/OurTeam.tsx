@@ -40,7 +40,9 @@ export const OurTeam: React.FC = () => {
     <Container size="lg" py="lg">
       <Group justify="center" mb="xs">
         <Stack gap="xs" align="center">
-          <Badge color="teal.9" mb={0} size="lg">
+          <Badge fz="xs" fw="normal" size="lg" variant="light" color="teal" tt="none">
+            {t('homePage.ourTeam.aboutBadge')}
+          </Badge>
             <Text size="xs" c="lime" fw="bold">
               {t('homePage.ourTeam.aboutBadge')}
             </Text>
