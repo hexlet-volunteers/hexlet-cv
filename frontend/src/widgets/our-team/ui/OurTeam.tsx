@@ -1,51 +1,46 @@
 import {
   Container,
   Title,
-  Text,
   SimpleGrid,
   Group,
   Stack,
-  Badge
+  Badge,
+  Paper,
+  Avatar,
+  Text
 } from '@mantine/core'
-import { UserBadge } from './components/UserBadge'
+// import { UserBadge } from './components/UserBadge'
 import { useTranslation } from 'react-i18next'
+import type { OurTeamCardDto } from '../types'
 
-export const OurTeam: React.FC = () => {
+type TProps = {
+  ourTeam: OurTeamCardDto[]
+}
+
+export const OurTeam: React.FC<TProps> = (props) => {
+  const { ourTeam } = props
   const { t } = useTranslation()
 
-  const staticTeamMembers = [
-    {
-      name: 'Максим',
-      role: 'Основатель сервиса',
-    },
-    {
-      name: 'Альберт',
-      role: 'Администратор',
-    },
-    {
-      name: 'Таня',
-      role: 'HR-менеджер',
-    },
-    {
-      name: 'Слава',
-      role: 'Карьерный консультант',
-    },
-    {
-      name: 'Лера',
-      role: 'Карьерный консультант',
-    },
-  ]
+  const renderItem = ({ name, role, src }: OurTeamCardDto, index: number) => {
+    return (
+      <Paper key={index} radius="lg" p="xs">
+        <Avatar src={src} size={120} radius={120} mx="auto" />
+        <Text ta="center" fz="lg" fw={500} mt="md">
+          {name}
+        </Text>
+        <Text ta="center" fz="sm">
+          {role}
+        </Text>
+      </Paper>
+    )
+  }
 
   return (
-    <Container size="lg" py="lg">
+    <Container size="lg" py="xs">
       <Group justify="center" mb="xs">
         <Stack gap="xs" align="center">
           <Badge fz="xs" fw="normal" size="lg" variant="light" color="teal" tt="none">
             {t('homePage.ourTeam.aboutBadge')}
-          </Badge>
-            <Text size="xs" c="lime" fw="bold">
-              {t('homePage.ourTeam.aboutBadge')}
-            </Text>
           </Badge>
           <Title order={1} fw={900} ta="center">
             {t('homePage.ourTeam.sectionTitle')}
@@ -62,13 +57,7 @@ export const OurTeam: React.FC = () => {
         spacing="lg"
         mb="xl"
       >
-        {staticTeamMembers.map((member, index) => (
-          <UserBadge
-            key={index}
-            name={member.name}
-            role={member.role}
-          />
-        ))}
+        {ourTeam.map(renderItem)}
       </SimpleGrid>
     </Container>
   )

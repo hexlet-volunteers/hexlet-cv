@@ -3,6 +3,7 @@ import type { IArticle } from '@widgets/articles'
 import { inertiaJson } from '@mocks/inertia'
 import type { PerformanceCardDto } from '@widgets/performance-review'
 import type { TrainingCardDto } from '@widgets/training-programs'
+import type { OurTeamCardDto } from '@widgets/our-team'
 
 const performanceReview: PerformanceCardDto[] = [
   {
@@ -46,6 +47,34 @@ const articles: IArticle[] = [
     title: 'Как пройти собеседование: частые ошибки и вопросы' },
 ]
 
+const ourTeam: OurTeamCardDto[] = [
+  {
+    name: 'Максим',
+    role: 'Основатель сервиса',
+    src: '',
+  },
+  {
+    name: 'Альберт',
+    role: 'Администратор',
+    src: '',
+  },
+  {
+    name: 'Таня',
+    role: 'HR-менеджер',
+    src: '',
+  },
+  {
+    name: 'Слава',
+    role: 'Карьерный консультант',
+    src: '',
+  },
+  {
+    name: 'Лера',
+    role: 'Карьерный консультант',
+    src: '',
+  },
+]
+
 export const handlers = [
   http.get(/\/(\?.*)?$/, async ({ request }) => {
     console.log('MSW handler hit:', request.method, request.url)
@@ -58,6 +87,7 @@ export const handlers = [
         trainingPrograms,
         performanceReview,
         articles,
+        ourTeam,
         errors: {},
       },
       url: '/',
