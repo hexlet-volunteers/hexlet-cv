@@ -55,6 +55,8 @@ export default tseslint.config([
       'brace-style': ['error', '1tbs', { allowSingleLine: true }],
       'comma-spacing': ['error', { before: false, after: true }],
       'key-spacing': ['error', { beforeColon: false, afterColon: true }],
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       'space-before-blocks': ['error', 'always'],
       'space-infix-ops': ['error', { int32Hint: false }],
       'no-unused-vars': 'warn',

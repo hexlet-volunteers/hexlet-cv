@@ -15,29 +15,16 @@ import { Communities } from '@widgets/communities'
 import { KnowledgeBaseAndInterviews } from '@widgets/knowledge-base-and-interviews'
 import { Webinars } from '@widgets/webinars'
 import { Articles, type IArticle } from '@widgets/articles'
-// import { Link } from '@inertiajs/react'
-
-type PageSection = {
-  id: number
-  pageKey: string
-  sectionKey: string
-  title: string
-  content: string
-  active: boolean
-  createdAt: string
-  updatedAt: string
-}
+import { Login } from '@widgets/login'
 
 type IndexProps = {
   articles: IArticle[]
-  pageSections: Readonly<PageSection[]>
 }
 
 const Index: React.FC<IndexProps> = (props) => {
-  const { articles, pageSections } = props
+  const { articles } = props
 
   const theme = useMantineTheme()
-  console.log(`Page sections:`, pageSections)
 
   return (
     <Stack
@@ -49,7 +36,7 @@ const Index: React.FC<IndexProps> = (props) => {
       }, theme)}
       justify="space-between"
     >
-      <Header />
+      <Header renderLogin={Login} />
       {/* здесь передаем пропсы страниц для отрисовки, а пока БД пустая я сделал компонент пустышку для демонстрации */}
       <Container size="xl">
         <AboutUs />
@@ -61,7 +48,6 @@ const Index: React.FC<IndexProps> = (props) => {
         <Webinars />
         <Articles articles={articles} />
         <Communities />
-        {/* <Link href="/account">Personal Cabinet</Link> */}
       </Container>
       <Footer />
     </Stack>

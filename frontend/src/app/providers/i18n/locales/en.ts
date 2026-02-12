@@ -23,6 +23,92 @@ export default {
         'Свежие джуниор-вакансии и стажировки каждый день.',
       title: 'Наше сообщество',
     },
+    auth: {
+      social: {
+        providers: {
+          google: 'Google',
+          github: 'Github',
+        },
+      },
+      signUp: {
+        title: 'Sign up',
+        subtitle: 'Use your preferred sign-in method',
+        divider: 'or',
+        fields: {
+          lastName: {
+            label: 'Last name',
+            placeholder: 'Last name',
+          },
+          firstName: {
+            label: 'First name',
+            placeholder: 'First name',
+          },
+          name: {
+            errors: {
+              required: 'Enter your name',
+              too_short: 'Name is too short',
+              too_long: 'Name is too long',
+              invalid_format: 'Invalid name format',
+            },
+          },
+          email: {
+            label: 'Email',
+            placeholder: 'E-mail',
+            errors: {
+              required: 'Enter your email',
+              too_long: 'Email is too long',
+              invalid_format: 'Invalid email format',
+            },
+          },
+          password: {
+            label: 'Password',
+            placeholder: 'Your password',
+            errors: {
+              required: 'Enter your password',
+              too_long: 'Password is too long',
+              too_short: 'Password must be at least 8 characters',
+              invalid_format: 'Invalid password format',
+            },
+          },
+          terms: {
+            errors: {
+              required: 'You must accept the terms',
+            },
+            label: 'I accept the terms',
+          },
+        },
+        signInLink: 'Already have an account? Sign in',
+        submit: 'Sign up',
+      },
+      signIn: {
+        title: 'Sign in',
+        subtitle: 'Use your preferred sign-in method',
+        divider: 'or',
+        fields: {
+          email: {
+            label: 'Email',
+            placeholder: 'E-mail',
+            errors: {
+              invalid: 'Invalid email or password',
+              required: 'Enter your email',
+              too_long: 'Email is too long',
+              invalid_format: 'Invalid email format',
+            },
+          },
+          password: {
+            label: 'Password',
+            placeholder: 'Password',
+            errors: {
+              required: 'Enter your password',
+              too_long: 'Password is too long',
+              too_short: 'Password must be at least 8 characters',
+              invalid_format: 'Invalid password format',
+            },
+          },
+        },
+        submit: 'Sign in',
+      },
+    },
     homePage: {
       greetings: 'Welcome',
       aboutUs: {
@@ -122,6 +208,31 @@ export default {
         viewSchedule: 'View Schedule',
       },
 
+    },
+    header: {
+      brand: {
+        line1: 'Hexlet',
+        line2: 'Career',
+      },
+      links: {
+        commercialExperience: 'Commercial experience',
+        analytics: 'Analytics',
+        training: 'Training',
+        grades: 'Grades',
+        knowledgeBase: 'Knowledge base',
+        webinars: 'Webinars',
+        cases: 'Cases',
+        pricing: 'Pricing',
+        news: 'News',
+        community: 'Community',
+      },
+      auth: {
+        signOut: 'Sign out',
+        tryFreeLine1: 'Try',
+        tryFreeLine2: 'for free',
+        signIn: 'Sign in',
+        signUp: 'Sign up',
+      },
     },
     accountPage: {
       purchases: {

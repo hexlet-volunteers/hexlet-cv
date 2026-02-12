@@ -1,2 +1,1 @@
-export type { MenuItem } from './inertiaSharedProps'
-export type { ActivityCardsData } from './inertiaSharedProps'
+export type { ActivityCardsData, AuthProps, MenuItem, User } from './inertiaSharedProps'

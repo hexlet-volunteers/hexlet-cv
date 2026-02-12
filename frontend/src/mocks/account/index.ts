@@ -1,12 +1,14 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '@mocks/inertia'
 import type { MenuItem } from '@shared/types/inertiaSharedData'
-import { purchaseHandlers } from './purchase'
+import { purchaseHandlers } from '@mocks/account/purchase'
 
-export const menu: MenuItem[] = [
+export const accountMenu: MenuItem[] = [
   { label: 'Мое обучение' },
-  { label: 'Покупки и подписки', link: '/account/purchase' },
-  { label: 'Вебинары', link: '/account/webinars' },
+  { label: 'Покупки и подписки',
+    link: '/account/purchase' },
+  { label: 'Вебинары',
+    link: '/account/webinars' },
   { label: 'База знаний' },
   { label: 'Интервью' },
   { label: 'Грейдирование' },
@@ -29,7 +31,7 @@ export const activityCards = {
   },
 }
 
-const makeHandler = ({ component, url }: { component: string; url: string }) =>
+const makeHandler = ({ component, url }: { component: string, url: string }) =>
   http.get(url, async ({ request }) => {
     console.log('MSW handler hit:', request.method, request.url)
     await delay()
@@ -37,7 +39,7 @@ const makeHandler = ({ component, url }: { component: string; url: string }) =>
       component,
       props: {
         errors: {},
-        menu,
+        menu: accountMenu,
         activityCards,
       },
       url,
@@ -48,11 +50,11 @@ const makeHandler = ({ component, url }: { component: string; url: string }) =>
 const routes = [
   {
     component: 'Account/Index',
-    url: '/account',
+    url: '*/:locale/account',
   },
   {
     component: 'Account/Webinars/Index',
-    url: '/account/webinars',
+    url: '*/:locale/account/webinars',
   },
 ] as const
 

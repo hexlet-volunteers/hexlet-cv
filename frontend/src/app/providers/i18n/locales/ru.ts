@@ -25,6 +25,92 @@ export default {
         'Свежие джуниор-вакансии и стажировки каждый день.',
       title: 'Наше сообщество',
     },
+    auth: {
+      social: {
+        providers: {
+          google: 'Google',
+          github: 'Github',
+        },
+      },
+      signUp: {
+        title: 'Регистрация',
+        subtitle: 'Используйте привычный способ входа',
+        divider: 'или',
+        fields: {
+          lastName: {
+            label: 'Фамилия',
+            placeholder: 'Фамилия',
+          },
+          firstName: {
+            label: 'Имя',
+            placeholder: 'Имя',
+          },
+          name: {
+            errors: {
+              required: 'Введите имя',
+              too_short: 'Имя слишком короткое',
+              too_long: 'Имя слишком длинное',
+              invalid_format: 'Некорректный формат имени',
+            },
+          },
+          email: {
+            label: 'Email',
+            placeholder: 'E-mail',
+            errors: {
+              required: 'Введите email',
+              too_long: 'Email слишком длинный',
+              invalid_format: 'Некорректный формат email',
+            },
+          },
+          password: {
+            label: 'Пароль',
+            placeholder: 'Пароль',
+            errors: {
+              required: 'Введите пароль',
+              too_long: 'Пароль слишком длинный',
+              too_short: 'Пароль должен быть не короче 8 символов',
+              invalid_format: 'Некорректный формат пароля',
+            },
+          },
+          terms: {
+            errors: {
+              required: 'Вы должны принять условия',
+            },
+            label: 'Я принимаю условия',
+          },
+        },
+        signInLink: 'Уже есть аккаунт? Войти',
+        submit: 'Зарегистрироваться',
+      },
+      signIn: {
+        title: 'Войти',
+        subtitle: 'Используйте привычный способ входа',
+        divider: 'или',
+        fields: {
+          email: {
+            label: 'Email',
+            placeholder: 'E-mail',
+            errors: {
+              invalid: 'Неверный email или пароль',
+              required: 'Введите email',
+              too_long: 'Email слишком длинный',
+              invalid_format: 'Некорректный формат email',
+            },
+          },
+          password: {
+            label: 'Пароль',
+            placeholder: 'Your password',
+            errors: {
+              required: 'Введите пароль',
+              too_long: 'Пароль слишком длинный',
+              too_short: 'Пароль должен быть не короче 8 символов',
+              invalid_format: 'Некорректный формат пароля',
+            },
+          },
+        },
+        submit: 'Войти',
+      },
+    },
     homePage: {
       greetings: 'Добро пожаловать!',
       aboutUs: {
@@ -124,7 +210,31 @@ export default {
         title: 'Вебинары с HR и экспертами',
         viewSchedule: 'Смотреть расписание',
       },
-
+    },
+    header: {
+      brand: {
+        line1: 'Hexlet',
+        line2: 'Карьера',
+      },
+      links: {
+        commercialExperience: 'Коммерческий опыт',
+        analytics: 'Аналитика',
+        training: 'Обучение',
+        grades: 'Грейды',
+        knowledgeBase: 'База знаний',
+        webinars: 'Вебинары',
+        cases: 'Кейсы',
+        pricing: 'Тарифы',
+        news: 'Новости',
+        community: 'Сообщество',
+      },
+      auth: {
+        signOut: 'Выйти',
+        tryFreeLine1: 'Попробовать',
+        tryFreeLine2: 'бесплатно',
+        signIn: 'Войти',
+        signUp: 'Регистрация',
+      },
     },
     accountPage: {
       purchases: {

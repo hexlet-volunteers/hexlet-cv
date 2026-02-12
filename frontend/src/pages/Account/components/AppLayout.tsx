@@ -4,6 +4,7 @@ import { SectionLayout } from './SectionLayout'
 import { Flex } from '@mantine/core'
 import { Footer } from '@widgets/Footer'
 import React from 'react'
+import { Login } from '@widgets/login'
 
 type TProps = {
   children: React.ReactNode
@@ -14,7 +15,7 @@ export const AppLayout: React.FC<TProps> = (props) => {
 
   return (
     <Flex direction="column" mih="100vh">
-      <Header />
+      <Header renderLogin={Login} />
       <Flex align="stretch" style={{ flex: 1 }}>
         <Navbar />
         <SectionLayout>{children}</SectionLayout>

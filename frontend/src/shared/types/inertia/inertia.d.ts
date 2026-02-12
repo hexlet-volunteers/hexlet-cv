@@ -4,6 +4,7 @@ import type { AdminMenuDTO } from '@pages/Admin/components/AdminNavbar'
 
 declare module '@inertiajs/core' {
   interface PageProps {
+    locale?: string
     menu: MenuItem[]
     adminMenu: AdminMenuDTO[]
     activityCards: ActivityCardsData
