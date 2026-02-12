@@ -1,4 +1,4 @@
-import { Group, Button, Divider, ThemeIcon, Text, Anchor } from '@mantine/core'
+import { Group, Divider, ThemeIcon, Text, Anchor } from '@mantine/core'
 import { Link } from '@inertiajs/react'
 
 const links = [
@@ -43,8 +43,13 @@ const links = [
     label: 'Сообщество',
   },
 ]
+interface Props {
+  renderLogin: () => JSX.Element
+}
 
-export function Header(): JSX.Element {
+export function Header(props: Props) {
+  const { renderLogin } = props
+
   const items = links.map(
     (link): JSX.Element => (
       <Anchor
@@ -58,7 +63,7 @@ export function Header(): JSX.Element {
       >
         {link.label}
       </Anchor>
-    ),
+    )
   )
 
   return (
@@ -88,19 +93,7 @@ export function Header(): JSX.Element {
         <nav>
           <Group gap="xl">{items}</Group>
         </nav>
-        {/* В данный момент переводит на авторизацию в dashboard */}
-        <Button
-          variant="default"
-          size="md"
-          component={Link}
-          href="/en/users/sign_in"
-        >
-          <Text size="md" lh={1.1}>
-            Попробывать
-            <br />
-            бесплатно
-          </Text>
-        </Button>
+        {renderLogin()}
       </Group>
       <Divider size={2} />
     </header>

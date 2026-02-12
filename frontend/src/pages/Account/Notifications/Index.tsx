@@ -10,25 +10,27 @@ import type { InertiaPage } from '@shared/types/inertia'
  * Тип DTO уведомления.
  */
 export type NotificationDTO = {
-    id: number
-    title: string
-    description: string
-    createdAt: string
+  /** Уникальный идентификатор уведомления. */
+  id: number
+  /** Заголовок уведомления. */
+  title: string
+  /** Основной текст уведомления. */
+  description: string
+  /** Дата и время создания уведомления. */
+  createdAt: string
 }
 
 /**
  * Тип пропсов страницы "Уведомления".
  */
 type TProps = {
+  /** Список уведомлений пользователя. */
   notifications?: NotificationDTO[]
 }
 
 /**
  * Страница "Уведомления" в личном кабинете пользователя.
- * Рендерит комопненты PageHeader и NotificationsList.
- * 
- * @param props - пропсы страницы, приходящие с бэкенда, в том числе список уведомлений { notifications: [...] }
- * @returns React-компонент
+ * Рендерит заголовок раздела и список уведомлений.
  */
 const Notifications: InertiaPage<TProps> = ({ notifications }): JSX.Element => {
   const { t } = useTranslation()
@@ -40,7 +42,7 @@ const Notifications: InertiaPage<TProps> = ({ notifications }): JSX.Element => {
         title={t('accountPage.notifications.title')}
       />
       <ScrollArea h={600}>
-        <NotificationsList notifications={notifications}/>
+        <NotificationsList notifications={notifications} />
       </ScrollArea>
     </Container>
   )

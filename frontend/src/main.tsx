@@ -6,7 +6,7 @@ async function getInitialPage() {
     headers: {
       'X-Inertia': 'true',
       'X-Requested-With': 'XMLHttpRequest',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
   })
 
@@ -18,9 +18,9 @@ async function getInitialPage() {
 }
 
 async function bootstrap() {
-  await enableMocking()
+  const mockEnabled = await enableMocking()
 
-  const page = await getInitialPage()
+  const page = mockEnabled ? await getInitialPage() : null
 
   initInertia(page)
 }

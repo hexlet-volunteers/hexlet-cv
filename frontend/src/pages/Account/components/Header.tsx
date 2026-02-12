@@ -3,7 +3,20 @@ import classes from './Header.module.css'
 import { IconSearch } from '@tabler/icons-react'
 import { useNavbar } from './NavigationProvider.tsx'
 
-export const Header: React.FC = () => {
+/**
+ * Описывает пропсы header-а личного кабинета.
+ */
+interface HeaderProps {
+  /** Функция рендера блока авторизационных действий. */
+  renderLogin: () => JSX.Element
+}
+
+/**
+ * Отображает шапку личного кабинета с поиском и панелью авторизации.
+ */
+export const Header = (props: HeaderProps) => {
+  const { renderLogin } = props
+
   const { opened, toggle } = useNavbar()
 
   return (
@@ -19,6 +32,7 @@ export const Header: React.FC = () => {
             visibleFrom="xs"
           />
           <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
+          {renderLogin()}
         </Group>
       </div>
     </header>

@@ -1,3 +1,4 @@
+// eslint-disable-next-line fsd/forbidden-imports
 import { AppLayout } from '@pages/Account/components/AppLayout'
 
 import { Stack, Text } from '@mantine/core'
@@ -13,11 +14,23 @@ interface ILesson {
   userId: number
   lessonTitle: string
 }
-const LessonsPage = ({ lessonsProgress }: { lessonsProgress: ILesson[] }) => {
+
+/**
+ * Описывает пропсы временной страницы уроков.
+ */
+type LessonsPageProps = {
+  /** Прогресс пользователя по урокам выбранной программы. */
+  lessonsProgress: ILesson[]
+}
+
+/**
+ * Отображает временную страницу со списком уроков выбранной программы.
+ */
+const LessonsPage = ({ lessonsProgress }: LessonsPageProps) => {
   // временная заглушка
   return (
     <Stack>
-      {lessonsProgress.map(lesson => (
+      {lessonsProgress.map((lesson) => (
         <Text key={lesson.id}>{lesson.lessonTitle}</Text>
       ))}
     </Stack>

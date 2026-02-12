@@ -23,6 +23,92 @@ export default {
         'Свежие джуниор-вакансии и стажировки каждый день.',
       title: 'Наше сообщество',
     },
+    auth: {
+      social: {
+        providers: {
+          google: 'Google',
+          github: 'Github',
+        },
+      },
+      signUp: {
+        title: 'Sign up',
+        subtitle: 'Use your preferred sign-in method',
+        divider: 'or',
+        fields: {
+          lastName: {
+            label: 'Last name',
+            placeholder: 'Last name',
+          },
+          firstName: {
+            label: 'First name',
+            placeholder: 'First name',
+          },
+          name: {
+            errors: {
+              required: 'Enter your name',
+              too_short: 'Name is too short',
+              too_long: 'Name is too long',
+              invalid_format: 'Invalid name format',
+            },
+          },
+          email: {
+            label: 'Email',
+            placeholder: 'E-mail',
+            errors: {
+              required: 'Enter your email',
+              too_long: 'Email is too long',
+              invalid_format: 'Invalid email format',
+            },
+          },
+          password: {
+            label: 'Password',
+            placeholder: 'Your password',
+            errors: {
+              required: 'Enter your password',
+              too_long: 'Password is too long',
+              too_short: 'Password must be at least 8 characters',
+              invalid_format: 'Invalid password format',
+            },
+          },
+          terms: {
+            errors: {
+              required: 'You must accept the terms',
+            },
+            label: 'I accept the terms',
+          },
+        },
+        signInLink: 'Already have an account? Sign in',
+        submit: 'Sign up',
+      },
+      signIn: {
+        title: 'Sign in',
+        subtitle: 'Use your preferred sign-in method',
+        divider: 'or',
+        fields: {
+          email: {
+            label: 'Email',
+            placeholder: 'E-mail',
+            errors: {
+              invalid: 'Invalid email or password',
+              required: 'Enter your email',
+              too_long: 'Email is too long',
+              invalid_format: 'Invalid email format',
+            },
+          },
+          password: {
+            label: 'Password',
+            placeholder: 'Password',
+            errors: {
+              required: 'Enter your password',
+              too_long: 'Password is too long',
+              too_short: 'Password must be at least 8 characters',
+              invalid_format: 'Invalid password format',
+            },
+          },
+        },
+        submit: 'Sign in',
+      },
+    },
     homePage: {
       greetings: 'Welcome',
       aboutUs: {
@@ -96,11 +182,14 @@ export default {
       knowledgeBaseAndInterview: {
         title: 'Knowledge base and interviews',
         knowledgeBaseTitle: 'Knowledge Base',
-        knowledgeBaseDescription: 'Step-by-step guides, checklists and templates for job search.',
+        knowledgeBaseDescription:
+          'Step-by-step guides, checklists and templates for job search.',
         interviewQuestionsTitle: 'Interview questions',
-        interviewQuestionsDescription: 'Collection of real questions and answers about roles and stack.',
+        interviewQuestionsDescription:
+          'Collection of real questions and answers about roles and stack.',
         realInterviewVideosTitle: 'Real interviews videos',
-        realInterviewVideosDescription: 'Interviews analysis with expert comments and checklists.',
+        realInterviewVideosDescription:
+          'Interviews analysis with expert comments and checklists.',
         button: 'Get access',
       },
       webinars: {
@@ -114,8 +203,20 @@ export default {
       totaAi: {
         aiAssistant: 'AI Assistant',
         title: 'Tota AI — Career Accelerator Agent',
-        description: 'Helps with resumes, applications, correspondence with recruiters, and interview preparation.',
-      }, 
+        description:
+          'Helps with resumes, applications, correspondence with recruiters, and interview preparation.',
+      },
+    },
+    header: {
+      auth: {
+        account: 'Account',
+        admin: 'Admin',
+        signOut: 'Sign out',
+        tryFreeLine1: 'Try',
+        tryFreeLine2: 'for free',
+        signIn: 'Sign in',
+        signUp: 'Sign up',
+      },
     },
     accountPage: {
       purchases: {
@@ -150,15 +251,15 @@ export default {
         courseBadge: {
           newProgram: 'New',
           completedProgram: 'Сertificate',
-        }
+        },
       },
       notifications: {
         title: 'Notifications',
         today: 'today',
         yesterday: 'yesterday',
         daysAgo: 'long ago',
-        noNotifications: 'No notifications'
-      }
+        noNotifications: 'No notifications',
+      },
     },
     activityCards: {
       courses_in_process: 'Courses in Progress',
