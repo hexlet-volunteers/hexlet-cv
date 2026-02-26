@@ -1,50 +1,58 @@
-import { Group, Button, Divider, ThemeIcon, Text, Anchor } from '@mantine/core'
+import { Group, Divider, ThemeIcon, Text, Anchor } from '@mantine/core'
 import { Link } from '@inertiajs/react'
+import { useTranslation } from 'react-i18next'
 
-const links = [
-  {
-    link: '#',
-    label: 'Коммерческий опыт',
-  },
-  {
-    link: '#',
-    label: 'Аналитика',
-  },
-  {
-    link: '/account/purchase',
-    label: 'Обучение', //временная ссылка для проверки работы личного кабинета раздела заказы
-  },
-  {
-    link: '#',
-    label: 'Грейды',
-  },
-  {
-    link: '#',
-    label: 'База знаний',
-  },
-  {
-    link: '#',
-    label: 'Вебинары',
-  },
-  {
-    link: '#',
-    label: 'Кейсы',
-  },
-  {
-    link: '#',
-    label: 'Тарифы',
-  },
-  {
-    link: '#',
-    label: 'Новости',
-  },
-  {
-    link: '#',
-    label: 'Сообщество',
-  },
-]
+interface Props {
+  renderLogin: () => JSX.Element
+}
 
-export function Header(): JSX.Element {
+export function Header(props: Props) {
+  const { renderLogin } = props
+  const { t } = useTranslation()
+
+  const links = [
+    {
+      link: '#',
+      label: t('header.links.commercialExperience'),
+    },
+    {
+      link: '#',
+      label: t('header.links.analytics'),
+    },
+    {
+      link: '/account/purchase',
+      label: t('header.links.training'),
+    },
+    {
+      link: '#',
+      label: t('header.links.grades'),
+    },
+    {
+      link: '#',
+      label: t('header.links.knowledgeBase'),
+    },
+    {
+      link: '#',
+      label: t('header.links.webinars'),
+    },
+    {
+      link: '#',
+      label: t('header.links.cases'),
+    },
+    {
+      link: '#',
+      label: t('header.links.pricing'),
+    },
+    {
+      link: '#',
+      label: t('header.links.news'),
+    },
+    {
+      link: '#',
+      label: t('header.links.community'),
+    },
+  ]
+
   const items = links.map(
     (link): JSX.Element => (
       <Anchor
@@ -58,7 +66,7 @@ export function Header(): JSX.Element {
       >
         {link.label}
       </Anchor>
-    ),
+    )
   )
 
   return (
@@ -79,28 +87,16 @@ export function Header(): JSX.Element {
               </Text>
             </ThemeIcon>
             <Text c="white" size="md" fw={700} lh={1.1}>
-              Hexlet
+              {t('header.brand.line1')}
               <br />
-              Карьера
+              {t('header.brand.line2')}
             </Text>
           </Group>
         </Anchor>
         <nav>
           <Group gap="xl">{items}</Group>
         </nav>
-        {/* В данный момент переводит на авторизацию в dashboard */}
-        <Button
-          variant="default"
-          size="md"
-          component={Link}
-          href="/en/users/sign_in"
-        >
-          <Text size="md" lh={1.1}>
-            Попробывать
-            <br />
-            бесплатно
-          </Text>
-        </Button>
+        {renderLogin()}
       </Group>
       <Divider size={2} />
     </header>

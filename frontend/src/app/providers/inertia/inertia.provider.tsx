@@ -17,11 +17,13 @@ export const initInertia = (page: Page) => {
       return page
     },
     setup({ el, App, props }) {
+      const locale = props.initialPage?.props?.locale
+
       const root = createRoot(el)
       root.render(
         <StrictMode>
           <UIProvider>
-            <I18nProvider>
+            <I18nProvider locale={locale}>
               <App {...props} />
             </I18nProvider>
           </UIProvider>

@@ -25,3 +25,21 @@ export function inertiaJson(
     },
   })
 }
+
+// Inertia navigation: 409 + X-Inertia-Location
+export const inertiaRedirect = (to: string) =>
+  new HttpResponse(null, {
+    status: 409,
+    headers: {
+      'X-Inertia-Location': to,
+    },
+  })
+
+// обычная навигация: 303 Location
+export const classicRedirect = (to: string) =>
+  new HttpResponse(null, {
+    status: 303,
+    headers: { Location: to },
+  })
+
+export const isInertia = (req: Request) => req.headers.get('X-Inertia') === 'true'
