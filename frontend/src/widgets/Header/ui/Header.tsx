@@ -12,7 +12,7 @@ const links = [
   },
   {
     link: '/account/purchase',
-    label: 'Обучение', //временная ссылка для проверки работы личного кабинета раздела заказы
+    label: 'Обучение', // временная ссылка для проверки работы личного кабинета раздела заказы
   },
   {
     link: '#',
@@ -58,7 +58,7 @@ export function Header(): JSX.Element {
       >
         {link.label}
       </Anchor>
-    ),
+    )
   )
 
   return (
@@ -96,7 +96,7 @@ export function Header(): JSX.Element {
           href="/en/users/sign_in"
         >
           <Text size="md" lh={1.1}>
-            Попробывать
+            Попробовать
             <br />
             бесплатно
           </Text>
