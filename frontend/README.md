@@ -1,22 +1,3 @@
-# Get started
-
-## Install
-
-1. Установить NodeJS 20.19 or above (https://nodejs.org/en/download)
-2. Проверьте версию Node.js `node -v`
-3. `npm ci`
-4. Сгенерировать файл сервис воркера для работы моков `npx msw init ./public --save`
-5. Создайть файл .env.local и прописать в нем `VITE_MSW=true`
-
-## Build
-
-1. `npm run build`
-
-## Development
-
-1. `npm run dev`
-2. Открыть http://localhost:5173/
-
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
