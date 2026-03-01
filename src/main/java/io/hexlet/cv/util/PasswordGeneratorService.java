@@ -42,9 +42,9 @@ public class PasswordGeneratorService {
     public String generateMemorablePassword(int wordCount) {
 
         String[] words = {"apple", "banana", "carrot", "dragon", "elephant", "flower",
-                "guitar", "happiness", "island", "jupiter", "kangaroo", "lighthouse",
-                "mountain", "notebook", "ocean", "penguin", "quantum", "rainbow",
-                "sunshine", "tiger", "universe", "victory", "waterfall", "xylophone"};
+            "guitar", "happiness", "island", "jupiter", "kangaroo", "lighthouse",
+            "mountain", "notebook", "ocean", "penguin", "quantum", "rainbow",
+            "sunshine", "tiger", "universe", "victory", "waterfall", "xylophone"};
 
         StringBuilder password = new StringBuilder();
         for (int i = 0; i < wordCount; i++) {
@@ -72,16 +72,28 @@ public class PasswordGeneratorService {
     }
 
     public int passwordStrength(String password) {
-        if (password == null || password.length() < 8) return 1;
+        if (password == null || password.length() < 8) {
+            return 1;
+        }
 
         int score = 0;
 
-        if (password.length() >= 12) score++;
+        if (password.length() >= 12) {
+            score++;
+        }
 
-        if (password.chars().anyMatch(Character::isUpperCase)) score++;
-        if (password.chars().anyMatch(Character::isLowerCase)) score++;
-        if (password.chars().anyMatch(Character::isDigit)) score++;
-        if (password.chars().anyMatch(ch -> SPECIAL.indexOf(ch) >= 0)) score++;
+        if (password.chars().anyMatch(Character::isUpperCase)) {
+            score++;
+        }
+        if (password.chars().anyMatch(Character::isLowerCase)) {
+            score++;
+        }
+        if (password.chars().anyMatch(Character::isDigit)) {
+            score++;
+        }
+        if (password.chars().anyMatch(ch -> SPECIAL.indexOf(ch) >= 0)) {
+            score++;
+        }
 
         return Math.min(score, 5);
     }

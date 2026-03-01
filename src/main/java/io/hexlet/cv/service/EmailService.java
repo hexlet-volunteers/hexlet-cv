@@ -1,17 +1,20 @@
 package io.hexlet.cv.service;
 
-import io.hexlet.cv.handler.exception.UserNotFoundException;
+import io.hexlet.cv.handler.exception.EmailSendingException;
 import io.hexlet.cv.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import io.hexlet.cv.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,35 +24,23 @@ public class EmailService {
     private final PasswordResetService passwordResetService;
     private final UserRepository userRepository;
     private final MessageSource messageSource;
-
-    @Autowired(required = false)
     private final Environment environment;
 
     public void sendResetEmail(String email, String clientUrl) {
-        if (!userRepository.existsByEmail(email)) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) {
             return;
         }
+
+        User user = userOpt.get();
+        String resetToken = passwordResetService.createPasswordResetToken(user);
+        String resetLink = buildResetLink(clientUrl, resetToken);
 
         if (isDevProfile()) {
-            String resetToken = passwordResetService.createPasswordResetToken(
-                    userRepository.findByEmail(email).orElseThrow()
-            );
-            String resetLink = clientUrl + "?token=" + resetToken;
             return;
         }
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
-
-        String resetToken = passwordResetService.createPasswordResetToken(user);
-        String resetLink = clientUrl + "?token=" + resetToken;
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject(getMessage("email.reset.subject"));
-        message.setText(createResetEmailText(resetLink));
-
-        mailSender.send(message);
+        sendEmail(email, "email.reset.subject", createResetEmailText(resetLink));
     }
 
     public void sendNewPasswordEmail(String email, String newPassword) {
@@ -57,18 +48,35 @@ public class EmailService {
             return;
         }
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject(getMessage("email.new_password.subject"));
-        message.setText(createNewPasswordEmailText(newPassword));
+        sendEmail(email, "email.new_password.subject", createNewPasswordEmailText(newPassword));
+    }
 
-        mailSender.send(message);
+    private void sendEmail(String to, String subjectKey, String text) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(to);
+            message.setSubject(getMessage(subjectKey));
+            message.setText(text);
+
+            mailSender.send(message);
+        } catch (MailException e) {
+            throw new EmailSendingException("Failed to send email", e);
+        }
+    }
+
+    private String buildResetLink(String clientUrl, String token) {
+        if (clientUrl.contains("?")) {
+            return clientUrl + "&token=" + token;
+        } else {
+            return clientUrl + "?token=" + token;
+        }
     }
 
     private boolean isDevProfile() {
         try {
-            return environment != null &&
-                    (environment.matchesProfiles("dev") || environment.matchesProfiles("test"));
+            return environment != null
+                    && (Arrays.asList(environment.getActiveProfiles()).contains("dev")
+                    || Arrays.asList(environment.getActiveProfiles()).contains("test"));
         } catch (Exception e) {
             String activeProfile = System.getProperty("spring.profiles.active", "");
             return activeProfile.contains("dev") || activeProfile.contains("test");
@@ -76,21 +84,15 @@ public class EmailService {
     }
 
     private String createResetEmailText(String resetLink) {
-        return String.format(
-                getMessage("email.reset.text"),
-                resetLink
-        );
+        return getMessage("email.reset.text", resetLink);
     }
 
     private String createNewPasswordEmailText(String newPassword) {
-        return String.format(
-                getMessage("email.new_password.text"),
-                newPassword
-        );
+        return getMessage("email.new_password.text", newPassword);
     }
 
-    private String getMessage(String code) {
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+    private String getMessage(String code, Object... args) {
+        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 }
 

@@ -11,6 +11,7 @@ import io.hexlet.cv.repository.UserRepository;
 import io.hexlet.cv.validator.CommonPasswordValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PasswordResetService {
 
     private final PasswordResetTokenRepository tokenRepository;
@@ -27,7 +29,7 @@ public class PasswordResetService {
     private final PasswordResetMapper passwordResetMapper;
 
     public boolean userExists(String email) {
-        return userRepository.existsByEmail(email);
+        return userRepository.findByEmail(email).isPresent();
     }
 
     @Transactional
@@ -66,14 +68,16 @@ public class PasswordResetService {
         PasswordResetToken resetToken = PasswordResetToken.createForUser(user);
         tokenRepository.save(resetToken);
 
+        log.info("Created password reset token for user: {}", user.getEmail());
+
         return resetToken.getToken();
     }
 
     public boolean isTokenValid(String token) {
         return tokenRepository.findByTokenWithUser(token)
                 .map(resetToken ->
-                        resetToken.isValid() &&
-                                resetToken.getUser().isEnabled()
+                        resetToken.isValid()
+                                && resetToken.getUser().isEnabled()
                 )
                 .orElse(false);
     }

@@ -25,19 +25,27 @@ public class CommonPasswordValidator {
     }
 
     public boolean isCommonPassword(String password) {
-        if (password == null) return false;
+        if (password == null) {
+            return false;
+        }
         return commonPasswords.contains(password.toLowerCase());
     }
 
     public boolean isDisposableEmail(String email) {
-        if (email == null) return false;
+        if (email == null) {
+            return false;
+        }
         String domain = extractDomain(email);
         return disposableDomains.contains(domain.toLowerCase());
     }
 
     private String extractDomain(String email) {
         int atIndex = email.indexOf('@');
-        return atIndex != -1 ? email.substring(atIndex + 1) : "";
+        if (atIndex != -1) {
+            return email.substring(atIndex + 1);
+        } else {
+            return "";
+        }
     }
 
     private Set<String> loadCommonPasswordsFromFile() {
