@@ -64,6 +64,8 @@ dependencies {
     testImplementation(platform(libs.junitBom))
     testImplementation(libs.junitJupiter)
     testRuntimeOnly(libs.junitPlatformLauncher)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.mockito.junit.jupiter)
 
     // Inertia4J
     implementation(libs.inertia4jSpring)
@@ -71,6 +73,14 @@ dependencies {
 
     // Jackson JSR310 для поддержки LocalDateTime
     implementation(libs.jacksonDatatypeJsr310)
+
+    // 📧 Email+
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
+    // 🎯 Thymeleaf для email шаблонов+
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    implementation("org.flywaydb:flyway-core")
 
 }
 
@@ -111,7 +121,7 @@ spotless {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 

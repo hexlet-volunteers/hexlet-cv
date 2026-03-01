@@ -15,6 +15,18 @@ spring:
       max-discount: 100
       min-price: 0
 
+  mail:
+    host: smtp.gmail.com # или SMTP сервер
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   jackson:
     serialization:
       write-dates-as-timestamps: false

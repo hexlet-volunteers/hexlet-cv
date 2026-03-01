@@ -24,6 +24,10 @@ shadow-plugin = "8.1.1"
 sonarqube-plugin = "6.2.0.5505"
 spotless-plugin = "7.0.3"
 guava = "33.4.8-jre"
+#для тестов
+assertj = "3.24.2"
+mockito = "5.5.0"
+javafaker = "1.0.2"
 
 jackson-databind-nullable = "0.2.6"
 springdoc-openapi-ui = "2.8.8"
@@ -39,6 +43,9 @@ junit-bom = "5.12.2"
 ##     ⬆ = "5.13.0-M3"
 ##     ⬆ = "5.13.0-RC1"
 
+# Новые версии для JWT и email
+jakarta-mail = "2.0.1"
+
 inertia4j-spring = "1.0.4"
 #inertia4j-starter = "1.0.2"
 #inertia4j-spring-adapter = "1.2.0"
@@ -53,6 +60,10 @@ jackson-jsr310 = "2.18.2"
 [libraries]
 # Lombok
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok-plugin" }
+#для тестов
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+javafaker = { group = "com.github.javafaker", name = "javafaker", version.ref = "javafaker" }
 
 # Spring Boot
 springBootStarterWeb = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot-version" }
