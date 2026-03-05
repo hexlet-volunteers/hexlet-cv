@@ -10,7 +10,7 @@ import {
   IconSchool,
   IconUsers,
   IconSettings,
-  IconHelp,
+  IconHelp
 } from '@tabler/icons-react'
 
 const iconsMap: any = {
@@ -32,38 +32,43 @@ export type AdminMenuItemDTO = {
 }
 
 export type AdminMenuDTO = {
-    category: string
-    items: AdminMenuItemDTO[]
+  category: string
+  items: AdminMenuItemDTO[]
 }
 
 export const AdminNavbar: React.FC = (): JSX.Element => {
   const { url, props } = usePage()
   const menuData = props.adminMenu as AdminMenuDTO[]
 
+  const isLinkActive = (link: string) => {
+    if (link === '/admin/marketing/articles') return url.startsWith('/admin/marketing/')
+    return url.includes(link) || url.startsWith(link + '/')
+  }
+
   return (
     <nav className={classes.navbar}>
-        {menuData?.map(group => (
-          <div className={classes.section} key={group.category}>
-            <Text c='dimmed' size='xs' pl='sm'>
-              {group.category}
-            </Text>
-            {group.items?.map(item => {
-              const isActive = url.includes(item.link)
-              const IconComponent = iconsMap[item.icon]
-              return (
-                <Link
-                  key={item.label}
-                  className={classes.link}
-                  href={item.link}
-                  data-active={isActive || undefined}
-                >
-                  <IconComponent className={classes.linkIcon} stroke={1.5} />
-                  <span>{item.label}</span>
-                </Link>
-              )
-            })}
-          </div>
-        ))}
+      {menuData?.map(group => (
+        <div className={classes.section} key={group.category}>
+          <Text c="dimmed" size="xs" pl="sm">
+            {group.category}
+          </Text>
+          {group.items?.map((item) => {
+            const isActive = isLinkActive(item.link)
+            const IconComponent = iconsMap[item.icon]
+            return (
+              <Link
+                key={item.label}
+                className={classes.link}
+                href={item.link}
+                data-active={isActive || undefined}
+              >
+                <IconComponent className={classes.linkIcon} stroke={1.5} />
+                <span>{item.label}</span>
+              </Link>
+            )
+          })}
+        </div>
+      ))}
     </nav>
   )
 }
