@@ -1,5 +1,6 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '../inertia'
+import type { WebinarDTO } from '@widgets/admin-webinars'
 import type { InterviewsEntry } from '@widgets/admin-interviews/ui/AdminInterviews'
 import type { KnowledgeBaseEntry } from '@widgets/knowledge-base'
 import type { StudyProgramsEntry } from '@widgets/admin-study-programs'
@@ -32,6 +33,11 @@ const mockMenu: AdminMenuDTO[] = [
   },
 ]
 
+const mockWebinars: WebinarDTO[] = [
+  { id: 1, name: 'Онбординг в LMS', date: '2025-10-01', registration: 'https://example.com/reg1', videoUrl: '', feature: true, isPublished: true },
+  { id: 2, name: 'Метрики e-learning', date: '2025-10-15', registration: 'https://example.com/reg2', videoUrl: '', feature: false, isPublished: false }
+]
+
 const mockInterviews: InterviewsEntry[] = [
     { id: 1, title: 'Интервью с продактом', speaker: 'Алексей С.', videoUrl: '', isPublished: true },
     { id: 2, title: 'Интервью: редактор', speaker: 'Наталья О.', videoUrl: '', isPublished: false },
@@ -48,6 +54,21 @@ const mockPrograms: StudyProgramsEntry[] = [
 ]
 
 export const adminHandlers = [
+  http.get('*/admin/webinars', async ({ request }) => {
+    console.log('MSW: handler hit', request.url)
+
+    await delay()
+
+    return inertiaJson({
+      component: 'Admin/Webinars/Index',
+      props: {
+        webinars: mockWebinars,
+        adminMenu: mockMenu,
+      },
+      url: new URL(request.url).pathname,
+      version: 'msw-dev',
+    })
+  }),
   http.get('*/admin/interview', async ({ request }) => {
     console.log('MSW: handler hit', request.url)
 
