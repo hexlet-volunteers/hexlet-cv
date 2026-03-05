@@ -1,0 +1,18 @@
+export { MarketingArticles } from './ui/MarketingArticles'
+export { MarketingStories } from './ui/MarketingStories'
+export { MarketingReviews } from './ui/MarketingReviews'
+export { MarketingTeam } from './ui/MarketingTeam'
+export { MarketingPricing } from './ui/MarketingPricing'
+export { MarketingTable } from './ui/MarketingTable'
+
+export type { TProps as ArticlesProps } from './ui/MarketingArticles'
+export type { TProps as StoriesProps } from './ui/MarketingStories'
+export type { TProps as ReviewsProps } from './ui/MarketingReviews'
+export type { TProps as TeamProps } from './ui/MarketingTeam'
+export type { TProps as PricingProps } from './ui/MarketingPricing'
+
+export type { MarketingArticlesDTO } from './ui/MarketingArticles'
+export type { MarketingStoriesDTO } from './ui/MarketingStories'
+export type { MarketingReviewsDTO } from './ui/MarketingReviews'
+export type { MarketingTeamDTO } from './ui/MarketingTeam'
+export type { MarketingPricingDTO } from './ui/MarketingPricing'
