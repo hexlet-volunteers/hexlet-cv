@@ -3,10 +3,7 @@ import type { TFunction } from 'i18next'
 import type { MantineColor } from '@mantine/core'
 import type { BadgeStatus } from '@entities/learning-progress/model/getBadgeStatus'
 
-export const getBadgeConfig = (
-  status: BadgeStatus,
-  t: TFunction,
-): { label: ReactNode; color: MantineColor } | null => {
+export const getBadgeConfig = (status: BadgeStatus, t: TFunction): { label: ReactNode, color: MantineColor } | null => {
   if (status === 'completed') {
     return {
       label: t('accountPage.progress.programBadge.completedProgram'),

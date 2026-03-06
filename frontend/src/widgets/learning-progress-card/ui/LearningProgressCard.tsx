@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { getRelativeDayI18nKey, getDaysDiff } from '@shared/lib'
 import type { TProgress } from '../../../entities/learning-progress/model'
-import { getBadgeConfig } from '@entities/learning-progress/ui/lib/getBadgeConfig'
+import { getBadgeConfig } from '@entities/learning-progress/lib/getBadgeConfig'
 import { getBadgeStatus } from '@entities/learning-progress/model/getBadgeStatus'
 
 interface LearningProgressCardProps {
