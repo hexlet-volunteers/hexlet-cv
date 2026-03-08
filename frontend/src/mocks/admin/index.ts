@@ -4,8 +4,9 @@ import type { InterviewsEntry } from '@widgets/admin-interviews/ui/AdminIntervie
 import type { KnowledgeBaseEntry } from '@widgets/knowledge-base'
 import type { StudyProgramsEntry } from '@widgets/admin-study-programs'
 import type { AdminMenuDTO } from '@pages/Admin/components/AdminNavbar'
+import type { UsersDTO } from '@widgets/admin-users'
 
-const mockMenu: AdminMenuDTO[] = [
+export const mockMenu: AdminMenuDTO[] = [
   {
     category: 'КОНТЕНТ',
     items: [
