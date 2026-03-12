@@ -1,17 +1,17 @@
 import type { TPagination } from '@shared/types/inertiaSharedData/inertiaSharedProps'
 
-export type TKnowledgeInterview = {
+export type KnowledgeInterviewDTO = {
   id: number
   title: string
   description: string | null
   duration: string | null
 }
 
-export interface IKnowledgeInterviewsResponse {
-  interviews: TKnowledgeInterview[]
+export type KnowledgeInterviewsResponseDTO = {
+  interviews: KnowledgeInterviewDTO[]
   pagination: TPagination
 }
 
-export interface IKnowledgeInterviewShowResponse {
-  interview: TKnowledgeInterview
+export type KnowledgeInterviewShowResponseDTO = {
+  interview: KnowledgeInterviewDTO
 }

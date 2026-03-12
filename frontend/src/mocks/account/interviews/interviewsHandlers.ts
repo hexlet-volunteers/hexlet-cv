@@ -53,7 +53,7 @@ export const interviewsHandlers = [
       url: url.pathname + url.search,
     })
   }),
-  http.get('/account/interviews/:id', async ({ params }) => {
+  http.get('/account/interviews/:id/read', async ({ params, request }) => {
     await delay()
 
     const interview = interviews.find(({ id }) => id === parseInt(params.id as string, 10))
@@ -71,7 +71,7 @@ export const interviewsHandlers = [
         activeMainSection: 'account',
         activeSubSection: 'interviews',
       },
-      url: `/account/interviews/${interview.id}`,
+      url: new URL(request.url).pathname,
     })
   }),
 ]

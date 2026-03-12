@@ -1,18 +1,20 @@
 import {
-  Card,
+  Flex,
   Group,
   Stack,
   Text,
 } from '@mantine/core'
+import type { FC, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { TKnowledgeInterview } from '@entities/interview'
+import { DsCard } from '@shared/uikit/DsCard/DsCard'
+import type { KnowledgeInterviewDTO } from '@entities/interview'
 
 interface InterviewCardProps {
-  interview: TKnowledgeInterview
-  actionButton: React.ReactNode
+  interview: KnowledgeInterviewDTO
+  actionButton: ReactNode
 }
 
-export const InterviewCard: React.FC<InterviewCardProps> = ({
+export const InterviewCard: FC<InterviewCardProps> = ({
   interview,
   actionButton,
 }) => {
@@ -24,29 +26,29 @@ export const InterviewCard: React.FC<InterviewCardProps> = ({
     : videoLabel
 
   return (
-    <Card
+    <DsCard
       shadow="sm"
       padding="md"
       radius="md"
       withBorder
-      flex={1}
-      h={173}
-      display="flex"
-      style={{ flexDirection: 'column' }}
     >
-      <Stack gap="xs" h="100%">
-        <Stack gap={2} style={{ minHeight: 78 }}>
-          <Text fw={700} size="lg" lineClamp={2} style={{ lineHeight: 1.25 }}>
-            {typeLabel} · {interview.title}
-          </Text>
-          <Text c="dimmed" size="sm">
-            {metaLine}
-          </Text>
-        </Stack>
-        <Group mt="auto" justify="flex-start">
-          {actionButton}
-        </Group>
-      </Stack>
-    </Card>
+      <DsCard.Content>
+        <Flex direction="column" gap="xs">
+          <Stack gap={2}>
+            <Text fw={700} size="lg" lineClamp={2} lh={1.25}>
+              {typeLabel}
+              {' · '}
+              {interview.title}
+            </Text>
+            <Text c="dimmed" size="sm">
+              {metaLine}
+            </Text>
+          </Stack>
+          <Group justify="flex-start" mt="xs">
+            {actionButton}
+          </Group>
+        </Flex>
+      </DsCard.Content>
+    </DsCard>
   )
 }

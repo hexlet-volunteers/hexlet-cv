@@ -2,14 +2,14 @@ import { Container } from '@mantine/core'
 import { IconMessage, IconSearchOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import type { InertiaPage } from '@shared/types/inertia'
-import type { IKnowledgeInterviewsResponse } from '@entities/interview'
+import type { KnowledgeInterviewsResponseDTO } from '@entities/interview'
 import { AppLayout } from '@pages/Account/components/AppLayout'
 import { PageHeader } from '@widgets/page-header'
 import { EntityGrid } from '@widgets/entity-grid'
 import { InterviewCard } from '@widgets/interview-card'
 import { OpenInterviewButton } from '@features/open-interview'
 
-const InterviewsPage: InertiaPage<IKnowledgeInterviewsResponse> = ({
+const InterviewsPage: InertiaPage<KnowledgeInterviewsResponseDTO> = ({
   interviews,
   pagination,
 }) => {
@@ -34,7 +34,6 @@ const InterviewsPage: InertiaPage<IKnowledgeInterviewsResponse> = ({
         }}
         renderItem={interview => (
           <InterviewCard
-            key={interview.id}
             interview={interview}
             actionButton={(
               <OpenInterviewButton interviewId={interview.id}>

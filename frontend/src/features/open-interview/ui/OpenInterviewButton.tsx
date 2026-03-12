@@ -15,7 +15,7 @@ export const OpenInterviewButton: React.FC<IProps> = ({
 }) => {
   return (
     <Button
-      href={`/account/interviews/${interviewId}`}
+      href={`/account/interviews/${interviewId}/read`}
       component={Link}
       variant={variant}
       rightSection={<IconChevronRight size={14} />}

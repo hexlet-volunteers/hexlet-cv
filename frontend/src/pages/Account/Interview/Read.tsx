@@ -1,9 +1,9 @@
 import { Stack, Text, Title } from '@mantine/core'
 import type { InertiaPage } from '@shared/types/inertia'
-import type { IKnowledgeInterviewShowResponse } from '@entities/interview'
+import type { KnowledgeInterviewShowResponseDTO } from '@entities/interview'
 import { AppLayout } from '@pages/Account/components/AppLayout'
 
-const InterviewReadPage: InertiaPage<IKnowledgeInterviewShowResponse> = ({
+const InterviewReadPage: InertiaPage<KnowledgeInterviewShowResponseDTO> = ({
   interview,
 }) => {
   return (

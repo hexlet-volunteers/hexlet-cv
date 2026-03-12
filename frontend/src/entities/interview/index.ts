@@ -1,5 +1,5 @@
 export type {
-  TKnowledgeInterview,
-  IKnowledgeInterviewsResponse,
-  IKnowledgeInterviewShowResponse,
-} from './model'
+  KnowledgeInterviewDTO,
+  KnowledgeInterviewsResponseDTO,
+  KnowledgeInterviewShowResponseDTO,
+} from './model/types'
