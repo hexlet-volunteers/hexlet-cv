@@ -1,17 +1,31 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '@mocks/inertia'
-import type { MenuItem } from '@shared/types/inertiaSharedData'
-import { purchaseHandlers } from './purchase'
+import type { TMenuItem } from '@shared/types/inertiaSharedData'
+import { purchaseHandlers } from '@mocks/account/purchase'
 import { progressHandlers, lessonsHandlers } from '@mocks/account/progress'
+import { resumeHandlers } from '@mocks/account/resume'
 
-export const menu: MenuItem[] = [
-  { label: 'Мое обучение', link: '/account/my-progress' },
-  { label: 'Покупки и подписки', link: '/account/purchase' },
-  { label: 'Вебинары', link: '/account/webinars' },
+export const menu: TMenuItem[] = [
+  {
+    label: 'Мое обучение',
+    link: '/account/my-progress',
+  },
+  {
+    label: 'Покупки и подписки',
+    link: '/account/purchase',
+  },
+  {
+    label: 'Вебинары',
+    link: '/account/webinars',
+  },
   { label: 'База знаний' },
   { label: 'Интервью' },
   { label: 'Грейдирование' },
   { label: 'Программы обучения' },
+  {
+    label: 'Резюме',
+    link: '/account/resume',
+  },
 ]
 
 export const activityCards = {
@@ -30,7 +44,7 @@ export const activityCards = {
   },
 }
 
-const makeHandler = ({ component, url }: { component: string; url: string }) =>
+const makeHandler = ({ component, url }: { component: string, url: string }) =>
   http.get(url, async ({ request }) => {
     console.log('MSW handler hit:', request.method, request.url)
     await delay()
@@ -62,4 +76,5 @@ export const handlers = [
   ...purchaseHandlers,
   ...progressHandlers,
   ...lessonsHandlers,
+  ...resumeHandlers,
 ]
