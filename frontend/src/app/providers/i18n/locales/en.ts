@@ -148,6 +148,11 @@ export default {
           completedProgram: 'Сertificate',
         }
       },
+      interviews: {
+        title: 'Interviews',
+        typeLabel: 'Interview',
+        videoLabel: 'Video',
+      },
     },
     activityCards: {
       courses_in_process: 'Courses in Progress',
@@ -158,12 +163,13 @@ export default {
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'You have no subscriptions or orders yet',
+      noInterviews: 'Interview materials have not been added yet',
     },
-
     buttonsLabels: {
       goToCatalog: 'Go to Catalog',
       open: 'Open',
       continue: 'Continue',
+      read: 'Read',
     },
     adminPage: {
       header: {

@@ -9,11 +9,13 @@ export const Navbar: React.FC = React.memo(() => {
   const { props: pageProps, url } = usePage()
   const { menu } = pageProps
   const { opened, toggle: navbarToggle } = useNavbar()
+  const normalizedUrl = normalizePathname(url)
 
   const ativeMenu =
-    menu?.find(
-      ({ link }) => normalizePathname(link) === normalizePathname(url),
-    ) || menu[0]
+    menu?.find(({ link }) => {
+      const normalizedLink = normalizePathname(link)
+      return normalizedLink && normalizedUrl?.startsWith(normalizedLink)
+    }) || menu[0]
 
   const links =
     menu?.map((item) => (

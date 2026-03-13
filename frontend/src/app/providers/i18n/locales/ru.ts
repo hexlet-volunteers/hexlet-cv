@@ -150,10 +150,16 @@ export default {
           completedProgram: 'Сертификат',
         },
       },
+      interviews: {
+        title: 'Интервью',
+        typeLabel: 'Интервью',
+        videoLabel: 'Видео',
+      },
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',
       noLearningProgress: 'Начните обучение сейчас',
+      noInterviews: 'Материалы для интервью пока не добавлены',
     },
     activityCards: {
       courses_in_process: 'Курсов в работе',
@@ -165,7 +171,8 @@ export default {
     buttonsLabels: {
       goToCatalog: 'В каталог',
       open: 'Открыть',
-      continue: 'Продолжить'
+      continue: 'Продолжить',
+      read: 'Читать',
     },
     adminPage: {
       header: {
