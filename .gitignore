@@ -60,3 +60,5 @@ build
 .settings
 .class
 .PVS-Studio/
+cookies.txt
+new_cookies.txt
