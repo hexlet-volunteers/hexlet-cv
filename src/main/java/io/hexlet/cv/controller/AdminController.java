@@ -77,7 +77,7 @@ public class AdminController {
         return inertia.render("Admin/Settings/Index", props);
     }
 
-    @GetMapping("/admin/help")
+    @GetMapping("/help")
     public ResponseEntity<?> adminHelpController(HttpServletRequest request) {
         var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Help/Index", props);
