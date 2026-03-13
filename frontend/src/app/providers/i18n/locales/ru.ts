@@ -98,18 +98,20 @@ export default {
       knowledgeBaseAndInterview: {
         title: 'База знаний и интервью',
         knowledgeBaseTitle: 'База знаний',
-        knowledgeBaseDescription: 'Пошаговые гайды, чек-листы и шаблоны для поиска работы.',
+        knowledgeBaseDescription:
+          'Пошаговые гайды, чек-листы и шаблоны для поиска работы.',
         interviewQuestionsTitle: 'Вопросы с собеседований',
-        interviewQuestionsDescription: 'Коллекция реальных вопросов и ответов по ролям и стеку.',
+        interviewQuestionsDescription:
+          'Коллекция реальных вопросов и ответов по ролям и стеку.',
         realInterviewVideosTitle: 'Записи реальных собесов',
-        realInterviewVideosDescription: 'Разбор интервью с комментариями экспертов и чек-листами.',
+        realInterviewVideosDescription:
+          'Разбор интервью с комментариями экспертов и чек-листами.',
         button: 'Получить доступ',
       },
       webinars: {
         title: 'Вебинары с HR и экспертами',
         viewSchedule: 'Смотреть расписание',
       },
-
     },
     accountPage: {
       purchases: {
@@ -146,6 +148,17 @@ export default {
           completedProgram: 'Сертификат',
         },
       },
+      webinars: {
+        title: 'Вебинары',
+        registration: 'Зарегистрироваться',
+        addToCalendar: 'Добавить в календарь',
+        shedule: 'Расписание',
+        noWebinars: 'Пока нет запланированных вебинаров',
+        location: {
+          online: 'Онлайн',
+          offline: 'Офлайн',
+        },
+      },
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',
@@ -161,7 +174,7 @@ export default {
     buttonsLabels: {
       goToCatalog: 'В каталог',
       open: 'Открыть',
-      continue: 'Продолжить'
+      continue: 'Продолжить',
     },
     adminPage: {
       header: {

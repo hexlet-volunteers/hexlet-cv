@@ -1,6 +1,6 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '@mocks/inertia'
-import { menu, activityCards } from '../index'
+import { menu, activityCards } from '@mocks/account'
 
 const progress = [
   {
@@ -154,7 +154,7 @@ export const progressHandlers = [
 
     // 1. Извлекаем номер страницы из URL (Inertia пришлет ?page=0, ?page=1 и т.д.)
     const url = new URL(request.url)
-    const page = parseInt(url.searchParams.get('page') || '0', 9)
+    const page = parseInt(url.searchParams.get('page') || '0', 10)
     const pageSize = 9
 
     const start = page * pageSize
