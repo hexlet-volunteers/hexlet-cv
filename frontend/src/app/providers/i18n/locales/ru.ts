@@ -109,7 +109,10 @@ export default {
         title: 'Вебинары с HR и экспертами',
         viewSchedule: 'Смотреть расписание',
       },
-
+      ourTeam: {
+        sectionTitle: 'Наша команда',
+        aboutBadge: 'О нас',
+      },
     },
     accountPage: {
       purchases: {

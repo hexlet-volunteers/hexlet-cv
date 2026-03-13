@@ -107,7 +107,10 @@ export default {
         title: 'Webinars with HR and Experts',
         viewSchedule: 'View Schedule',
       },
-
+      ourTeam: {
+        sectionTitle: 'Our Team',
+        aboutBadge: 'About Us',
+      },
     },
     accountPage: {
       purchases: {
