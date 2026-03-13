@@ -96,18 +96,20 @@ export default {
       knowledgeBaseAndInterview: {
         title: 'Knowledge base and interviews',
         knowledgeBaseTitle: 'Knowledge Base',
-        knowledgeBaseDescription: 'Step-by-step guides, checklists and templates for job search.',
+        knowledgeBaseDescription:
+          'Step-by-step guides, checklists and templates for job search.',
         interviewQuestionsTitle: 'Interview questions',
-        interviewQuestionsDescription: 'Collection of real questions and answers about roles and stack.',
+        interviewQuestionsDescription:
+          'Collection of real questions and answers about roles and stack.',
         realInterviewVideosTitle: 'Real interviews videos',
-        realInterviewVideosDescription: 'Interviews analysis with expert comments and checklists.',
+        realInterviewVideosDescription:
+          'Interviews analysis with expert comments and checklists.',
         button: 'Get access',
       },
       webinars: {
         title: 'Webinars with HR and Experts',
         viewSchedule: 'View Schedule',
       },
-
     },
     accountPage: {
       purchases: {
@@ -142,7 +144,18 @@ export default {
         courseBadge: {
           newProgram: 'New',
           completedProgram: 'Сertificate',
-        }
+        },
+      },
+      webinars: {
+        title: 'Webinars',
+        registration: 'Register',
+        addToCalendar: 'Add to Calendar',
+        shedule: 'Schedule',
+        noWebinars: 'No scheduled webinars yet',
+        location: {
+          online: 'Оnline',
+          offline: 'Offline',
+        },
       },
     },
     activityCards: {

@@ -1,5 +1,4 @@
-export type BadgeStatus = 'completed' | 'new' | null
-
+import type { BadgeStatus } from '../index'
 export const getBadgeStatus = (
   isCompleted: boolean,
   completedLessons: number,

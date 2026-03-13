@@ -1,4 +1,3 @@
-export { ProgramHeader } from './ui/ProgramHeader'
-export { ProgramProgressBar } from './ui/ProgramProgressBar'
-export { ProgramStatusInfo } from './ui/ProgramStatusInfo'
-export type { TProgress } from './model/'
+export type { TProgress, IProgressResponse, BadgeStatus } from './model/types'
+export { getBadgeStatus } from './lib/getBadgeStatus'
+export { getBadgeConfig } from './lib/getBadgeConfig'

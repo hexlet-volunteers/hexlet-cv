@@ -1,5 +1,7 @@
 import type { TPagination } from '@shared/types'
 
+export type BadgeStatus = 'completed' | 'new' | null
+
 export type TProgress = {
   id: number
   programTitle: string
