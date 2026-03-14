@@ -1,23 +1,5 @@
-# Git
 .git
-.github
-
-# Build outputs
-build
-frontend/dist
-frontend/node_modules
+vendor
 node_modules
-
-# IDE and local
-.idea
-*.iml
-.gradle
-
-# Docs and other (optional, keeps image build smaller)
-docs
-ruby-version
-*.md
-!README.md
-
-# Local Gradle cache
-.gradle
+log
+tmp

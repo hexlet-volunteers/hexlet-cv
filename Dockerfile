@@ -1,31 +1,32 @@
-# Build stage (Java 24 to match build.gradle.kts toolchain)
-FROM eclipse-temurin:24-jdk-alpine AS build
+# Сборка
+FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 
-# Install Node.js for frontend build (Alpine)
-RUN apk add --no-cache nodejs npm
-
-# Gradle wrapper and config
+# Кэш зависимостей Gradle
 COPY gradlew .
-COPY gradlew.bat .
 COPY gradle gradle
-COPY build.gradle.kts settings.gradle.kts gradle.properties .
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+COPY gradle.properties .
+COPY gradle/libs.versions.toml gradle/
 
-# Download dependencies (cache layer)
+# Скачивание зависимостей (без сборки приложения)
 RUN ./gradlew dependencies --no-daemon || true
 
-# Source and frontend
+# Исходники и сборка
 COPY src src
 COPY frontend frontend
 
-# Build frontend
+# Сборка frontend (если нужна интеграция в бэкенд)
 RUN cd frontend && npm ci && npm run build
 
-# Build Spring Boot JAR
+# Копирование собранного frontend в static (если используется)
+# RUN cp -r frontend/dist/* src/main/resources/static/  # раскомментировать при необходимости
+
 RUN ./gradlew bootJar --no-daemon -x test
 
-# Runtime stage
-FROM eclipse-temurin:24-jre-alpine
+# Рантайм
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 RUN adduser -D appuser
