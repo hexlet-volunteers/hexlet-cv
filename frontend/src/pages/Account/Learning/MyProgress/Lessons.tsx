@@ -17,7 +17,7 @@ const LessonsPage = ({ lessonsProgress }: { lessonsProgress: ILesson[] }) => {
   // временная заглушка
   return (
     <Stack>
-      {lessonsProgress.map(lesson => (
+      {lessonsProgress.map((lesson) => (
         <Text key={lesson.id}>{lesson.lessonTitle}</Text>
       ))}
     </Stack>

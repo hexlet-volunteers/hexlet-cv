@@ -1,33 +1,41 @@
-import { useState } from 'react';
-import { useForm, Link } from '@inertiajs/react';
-import { Container, Title, TextInput, PasswordInput, Button, Alert, Group } from '@mantine/core';
+import { useState } from 'react'
+import { useForm, Link } from '@inertiajs/react'
+import {
+  Container,
+  Title,
+  TextInput,
+  PasswordInput,
+  Button,
+  Alert,
+  Group,
+} from '@mantine/core'
 
 export default function SignIn() {
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<string | null>(null)
   const form = useForm({
     email: '',
     password: '',
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoginError(null);
+    e.preventDefault()
+    setLoginError(null)
 
     if (!/^\S+@\S+$/.test(form.data.email)) {
-      setLoginError('Введите корректный email');
-      return;
+      setLoginError('Введите корректный email')
+      return
     }
 
     form.post('/en/users/sign_in', {
       onError: (errs) => {
-        console.error('Ошибка', errs);
-        setLoginError('Ошибка входа. Проверьте данные.');
+        console.error('Ошибка', errs)
+        setLoginError('Ошибка входа. Проверьте данные.')
       },
       onSuccess: () => {
-        console.log('Успешный вход!');
+        console.log('Успешный вход!')
       },
-    });
-  };
+    })
+  }
 
   return (
     <Container size="sm" mt="xl">
@@ -62,5 +70,5 @@ export default function SignIn() {
         </Group>
       </form>
     </Container>
-  );
+  )
 }

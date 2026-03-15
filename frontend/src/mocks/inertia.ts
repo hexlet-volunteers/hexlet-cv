@@ -14,13 +14,13 @@ export type InertiaPage = {
 
 export function inertiaJson(
   page: InertiaPage,
-  init?: { status?: number, headers?: Record<string, string> }
+  init?: { status?: number; headers?: Record<string, string> },
 ) {
   return HttpResponse.json(page, {
     status: init?.status ?? 200,
     headers: {
       'X-Inertia': 'true',
-      'Vary': 'X-Inertia',
+      Vary: 'X-Inertia',
       ...init?.headers,
     },
   })

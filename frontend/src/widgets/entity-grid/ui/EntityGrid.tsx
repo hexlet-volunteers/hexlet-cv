@@ -19,7 +19,7 @@ interface IProps<T> {
 }
 
 export const EntityGrid = <T extends { id: string | number }>(
-  props: IProps<T>
+  props: IProps<T>,
 ) => {
   const { data, pagination, emptyConfig, baseUrl, renderItem } = props
   // API ожидает индекс страницы с 0, поэтому вычитаем 1 из значения пагинатора
@@ -37,7 +37,7 @@ export const EntityGrid = <T extends { id: string | number }>(
         }}
         spacing="md"
       >
-        {data.map(dataItem => (
+        {data.map((dataItem) => (
           <div key={dataItem.id}>{renderItem(dataItem)}</div>
         ))}
       </SimpleGrid>

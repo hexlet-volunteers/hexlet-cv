@@ -1,1 +1,1 @@
-export { WhoWeAre } from './ui/WhoWeAre';
+export { WhoWeAre } from './ui/WhoWeAre'

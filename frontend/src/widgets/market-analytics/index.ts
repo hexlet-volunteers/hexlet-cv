@@ -1,1 +1,1 @@
-export { MarketAnalytics } from './ui/MarketAnalytics';
+export { MarketAnalytics } from './ui/MarketAnalytics'

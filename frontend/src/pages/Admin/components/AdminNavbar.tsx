@@ -13,7 +13,7 @@ import {
   IconHelp,
 } from '@tabler/icons-react'
 
-const iconsMap: any = {
+const iconsMap: unknown = {
   IconSpeakerphone: IconSpeakerphone,
   IconVideo: IconVideo,
   IconBooks: IconBooks,
@@ -32,8 +32,8 @@ export type AdminMenuItemDTO = {
 }
 
 export type AdminMenuDTO = {
-    category: string
-    items: AdminMenuItemDTO[]
+  category: string
+  items: AdminMenuItemDTO[]
 }
 
 export const AdminNavbar: React.FC = (): JSX.Element => {
@@ -42,28 +42,28 @@ export const AdminNavbar: React.FC = (): JSX.Element => {
 
   return (
     <nav className={classes.navbar}>
-        {menuData?.map(group => (
-          <div className={classes.section} key={group.category}>
-            <Text c='dimmed' size='xs' pl='sm'>
-              {group.category}
-            </Text>
-            {group.items?.map(item => {
-              const isActive = url.includes(item.link)
-              const IconComponent = iconsMap[item.icon]
-              return (
-                <Link
-                  key={item.label}
-                  className={classes.link}
-                  href={item.link}
-                  data-active={isActive || undefined}
-                >
-                  <IconComponent className={classes.linkIcon} stroke={1.5} />
-                  <span>{item.label}</span>
-                </Link>
-              )
-            })}
-          </div>
-        ))}
+      {menuData?.map((group) => (
+        <div className={classes.section} key={group.category}>
+          <Text c="dimmed" size="xs" pl="sm">
+            {group.category}
+          </Text>
+          {group.items?.map((item) => {
+            const isActive = url.includes(item.link)
+            const IconComponent = iconsMap[item.icon]
+            return (
+              <Link
+                key={item.label}
+                className={classes.link}
+                href={item.link}
+                data-active={isActive || undefined}
+              >
+                <IconComponent className={classes.linkIcon} stroke={1.5} />
+                <span>{item.label}</span>
+              </Link>
+            )
+          })}
+        </div>
+      ))}
     </nav>
   )
 }

@@ -1,4 +1,14 @@
-import { Container, Card, Badge, Text, Group, Title, Grid, ThemeIcon, Stack } from '@mantine/core'
+import {
+  Container,
+  Card,
+  Badge,
+  Text,
+  Group,
+  Title,
+  Grid,
+  ThemeIcon,
+  Stack,
+} from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 
 export const MarketAnalytics: React.FC = () => {
@@ -9,9 +19,7 @@ export const MarketAnalytics: React.FC = () => {
       <Card radius="lg" p="xl">
         <Stack align="center" mb="xl" gap="xs">
           <Badge color="gray.7" size="lg" tt="none">
-            <Text size="xs">
-              {t('homePage.marketAnalytics.badge')}
-            </Text>
+            <Text size="xs">{t('homePage.marketAnalytics.badge')}</Text>
           </Badge>
           <Title order={1} fw="bold" ta="center">
             {t('homePage.marketAnalytics.title')}

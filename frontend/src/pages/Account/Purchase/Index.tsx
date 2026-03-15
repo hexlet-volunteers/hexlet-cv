@@ -19,6 +19,6 @@ const Purchase: InertiaPage = () => {
   )
 }
 
-Purchase.layout = page => <AppLayout>{page}</AppLayout>
+Purchase.layout = (page) => <AppLayout>{page}</AppLayout>
 
 export default Purchase

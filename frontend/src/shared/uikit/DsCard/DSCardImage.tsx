@@ -17,10 +17,7 @@ export const DSCardImage: React.FC<TProps> = (props) => {
   if (src) {
     return (
       <Card.Section>
-        <Image
-          src={src}
-          h={CARD_IMAGE_HEIGHT}
-        />
+        <Image src={src} h={CARD_IMAGE_HEIGHT} />
       </Card.Section>
     )
   }

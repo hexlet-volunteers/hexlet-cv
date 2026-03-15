@@ -10,7 +10,10 @@ export const TrainingPrograms: React.FC<TProps> = (props) => {
   const { trainingPrograms } = props
   const { t } = useTranslation()
 
-  const renderItem = ({ title, description }: TrainingCardDto, index: number) => {
+  const renderItem = (
+    { title, description }: TrainingCardDto,
+    index: number,
+  ) => {
     return (
       <Grid.Col
         key={index}
@@ -20,9 +23,7 @@ export const TrainingPrograms: React.FC<TProps> = (props) => {
         }}
       >
         <Card radius="lg" h="100%">
-          <Title order={3}>
-            {title}
-          </Title>
+          <Title order={3}>{title}</Title>
           <Text size="sm" mb="lg" mt="xs">
             {description}
           </Text>
@@ -39,9 +40,7 @@ export const TrainingPrograms: React.FC<TProps> = (props) => {
       <Title order={1} fw="bold" mb="md">
         {t('homePage.trainingPrograms.title')}
       </Title>
-      <Grid>
-        {trainingPrograms.map(renderItem)}
-      </Grid>
+      <Grid>{trainingPrograms.map(renderItem)}</Grid>
     </Container>
   )
 }

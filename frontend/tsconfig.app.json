@@ -35,8 +35,8 @@
       "@entities/*": ["src/entities/*"],
       "@widgets/*": ["src/widgets/*"],
       "@features/*": ["src/features/*"],
-      "@mocks/*": ["src/mocks/*"],
-    },
+      "@mocks/*": ["src/mocks/*"]
+    }
   },
   "include": ["src"]
 }
