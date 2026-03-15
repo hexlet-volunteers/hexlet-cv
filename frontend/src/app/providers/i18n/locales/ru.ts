@@ -150,6 +150,13 @@ export default {
           completedProgram: 'Сертификат',
         },
       },
+      notifications: {
+        title: 'Уведомления',
+        today: 'сегодня',
+        yesterday: 'вчера',
+        daysAgo: 'давно',
+        noNotifications: 'Уведомлений нет'
+      }
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',

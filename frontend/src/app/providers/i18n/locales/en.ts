@@ -148,6 +148,13 @@ export default {
           completedProgram: 'Сertificate',
         }
       },
+      notifications: {
+        title: 'Notifications',
+        today: 'today',
+        yesterday: 'yesterday',
+        daysAgo: 'long ago',
+        noNotifications: 'No notifications'
+      }
     },
     activityCards: {
       courses_in_process: 'Courses in Progress',
