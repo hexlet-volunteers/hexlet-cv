@@ -150,6 +150,17 @@ export default {
           completedProgram: 'Сертификат',
         },
       },
+      resume: {
+        title: 'Резюме',
+        header: 'Заголовок',
+        summary: 'Саммари',
+        skills: 'Навыки',
+        experience: 'Опыт',
+        template: 'Шаблон',
+        preview: 'Превью',
+        download: 'Скачать JSON',
+      },
+
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',
@@ -165,7 +176,7 @@ export default {
     buttonsLabels: {
       goToCatalog: 'В каталог',
       open: 'Открыть',
-      continue: 'Продолжить'
+      continue: 'Продолжить',
     },
     adminPage: {
       header: {

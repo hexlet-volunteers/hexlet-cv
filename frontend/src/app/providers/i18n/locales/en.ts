@@ -146,7 +146,17 @@ export default {
         courseBadge: {
           newProgram: 'New',
           completedProgram: 'Сertificate',
-        }
+        },
+      },
+      resume: {
+        title: 'Resume',
+        header: 'Header',
+        summary: 'Summary',
+        skills: 'Skills',
+        experience: 'Experience',
+        template: 'Template',
+        preview: 'Preview',
+        download: 'Download JSON',
       },
     },
     activityCards: {
