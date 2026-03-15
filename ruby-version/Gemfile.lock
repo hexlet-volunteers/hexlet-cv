@@ -537,7 +537,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
-    uri (0.13.2)
+    uri (0.13.3)
     valid_email2 (5.2.5)
       activemodel (>= 3.2)
       mail (~> 2.5)
