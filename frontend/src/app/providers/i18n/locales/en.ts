@@ -197,6 +197,52 @@ export default {
         programLessons: 'Lessons',
         programPublished: 'Published',
       },
+      marketing: {
+        title: 'Marketing',
+        loadError: 'Load error',
+        EmptyData: 'No data',
+        buttonCreate: 'Create',
+        buttonReload: 'Reload',
+        menu: {
+          articles: 'Articles',
+          stories: 'Stories',
+          reviews: 'Reviews',
+          team: 'Team',
+          pricing: 'Pricing and Discounts',
+        },
+        articles: {
+          title: 'Title',
+          inBlog: 'In Blog',
+          onHomepage: 'On Homepage',
+        },
+        stories: {
+          title: 'Story',
+          onHomepage: 'On Homepage',
+        },
+        reviews: {
+          author: 'Author',
+          text: 'Text',
+          inBlog: 'In Blog',
+          onHomepage: 'On Homepage',
+        },
+        team: {
+          author: 'Author',
+          siteRole: 'Site Role',
+          systemRole: 'System Role',
+          onHomepage: 'On Homepage',
+        },
+        pricing: {
+          name: 'Plan',
+          originalPrice: 'Original Price (₽)',
+          discountPercent: 'Discount (%)',
+          total: 'Total (₽)',
+          description: 'Description',
+        },
+        aria: {
+          published: 'Published: {{title}}',
+          showOnHomepage: 'Show on homepage: {{title}}',
+        },
+      },
     },
   },
 }
