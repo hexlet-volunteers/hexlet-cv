@@ -98,11 +98,14 @@ export default {
       knowledgeBaseAndInterview: {
         title: 'База знаний и интервью',
         knowledgeBaseTitle: 'База знаний',
-        knowledgeBaseDescription: 'Пошаговые гайды, чек-листы и шаблоны для поиска работы.',
+        knowledgeBaseDescription:
+          'Пошаговые гайды, чек-листы и шаблоны для поиска работы.',
         interviewQuestionsTitle: 'Вопросы с собеседований',
-        interviewQuestionsDescription: 'Коллекция реальных вопросов и ответов по ролям и стеку.',
+        interviewQuestionsDescription:
+          'Коллекция реальных вопросов и ответов по ролям и стеку.',
         realInterviewVideosTitle: 'Записи реальных собесов',
-        realInterviewVideosDescription: 'Разбор интервью с комментариями экспертов и чек-листами.',
+        realInterviewVideosDescription:
+          'Разбор интервью с комментариями экспертов и чек-листами.',
         button: 'Получить доступ',
       },
       webinars: {
@@ -112,7 +115,8 @@ export default {
       totaAi: {
         aiAssistant: 'ИИ-помощник',
         title: 'Тота ИИ — агент-ускоритель карьеры',
-        description: 'Помогает с резюме, откликами, перепиской с рекрутерами и подготовкой к собеседованиям.',
+        description:
+          'Помогает с резюме, откликами, перепиской с рекрутерами и подготовкой к собеседованиям.',
       },
     },
     accountPage: {
@@ -150,6 +154,14 @@ export default {
           completedProgram: 'Сертификат',
         },
       },
+      coverLetter: {
+        title: 'Сопроводительное письмо',
+        header: 'Заголовок',
+        textLetter: 'Текст письма',
+        template: 'Шаблон',
+        preview: 'Превью',
+        download: 'Скачать JSON',
+      },
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',
@@ -165,7 +177,7 @@ export default {
     buttonsLabels: {
       goToCatalog: 'В каталог',
       open: 'Открыть',
-      continue: 'Продолжить'
+      continue: 'Продолжить',
     },
     adminPage: {
       header: {

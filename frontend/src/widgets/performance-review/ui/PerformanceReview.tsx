@@ -10,7 +10,10 @@ export const PerformanceReview: React.FC<TProps> = (props) => {
   const { performanceReview } = props
   const { t } = useTranslation()
 
-  const renderItem = ({ title, description }: PerformanceCardDto, index: number) => {
+  const renderItem = (
+    { title, description }: PerformanceCardDto,
+    index: number,
+  ) => {
     return (
       <Grid.Col
         key={index}
@@ -20,9 +23,7 @@ export const PerformanceReview: React.FC<TProps> = (props) => {
         }}
       >
         <Card radius="lg" h="100%">
-          <Title order={3}>
-            {title}
-          </Title>
+          <Title order={3}>{title}</Title>
           <Text size="sm" mb="lg" mt="xs">
             {description}
           </Text>
@@ -39,9 +40,7 @@ export const PerformanceReview: React.FC<TProps> = (props) => {
       <Title order={1} fw="bold" mb="md">
         {t('homePage.performanceReview.title')}
       </Title>
-      <Grid>
-        {performanceReview.map(renderItem)}
-      </Grid>
+      <Grid>{performanceReview.map(renderItem)}</Grid>
     </Container>
   )
 }

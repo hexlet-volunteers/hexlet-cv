@@ -13,9 +13,7 @@ export const AdminLayout: React.FC<TProps> = ({ children }) => {
       <AdminHeader />
       <Flex style={{ flex: 1 }}>
         <AdminNavbar />
-        <Box style={{ flex: 1 }}>
-          {children}
-        </Box>
+        <Box style={{ flex: 1 }}>{children}</Box>
       </Flex>
     </Flex>
   )

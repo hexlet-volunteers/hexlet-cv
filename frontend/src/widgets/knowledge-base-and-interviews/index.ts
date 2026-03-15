@@ -1,1 +1,1 @@
-export { KnowledgeBaseAndInterviews } from './ui/KnowledgeBaseAndInterviews';
+export { KnowledgeBaseAndInterviews } from './ui/KnowledgeBaseAndInterviews'

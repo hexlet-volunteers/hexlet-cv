@@ -1,9 +1,9 @@
-import { Link } from '@inertiajs/react';
-import { Container, Button, Group, Title } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
+import { Link } from '@inertiajs/react'
+import { Container, Button, Group, Title } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <Container size="sm" mt="xl" ta="center">
@@ -20,5 +20,5 @@ export default function Home() {
         </Button>
       </Group>
     </Container>
-  );
+  )
 }

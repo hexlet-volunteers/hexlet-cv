@@ -1,5 +1,5 @@
 export type {
   TMenuItem,
   TActivityCardsData,
-  TPagination
+  TPagination,
 } from './inertiaSharedData/inertiaSharedProps'

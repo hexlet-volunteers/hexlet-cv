@@ -44,18 +44,20 @@ const links = [
 ]
 
 export function Footer(): JSX.Element {
-  const items = links.map((link): JSX.Element => (
-    <Anchor
-      key={link.label}
-      href={link.link}
-      variant="transparent"
-      underline="never"
-      size="md"
-      fw={500}
-    >
-      {link.label}
-    </Anchor>
-  ))
+  const items = links.map(
+    (link): JSX.Element => (
+      <Anchor
+        key={link.label}
+        href={link.link}
+        variant="transparent"
+        underline="never"
+        size="md"
+        fw={500}
+      >
+        {link.label}
+      </Anchor>
+    ),
+  )
 
   return (
     <footer>
@@ -67,13 +69,9 @@ export function Footer(): JSX.Element {
               X
             </Text>
           </ThemeIcon>
-          <Text size="md">
-            © 2025 Hexlet Карьера
-          </Text>
+          <Text size="md">© 2025 Hexlet Карьера</Text>
         </Group>
-        <Group gap="xl">
-          {items}
-        </Group>
+        <Group gap="xl">{items}</Group>
       </Group>
     </footer>
   )

@@ -1,40 +1,48 @@
-import { useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { Container, Title, TextInput, PasswordInput, Button, Alert } from '@mantine/core';
+import { useState } from 'react'
+import { useForm } from '@inertiajs/react'
+import {
+  Container,
+  Title,
+  TextInput,
+  PasswordInput,
+  Button,
+  Alert,
+} from '@mantine/core'
 
 export default function SignUp() {
-  const [regError, setRegError] = useState<string | null>(null);
+  const [regError, setRegError] = useState<string | null>(null)
   const form = useForm({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
-  });
+  })
 
   const validateClient = () => {
-    if (!/^\S+@\S+$/.test(form.data.email)) return 'Неверный email';
-    if (form.data.password.length < 8) return 'Пароль должен быть минимум 8 символов';
-    return null;
-  };
+    if (!/^\S+@\S+$/.test(form.data.email)) return 'Неверный email'
+    if (form.data.password.length < 8)
+      return 'Пароль должен быть минимум 8 символов'
+    return null
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const err = validateClient();
+    e.preventDefault()
+    const err = validateClient()
     if (err) {
-      setRegError(err);
-      return;
+      setRegError(err)
+      return
     }
 
     form.post('/en/users', {
       onError: (errs) => {
-        console.error('Ошибка', errs);
-        setRegError('Ошибка регистрации');
+        console.error('Ошибка', errs)
+        setRegError('Ошибка регистрации')
       },
       onSuccess: () => {
-        console.log('Success!');
+        console.log('Success!')
       },
-    });
-  };
+    })
+  }
 
   return (
     <Container size="sm" mt="xl">
@@ -76,5 +84,5 @@ export default function SignUp() {
         </Button>
       </form>
     </Container>
-  );
+  )
 }

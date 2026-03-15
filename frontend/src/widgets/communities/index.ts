@@ -1,1 +1,1 @@
-export {Communities} from './Communities';
+export { Communities } from './Communities'

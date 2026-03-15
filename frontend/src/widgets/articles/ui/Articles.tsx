@@ -1,6 +1,16 @@
 import { DsCard } from '@shared/uikit/DsCard/DsCard'
 import type { IArticle } from '../types'
-import { Badge, Button, Center, Container, Group, SimpleGrid, Space, Text, Title } from '@mantine/core'
+import {
+  Badge,
+  Button,
+  Center,
+  Container,
+  Group,
+  SimpleGrid,
+  Space,
+  Text,
+  Title,
+} from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { IconArrowRight } from '@tabler/icons-react'
 import { ReadingTime } from './components/ReadingTime'
@@ -40,9 +50,7 @@ export const Articles: React.FC<TProps> = (props) => {
       </Center>
       <Space h="md" />
       <Center>
-        <Title order={1}>
-          {t('articles.description')}
-        </Title>
+        <Title order={1}>{t('articles.description')}</Title>
       </Center>
       <Space h="md" />
       <SimpleGrid cols={COLS_CONFIG} spacing="lg">
@@ -50,13 +58,33 @@ export const Articles: React.FC<TProps> = (props) => {
           <DsCard key={index}>
             <DsCard.Image />
             <DsCard.Content>
-              <Group gap="8" mt="md">{tags.map((tag, index) => <Badge color="gray" fz="8" key={index} size="sm" tt="none" variant="light">{tag}</Badge>)}</Group>
+              <Group gap="8" mt="md">
+                {tags.map((tag, index) => (
+                  <Badge
+                    color="gray"
+                    fz="8"
+                    key={index}
+                    size="sm"
+                    tt="none"
+                    variant="light"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </Group>
               <Space h="xs" />
               <Text>{title}</Text>
               <Space h="xs" />
               <Group justify="space-between">
                 <ReadingTime value={readingTime} />
-                <Button component="a" rightSection={<IconArrowRight size={14} />} size="compact-xs" variant="transparent">{t('articles.readNextActionLabel')}</Button>
+                <Button
+                  component="a"
+                  rightSection={<IconArrowRight size={14} />}
+                  size="compact-xs"
+                  variant="transparent"
+                >
+                  {t('articles.readNextActionLabel')}
+                </Button>
               </Group>
             </DsCard.Content>
           </DsCard>

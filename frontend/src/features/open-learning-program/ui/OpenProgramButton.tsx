@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react'
 interface IProps {
   programId: number
   children: React.ReactNode
-  variant?: string,
+  variant?: string
 }
 export const OpenProgramButton: React.FC<IProps> = ({
   children,

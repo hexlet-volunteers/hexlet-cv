@@ -20,7 +20,10 @@ export const Webinars = () => {
     },
   ]
 
-  const renderItem = ({ description, title }: WebinarsCardDto, index: number) => {
+  const renderItem = (
+    { description, title }: WebinarsCardDto,
+    index: number,
+  ) => {
     return (
       <Grid.Col
         key={index}
@@ -30,9 +33,7 @@ export const Webinars = () => {
         }}
       >
         <Card radius="lg" h="100%">
-          <Title order={3}>
-            {title}
-          </Title>
+          <Title order={3}>{title}</Title>
           <Text size="sm" mb="lg" mt="xs">
             {description}
           </Text>
@@ -49,9 +50,7 @@ export const Webinars = () => {
       <Title order={1} fw="bold" mb="md">
         {t('homePage.webinars.title')}
       </Title>
-      <Grid>
-        {webinars.map(renderItem)}
-      </Grid>
+      <Grid>{webinars.map(renderItem)}</Grid>
     </Container>
   )
 }

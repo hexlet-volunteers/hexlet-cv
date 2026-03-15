@@ -5,10 +5,6 @@ const Webinars: InertiaPage = () => {
   return 'Webinars'
 }
 
-Webinars.layout = page => (
-  <AppLayout>
-    {page}
-  </AppLayout>
-)
+Webinars.layout = (page) => <AppLayout>{page}</AppLayout>
 
 export default Webinars

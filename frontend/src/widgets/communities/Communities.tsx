@@ -1,4 +1,13 @@
-import { Badge, Button, Center, Container, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import {
+  Badge,
+  Button,
+  Center,
+  Container,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { TelegramLink } from './components/TelegramLink'
 import { openTelegramLink } from './helpers/openTelegramInNewTab'

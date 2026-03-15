@@ -6,7 +6,7 @@ async function getInitialPage() {
     headers: {
       'X-Inertia': 'true',
       'X-Requested-With': 'XMLHttpRequest',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
   })
 

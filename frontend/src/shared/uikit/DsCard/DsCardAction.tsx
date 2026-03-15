@@ -9,7 +9,6 @@ export const DsCardAction: React.FC<TProps> = (props) => {
   const { label, onClick } = props
 
   return (
-
     <Button
       fullWidth
       mt="md"
@@ -22,6 +21,5 @@ export const DsCardAction: React.FC<TProps> = (props) => {
     >
       <Text fw={400}>{label}</Text>
     </Button>
-
   )
 }

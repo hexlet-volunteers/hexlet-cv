@@ -25,7 +25,7 @@ export const initInertia = (page: Page) => {
               <App {...props} />
             </I18nProvider>
           </UIProvider>
-        </StrictMode>
+        </StrictMode>,
       )
     },
   })
