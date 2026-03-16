@@ -197,6 +197,7 @@ export default {
       },
       users: {
         title: 'Пользователи',
+        invalidDate: 'Неверный формат даты!',
         filters: {
           registered: 'Зарегистрированные ',
           subscription: 'Купили подписку ',
@@ -221,6 +222,13 @@ export default {
           add: 'Продлить +30д',
           complete: 'Завершить',
           profile: 'Профиль',
+        },
+        roles: {
+          ADMIN: 'Администратор',
+          USER: 'Пользователь',
+          CURATOR: 'Куратор',
+          СONSULTANT: 'Карьерный консультант',
+          MENTOR: 'Наставник',
         },
       },
     },

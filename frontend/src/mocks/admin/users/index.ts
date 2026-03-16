@@ -1,15 +1,15 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '@mocks/inertia'
-import { type UsersDTO } from '@widgets/admin-users'
-import { mockMenu } from '@mocks/admin'
+import { type UserDTO } from '@entities/user'
+import { mockMenu } from '@mocks/adminMenu'
 
-const mockUsers: UsersDTO[] = [
+const mockUsers: UserDTO[] = [
   {
     id: 1,
     name: 'Иванов Иван',
     email: 'ivanov@gmail.com',
     login: 'ivan87',
-    role: 'Карьерный консультант',
+    role: 'СONSULTANT',
     isSubscribed: false,
     tarif: 'pro',
     startsAt: '2024-01-15T10:30:00Z',
@@ -20,7 +20,7 @@ const mockUsers: UsersDTO[] = [
     name: 'Кравцова Мария',
     email: 'maryk@list.ru',
     login: 'mary',
-    role: 'Администратор',
+    role: 'ADMIN',
     isSubscribed: true,
     tarif: 'pro',
     startsAt: '2025-01-15T10:30:00Z',
@@ -31,7 +31,7 @@ const mockUsers: UsersDTO[] = [
     name: 'Иванова Анна',
     email: 'anna@gmail.ru',
     login: 'anna',
-    role: 'Куратор',
+    role: 'CURATOR',
     isSubscribed: true,
     tarif: 'pro',
     startsAt: '2026-01-15T10:30:00Z',
@@ -42,7 +42,7 @@ const mockUsers: UsersDTO[] = [
     name: 'Семенов Александр',
     email: 'sanek@gmail.ru',
     login: 'sanchez',
-    role: 'Пользователь',
+    role: 'USER',
     isSubscribed: null,
     tarif: null,
   },
@@ -51,7 +51,7 @@ const mockUsers: UsersDTO[] = [
     name: 'Олег Тестовый',
     email: 'oleg@gmail.ru',
     login: 'oleg',
-    role: 'Наставник',
+    role: 'MENTOR',
     isSubscribed: true,
     tarif: 'pro',
     startsAt: '2024-01-15T10:30:00Z',
@@ -59,7 +59,7 @@ const mockUsers: UsersDTO[] = [
   },
 ]
 
-export const administrationHandlers = [
+export const usersHandlers = [
   http.get('*/admin/users', async ({ request }) => {
     console.log('MSW: handler hit', request.url)
 

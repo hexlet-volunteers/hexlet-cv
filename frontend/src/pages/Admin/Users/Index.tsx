@@ -1,8 +1,12 @@
-import { AdminUsers, type TProps } from '@widgets/admin-users/'
+import { AdminUsers, type UsersDTO } from '@widgets/admin-users/'
 import { AdminLayout } from '../components/AdminLayout'
 import type React from 'react'
 
-const Users = ({ users }: TProps) => {
+interface Users {
+  users: UsersDTO[]
+}
+
+const Users = ({ users }: Users) => {
   return <AdminUsers users={users} />
 }
 

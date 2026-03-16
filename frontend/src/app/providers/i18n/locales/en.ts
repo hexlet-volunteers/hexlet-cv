@@ -195,6 +195,7 @@ export default {
       },
       users: {
         title: 'Users',
+        invalidDate: 'Invalid date!',
         filters: {
           registered: 'Registered ',
           subscription: 'Has subscription ',
@@ -219,6 +220,13 @@ export default {
           add: 'Add +30d',
           complete: 'Complete',
           profile: 'Profile',
+        },
+        roles: {
+          ADMIN: 'Admin',
+          USER: 'User',
+          CURATOR: 'Curator',
+          СONSULTANT: 'Consultant',
+          MENTOR: 'Mentor',
         },
       },
     },
