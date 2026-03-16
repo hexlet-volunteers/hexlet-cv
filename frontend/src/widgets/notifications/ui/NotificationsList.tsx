@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import type { NotificationDTO } from '../types'
 
 interface NotificationsListProps {
-    notifications: NotificationDTO[]
+    notifications?: NotificationDTO[]
 }
 
 export const NotificationsList: React.FC<NotificationsListProps> = (props): JSX.Element => {
