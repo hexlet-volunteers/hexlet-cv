@@ -1,10 +1,11 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '@mocks/inertia'
-import type { MenuItem } from '@shared/types/inertiaSharedData'
-import { purchaseHandlers } from './purchase'
+import type { TMenuItem } from '@shared/types/inertiaSharedData'
+import { purchaseHandlers } from '@mocks/account/purchase'
 import { progressHandlers, lessonsHandlers } from '@mocks/account/progress'
+import { coverLetterHandlers } from '@mocks/account/coverLetter'
 
-export const menu: MenuItem[] = [
+export const menu: TMenuItem[] = [
   { label: 'Мое обучение', link: '/account/my-progress' },
   { label: 'Покупки и подписки', link: '/account/purchase' },
   { label: 'Вебинары', link: '/account/webinars' },
@@ -12,6 +13,7 @@ export const menu: MenuItem[] = [
   { label: 'Интервью' },
   { label: 'Грейдирование' },
   { label: 'Программы обучения' },
+  { label: 'Сопроводительное', link: '/account/coverletter' },
 ]
 
 export const activityCards = {
@@ -62,4 +64,5 @@ export const handlers = [
   ...purchaseHandlers,
   ...progressHandlers,
   ...lessonsHandlers,
+  ...coverLetterHandlers,
 ]
