@@ -1,3 +1,5 @@
+import '@mantine/carousel/styles.css'
+
 import { initInertia } from '@inertia/inertia.provider'
 import { enableMocking } from '@mocks/enableMocking'
 

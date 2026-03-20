@@ -14,6 +14,7 @@ import { TrainingPrograms, type TrainingCardDto } from '@widgets/training-progra
 import { Communities } from '@widgets/communities'
 import { KnowledgeBaseAndInterviews } from '@widgets/knowledge-base-and-interviews'
 import { Webinars } from '@widgets/webinars'
+import { SuccessStories, type SuccessCardDto } from '@widgets/success-stories'
 import { TotaAi } from '@widgets/tota-ai' 
 import { Articles, type IArticle } from '@widgets/articles'
 import { PerformanceReview, type PerformanceCardDto } from '@widgets/performance-review'
@@ -35,12 +36,13 @@ type IndexProps = {
   articles: IArticle[]
   trainingPrograms: TrainingCardDto[]
   performanceReview: PerformanceCardDto[]
+  successStories: SuccessCardDto[]
   ourTeam: OurTeamCardDto []
   pageSections: Readonly<PageSection[]>
 }
 
 const Index: React.FC<IndexProps> = (props) => {
-  const { articles, trainingPrograms, performanceReview, ourTeam, pageSections } = props
+  const { articles, trainingPrograms, performanceReview, successStories, ourTeam, pageSections } = props
 
   const theme = useMantineTheme()
   console.log(`Page sections:`, pageSections)
@@ -66,6 +68,7 @@ const Index: React.FC<IndexProps> = (props) => {
         <PerformanceReview performanceReview={performanceReview} />
         <KnowledgeBaseAndInterviews />
         <Webinars />
+        <SuccessStories successStories={successStories} />
         <TotaAi />
         <Articles articles={articles} />
         <OurTeam ourTeam={ourTeam} />
