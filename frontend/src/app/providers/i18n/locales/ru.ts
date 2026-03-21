@@ -176,7 +176,7 @@ export default {
     buttonsLabels: {
       goToCatalog: 'В каталог',
       open: 'Открыть',
-      continue: 'Продолжить'
+      continue: 'Продолжить',
     },
     adminPage: {
       header: {
@@ -209,6 +209,42 @@ export default {
         programDuration: 'Длительность',
         programLessons: 'Уроков',
         programPublished: 'Публикация',
+      },
+      users: {
+        title: 'Пользователи',
+        invalidDate: 'Неверный формат даты!',
+        filters: {
+          registered: 'Зарегистрированные ',
+          subscription: 'Купили подписку ',
+          expired: 'Подписка закончилась ',
+          admins: 'Администраторы ',
+          placeholder: 'Поиск: имя, емайл, логин',
+        },
+        table: {
+          user: 'Пользователь',
+          login: 'Логин',
+          role: 'Роль',
+          subscription: 'Подписка',
+          actions: 'Действия',
+        },
+        sub: {
+          active: 'Активна',
+          expired: 'Истекла',
+          plan: 'План: ',
+          noSub: 'Нет',
+          startsAt: 'Куплено',
+          endsAt: 'Истекает',
+          add: 'Продлить +30д',
+          complete: 'Завершить',
+          profile: 'Профиль',
+        },
+        roles: {
+          ADMIN: 'Администратор',
+          USER: 'Пользователь',
+          CURATOR: 'Куратор',
+          СONSULTANT: 'Карьерный консультант',
+          MENTOR: 'Наставник',
+        },
       },
     },
   },

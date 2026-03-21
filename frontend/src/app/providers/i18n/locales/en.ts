@@ -150,7 +150,7 @@ export default {
         courseBadge: {
           newProgram: 'New',
           completedProgram: 'Сertificate',
-        }
+        },
       },
       notifications: {
         title: 'Notifications',
@@ -207,6 +207,42 @@ export default {
         programDuration: 'Duration',
         programLessons: 'Lessons',
         programPublished: 'Published',
+      },
+      users: {
+        title: 'Users',
+        invalidDate: 'Invalid date!',
+        filters: {
+          registered: 'Registered ',
+          subscription: 'Has subscription ',
+          expired: 'Subscription Expired ',
+          admins: 'Administrators ',
+          placeholder: 'Search: name, email, login',
+        },
+        table: {
+          user: 'User',
+          login: 'Login',
+          role: 'Role',
+          subscription: 'Subscription',
+          actions: 'Actions',
+        },
+        sub: {
+          active: 'Active',
+          expired: 'Expired',
+          plan: 'Plan: ',
+          noSub: 'No',
+          startsAt: 'purchased',
+          endsAt: 'expires',
+          add: 'Add +30d',
+          complete: 'Complete',
+          profile: 'Profile',
+        },
+        roles: {
+          ADMIN: 'Admin',
+          USER: 'User',
+          CURATOR: 'Curator',
+          СONSULTANT: 'Consultant',
+          MENTOR: 'Mentor',
+        },
       },
     },
   },
