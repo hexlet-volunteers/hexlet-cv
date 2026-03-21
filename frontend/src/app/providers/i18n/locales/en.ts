@@ -107,7 +107,15 @@ export default {
         title: 'Webinars with HR and Experts',
         viewSchedule: 'View Schedule',
       },
-
+      ourTeam: {
+        sectionTitle: 'Our Team',
+        aboutBadge: 'About Us',
+      },
+      totaAi: {
+        aiAssistant: 'AI Assistant',
+        title: 'Tota AI — Career Accelerator Agent',
+        description: 'Helps with resumes, applications, correspondence with recruiters, and interview preparation.',
+      }, 
     },
     accountPage: {
       purchases: {
@@ -144,6 +152,13 @@ export default {
           completedProgram: 'Сertificate',
         },
       },
+      notifications: {
+        title: 'Notifications',
+        today: 'today',
+        yesterday: 'yesterday',
+        daysAgo: 'long ago',
+        noNotifications: 'No notifications'
+      }
     },
     activityCards: {
       courses_in_process: 'Courses in Progress',

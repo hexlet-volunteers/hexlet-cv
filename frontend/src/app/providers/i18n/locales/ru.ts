@@ -109,7 +109,15 @@ export default {
         title: 'Вебинары с HR и экспертами',
         viewSchedule: 'Смотреть расписание',
       },
-
+      ourTeam: {
+        sectionTitle: 'Наша команда',
+        aboutBadge: 'О нас',
+      },
+      totaAi: {
+        aiAssistant: 'ИИ-помощник',
+        title: 'Тота ИИ — агент-ускоритель карьеры',
+        description: 'Помогает с резюме, откликами, перепиской с рекрутерами и подготовкой к собеседованиям.',
+      },
     },
     accountPage: {
       purchases: {
@@ -146,6 +154,13 @@ export default {
           completedProgram: 'Сертификат',
         },
       },
+      notifications: {
+        title: 'Уведомления',
+        today: 'сегодня',
+        yesterday: 'вчера',
+        daysAgo: 'давно',
+        noNotifications: 'Уведомлений нет'
+      }
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',
