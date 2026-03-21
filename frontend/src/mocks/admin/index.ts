@@ -4,7 +4,7 @@ import type { InterviewsEntry } from '@widgets/admin-interviews/ui/AdminIntervie
 import type { KnowledgeBaseEntry } from '@widgets/knowledge-base'
 import type { StudyProgramsEntry } from '@widgets/admin-study-programs'
 import { usersHandlers } from '@mocks/admin/users'
-import { mockMenu } from '@mocks/adminMenu'
+import { mockMenu } from '@mocks/admin/consts'
 
 const mockInterviews: InterviewsEntry[] = [
   { id: 1, title: 'Интервью с продактом', speaker: 'Алексей С.', videoUrl: '', isPublished: true },

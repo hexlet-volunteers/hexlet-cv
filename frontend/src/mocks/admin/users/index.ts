@@ -1,7 +1,7 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '@mocks/inertia'
 import { type UserDTO } from '@entities/user'
-import { mockMenu } from '@mocks/adminMenu'
+import { mockMenu } from '@mocks/admin/consts'
 
 const mockUsers: UserDTO[] = [
   {

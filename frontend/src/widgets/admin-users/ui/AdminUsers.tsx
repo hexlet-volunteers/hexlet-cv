@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { type UserDTO, EUserRole, getSubscriptionStatus } from '@entities/user'
 import {
-  Container, Input, Tabs, Title, Group,
+  Container, Input, Title, Group, Chip,
   Table, Text, Select, Badge, Button
 } from '@mantine/core'
+
+type ActiveTab = 'registered' | 'active' | 'expired' | 'admin'
 
 function formatDate(date?: string): string | null {
   if (!date) return null
@@ -14,9 +16,7 @@ function formatDate(date?: string): string | null {
   return isNaN(d.getTime()) ? null : d.toLocaleDateString()
 }
 
-function filterUsers(users: Array<UserDTO>, activeTab: string | null, searchQuery: string): UserDTO[] {
-  const now = new Date()
-
+function filterUsers(users: Array<UserDTO>, activeTab: ActiveTab, searchQuery: string): UserDTO[] {
   if (!users?.length) {
     return []
   }
@@ -25,24 +25,29 @@ function filterUsers(users: Array<UserDTO>, activeTab: string | null, searchQuer
     switch (activeTab) {
       case 'registered':
         return users
-      case 'withSub':
-        return users.filter(user => user.endsAt && new Date(user.endsAt) > now)
-      case 'expiredSub':
-        return users.filter(user => user.endsAt && new Date(user.endsAt) < now)
-      case 'admins':
+      case 'active':
+        return users.filter(user => getSubscriptionStatus(user) === 'active')
+      case 'expired':
+        return users.filter(user => getSubscriptionStatus(user) === 'expired')
+      case 'admin':
         return users.filter(user => user.role === EUserRole.ADMIN)
       default:
-        return users
+        return []
     }
   })()
 
-  if (searchQuery.trim()) {
-    const query = searchQuery.toLowerCase()
-    return filtered.filter(user =>
-      user.email?.toLowerCase().includes(query)
-      || user.name?.toLowerCase().includes(query)
-      || user.login?.toLowerCase().includes(query)
-    )
+  const query = searchQuery.trim().toLowerCase()
+
+  if (query) {
+    return filtered.filter((user) => {
+      const email = user.email?.trim().toLowerCase()
+      const name = user.name?.trim().toLowerCase()
+      const login = user.login?.trim().toLowerCase()
+
+      return email.includes(query)
+        || name.includes(query)
+        || login.includes(query)
+    })
   }
 
   return filtered
@@ -55,16 +60,17 @@ interface AdminUsersProps {
 export const AdminUsers: React.FC<AdminUsersProps> = (props) => {
   const { users } = props
   const { t } = useTranslation()
-  const [activeTab, setActiveTab] = useState<string | null>('registered')
+  const [activeTab, setActiveTab] = useState<ActiveTab>('registered')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const selectData = Object.values(EUserRole).map(role => ({
     value: role,
     label: t(`adminPage.users.roles.${role}`),
   }))
 
-  const handleTabChange = (tab: string | null) => {
+  const handleTabChange = (value: string | null) => {
+    if (!value) return
+    const tab = value as ActiveTab
     setActiveTab(tab)
-    setSearchQuery('')
   }
 
   // Здесь должен быть обработчик для изменения селектов
@@ -76,19 +82,11 @@ export const AdminUsers: React.FC<AdminUsersProps> = (props) => {
     const startDate = formatDate(user.startsAt || '')
     const endDate = formatDate(user.endsAt || '')
 
-    if (status === 'active') {
-      return `${t('adminPage.users.sub.startsAt')}: ${startDate} - ${t('adminPage.users.sub.endsAt')}: ${endDate}`
-    }
-
-    if (status === 'expired') {
-      return `${t('adminPage.users.sub.startsAt')}: ${startDate} - ${t('adminPage.users.sub.endsAt')}: ${endDate}`
-    }
-
-    return null
+    return `${t('adminPage.users.sub.startsAt')}: ${startDate} - ${t('adminPage.users.sub.endsAt')}: ${endDate}`
   }
   // Логину на кнопки пока не добавлял
 
-  function renderButton(user: UserDTO): JSX.Element | null {
+  function renderButton(user: UserDTO): JSX.Element {
     const status = getSubscriptionStatus(user)
 
     return (
@@ -100,12 +98,15 @@ export const AdminUsers: React.FC<AdminUsersProps> = (props) => {
     )
   }
 
-  function renderBadge(tarif: string | null, expired?: string): JSX.Element {
-    if (!expired || tarif === null) return <Badge color="gray" variant="light" fw={500}>{t('adminPage.users.sub.noSub')}</Badge>
-    const expiredDate = Number(new Date(expired))
-    const dateNow = Date.now()
+  function renderBadge(user: UserDTO): JSX.Element {
+    const status = getSubscriptionStatus(user)
+    const tarif = user?.tarif
 
-    const badge = expired && Number(expiredDate) > Number(dateNow)
+    if (status === 'none') return (
+      <Badge color="gray" variant="light" fw={500}>{t('adminPage.users.sub.noSub')}</Badge>
+    )
+
+    const badge = getSubscriptionStatus(user) === 'active'
       ? <Badge color="green" variant="light" fw={500}>{t('adminPage.users.sub.active')}</Badge>
       : <Badge color="red" variant="light" fw={500}>{t('adminPage.users.sub.expired')}</Badge>
     return (
@@ -128,14 +129,13 @@ export const AdminUsers: React.FC<AdminUsersProps> = (props) => {
       <Table.Td>{user.login}</Table.Td>
       <Table.Td>
         <Select
-          label=""
           value={user.role}
           data={selectData}
           // Здесь добавить обработчик для изменения роли.
         />
       </Table.Td>
       <Table.Td>
-        {renderBadge(user.tarif, user.endsAt || '')}
+        {renderBadge(user)}
         <Text>
           {renderDate(user)}
         </Text>
@@ -154,61 +154,59 @@ export const AdminUsers: React.FC<AdminUsersProps> = (props) => {
         fw={500}
         mt="sm"
         mr="sm"
+        mb="lg"
       >
         {t('adminPage.users.title')}
       </Title>
-      <Tabs value={activeTab} onChange={handleTabChange} color="grey" variant="pills" mt="lg">
-        <Group>
-          <Tabs.List color="purple">
-            <Tabs.Tab value="registered">
-              {t('adminPage.users.filters.registered')}
-              (
-              {filterUsers(users, 'registered', '').length}
-              )
-            </Tabs.Tab>
-            <Tabs.Tab value="withSub">
-              {t('adminPage.users.filters.subscription')}
-              (
-              {filterUsers(users, 'withSub', '').length}
-              )
-            </Tabs.Tab>
-            <Tabs.Tab value="expiredSub">
-              {t('adminPage.users.filters.expired')}
-              (
-              {filterUsers(users, 'expiredSub', '').length}
-              )
-            </Tabs.Tab>
-            <Tabs.Tab value="admins">
-              {t('adminPage.users.filters.admins')}
-              (
-              {filterUsers(users, 'admins', '').length}
-              )
-            </Tabs.Tab>
-          </Tabs.List>
-
-          <Input
-            placeholder={t('adminPage.users.filters.placeholder')}
-            size="xs"
-            style={{ width: 200 }}
-            value={searchQuery}
-            onChange={(event) => {
-              setSearchQuery(event.currentTarget.value)
-            }}
-          />
-        </Group>
-        <Table mt="lg" withTableBorder>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>{t('adminPage.users.table.user')}</Table.Th>
-              <Table.Th>{t('adminPage.users.table.login')}</Table.Th>
-              <Table.Th>{t('adminPage.users.table.role')}</Table.Th>
-              <Table.Th>{t('adminPage.users.table.subscription')}</Table.Th>
-              <Table.Th>{t('adminPage.users.table.actions')}</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </Tabs>
+      <Group>
+        <Chip.Group multiple={false} value={activeTab} onChange={handleTabChange}>
+          <Chip value="registered">
+            {t('adminPage.users.filters.registered')}
+            (
+            {filterUsers(users, 'registered', '').length}
+            )
+          </Chip>
+          <Chip value="active">
+            {t('adminPage.users.filters.subscription')}
+            (
+            {filterUsers(users, 'active', '').length}
+            )
+          </Chip>
+          <Chip value="expired">
+            {t('adminPage.users.filters.expired')}
+            (
+            {filterUsers(users, 'expired', '').length}
+            )
+          </Chip>
+          <Chip value="admin">
+            {t('adminPage.users.filters.admins')}
+            (
+            {filterUsers(users, 'admin', '').length}
+            )
+          </Chip>
+        </Chip.Group>
+        <Input
+          placeholder={t('adminPage.users.filters.placeholder')}
+          size="xs"
+          style={{ width: 200 }}
+          value={searchQuery}
+          onChange={(event) => {
+            setSearchQuery(event.currentTarget.value)
+          }}
+        />
+      </Group>
+      <Table mt="lg" withTableBorder>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>{t('adminPage.users.table.user')}</Table.Th>
+            <Table.Th>{t('adminPage.users.table.login')}</Table.Th>
+            <Table.Th>{t('adminPage.users.table.role')}</Table.Th>
+            <Table.Th>{t('adminPage.users.table.subscription')}</Table.Th>
+            <Table.Th>{t('adminPage.users.table.actions')}</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
     </Container>
   )
 }

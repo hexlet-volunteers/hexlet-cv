@@ -17,16 +17,3 @@ export type UserDTO = {
   startsAt?: string | null
   endsAt?: string | null
 }
-
-export function getSubscriptionStatus(user: UserDTO): 'none' | 'active' | 'expired' {
-  const now = new Date()
-
-  if (!user.tarif) return 'none'
-
-  const expiryDate = new Date(user.endsAt || '')
-  if (isNaN(expiryDate.getTime())) {
-    return 'none'
-  }
-
-  return expiryDate > now ? 'active' : 'expired'
-}

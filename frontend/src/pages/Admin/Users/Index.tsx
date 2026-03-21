@@ -1,12 +1,14 @@
-import { AdminUsers, type UsersDTO } from '@widgets/admin-users/'
+import { AdminUsers } from '@widgets/admin-users/'
 import { AdminLayout } from '../components/AdminLayout'
+import type { UserDTO } from '@entities/user'
 import type React from 'react'
+import type { InertiaPage } from '@shared/types/inertia'
 
-interface Users {
-  users: UsersDTO[]
+interface UsersProps {
+  users: UserDTO[]
 }
 
-const Users = ({ users }: Users) => {
+const Users: InertiaPage<UsersProps> = ({ users }) => {
   return <AdminUsers users={users} />
 }
 
