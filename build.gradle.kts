@@ -127,8 +127,8 @@ spotless {
 //toolchain можно раскомментировать, а этот вариант закомментить, если требует того сборка
 
 //    toolchain {
-//        languageVersion = JavaLanguageVersion.of(21)
-//    }
+//        languageVersion = JavaLanguageVersion.of(24)
+//        }
     }
 
 // sonar {
