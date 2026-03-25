@@ -1,21 +1,19 @@
 package io.hexlet.cv.handler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import io.hexlet.cv.handler.exception.AuthenticationException;
-import io.hexlet.cv.handler.exception.EmailSendingException;
+import io.hexlet.cv.handler.exception.ClientException;
 import io.hexlet.cv.handler.exception.InvalidPasswordException;
-import io.hexlet.cv.handler.exception.InvalidTokenException;
-import io.hexlet.cv.handler.exception.PasswordMismatchException;
-import io.hexlet.cv.handler.exception.PasswordResetException;
 import io.hexlet.cv.handler.exception.ResourceNotFoundException;
+import io.hexlet.cv.handler.exception.ServerException;
 import io.hexlet.cv.handler.exception.UserAlreadyExistsException;
 import io.hexlet.cv.handler.exception.UserNotFoundException;
-import io.hexlet.cv.handler.exception.WeakPasswordException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -28,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     private Object commonHandle(Map<String, String> errors,
@@ -139,23 +138,28 @@ public class GlobalExceptionHandler {
     }
 
 
-    //reset
-    @ExceptionHandler(AuthenticationException.class)
-    public Object handleAuthenticationException(AuthenticationException ex,
-                                                HttpServletRequest request,
-                                                RedirectAttributes redirectAttributes) {
+    //400 и 500 ошибки
+    @ExceptionHandler(ClientException.class)
+    public Object handleClientException(ClientException ex,
+                                        HttpServletRequest request,
+                                        RedirectAttributes redirectAttributes) {
 
-        Map<String, String> errors = Map.of("auth", ex.getMessage());
-        return commonHandle(errors, request, redirectAttributes, HttpStatus.UNAUTHORIZED);
+        Map<String, String> errors = Map.of(ex.getField(), ex.getMessage());
+        return commonHandle(errors, request, redirectAttributes, ex.getStatus());
     }
 
-    @ExceptionHandler(InvalidTokenException.class)
-    public Object handleInvalidTokenException(InvalidTokenException ex,
-                                              HttpServletRequest request,
-                                              RedirectAttributes redirectAttributes) {
+    @ExceptionHandler(ServerException.class)
+    public Object handleServerException(ServerException ex,
+                                        HttpServletRequest request,
+                                        RedirectAttributes redirectAttributes) {
 
-        Map<String, String> errors = Map.of("auth", ex.getMessage());
-        return commonHandle(errors, request, redirectAttributes, HttpStatus.UNAUTHORIZED);
+        log.error("Server error: {} - {}", ex.getErrorCode(), ex.getMessage(), ex);
+
+        Map<String, String> errors = Map.of("error",
+                "A technical error occurred. Please try again later.");
+
+        return commonHandle(errors, request, redirectAttributes,
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -165,42 +169,6 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = Map.of("auth", ex.getMessage());
 
         return commonHandle(errors, request, redirectAttributes, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(PasswordMismatchException.class)
-    public Object handlePasswordMismatch(PasswordMismatchException ex,
-                                         HttpServletRequest request,
-                                         RedirectAttributes redirectAttributes) {
-
-        Map<String, String> errors = Map.of("password", ex.getMessage());
-        return commonHandle(errors, request, redirectAttributes, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(WeakPasswordException.class)
-    public Object handleWeakPassword(WeakPasswordException ex,
-                                     HttpServletRequest request,
-                                     RedirectAttributes redirectAttributes) {
-
-        Map<String, String> errors = Map.of("password", ex.getMessage());
-        return commonHandle(errors, request, redirectAttributes, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(EmailSendingException.class)
-    public Object handleEmailSending(EmailSendingException ex,
-                                     HttpServletRequest request,
-                                     RedirectAttributes redirectAttributes) {
-
-        Map<String, String> errors = Map.of("email", ex.getMessage());
-        return commonHandle(errors, request, redirectAttributes, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(PasswordResetException.class)
-    public Object handlePasswordReset(PasswordResetException ex,
-                                      HttpServletRequest request,
-                                      RedirectAttributes redirectAttributes) {
-
-        Map<String, String> errors = Map.of("reset", ex.getMessage());
-        return commonHandle(errors, request, redirectAttributes, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

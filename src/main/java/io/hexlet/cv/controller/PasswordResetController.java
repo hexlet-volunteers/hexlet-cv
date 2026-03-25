@@ -4,33 +4,31 @@ import io.github.inertia4j.spring.Inertia;
 import io.hexlet.cv.dto.reset.EmailFormDTO;
 import io.hexlet.cv.dto.reset.PasswordResetDTO;
 import io.hexlet.cv.dto.reset.PasswordResetResponseDTO;
-import io.hexlet.cv.handler.exception.UserNotFoundException;
+import io.hexlet.cv.handler.exception.ClientException;
 import io.hexlet.cv.model.User;
 import io.hexlet.cv.repository.PasswordResetTokenRepository;
 import io.hexlet.cv.repository.UserRepository;
 import io.hexlet.cv.service.EmailService;
 import io.hexlet.cv.service.FlashPropsService;
 import io.hexlet.cv.service.PasswordResetService;
+import io.hexlet.cv.service.PasswordValidationService;
 import io.hexlet.cv.util.PasswordGeneratorService;
+import io.hexlet.cv.validator.PasswordResetValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,81 +44,45 @@ public class PasswordResetController {
     private final MessageSource messageSource;
     private final UserRepository userRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
-
-    private static final Set<String> SUPPORTED_LOCALES = Set.of("en", "ru");
-    private static final String DEFAULT_LOCALE = "en";
-
+    private final PasswordValidationService passwordValidationService;
+    private final PasswordResetValidator passwordResetValidator;
 
     @GetMapping("/auth/forgot")
     public ResponseEntity<?> showForgotPage(HttpServletRequest request) {
-        String locale = resolveLocale(request);
-        var props = flashPropsService.buildProps(locale, request);
+
+        var props = flashPropsService.buildProps(request);
         props.put("form", new EmailFormDTO());
-        props.put("locale", locale);
         return inertia.render("Auth/Forgot", props);
     }
 
     @PostMapping("/auth/forgot")
     public ResponseEntity<?> processForgot(@Valid @RequestBody EmailFormDTO form,
-                                           BindingResult bindingResult,
                                            HttpServletRequest request,
                                            HttpSession session) {
 
-        String locale = resolveLocale(request);
-
-        if (bindingResult.hasErrors()) {
-
-            var props = flashPropsService.buildProps(locale, request);
-            props.put("form", form);
-            props.put("locale", locale);
-
-            Map<String, String> errors = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error ->
-                    errors.put(error.getField(), error.getDefaultMessage()));
-            props.put("errors", errors);
-
-            return inertia.render("Auth/Forgot", props);
-        }
+        passwordValidationService.validateEmail(form.getEmail());
 
         if (passwordResetService.userExists(form.getEmail())) {
-            String resetUrl = generateResetUrl(request, locale, form.getEmail());
+            String resetUrl = generateResetUrl(request, form.getEmail());
             emailService.sendResetEmail(form.getEmail(), resetUrl);
         }
 
-        String successMessage = messageSource.getMessage(
-                "password.reset.email_sent",
-                null,
-                new Locale(locale)
-        );
-
-        if (isInertiaRequest(request)) {
-            session.setAttribute("flash", Map.of("success", successMessage));
-            return inertia.redirect("/users/sign_in");
-        } else {
-            return ResponseEntity.ok(Map.of(
-                    "success", true,
-                    "message", successMessage
-            ));
-        }
+        return createSuccessResponse(request, session, "password.reset.email_sent");
     }
 
     @GetMapping("/auth/reset")
     public ResponseEntity<?> showResetPage(@RequestParam String token,
                                            HttpServletRequest request) {
-
-        String locale = resolveLocale(request);
         boolean isValid = passwordResetService.isTokenValid(token);
-        var props = flashPropsService.buildProps(locale, request);
+        var props = flashPropsService.buildProps(request);
 
         props.put("token", token);
         props.put("isValid", isValid);
         props.put("form", new PasswordResetDTO());
-        props.put("locale", locale);
 
         if (!isValid) {
-            props.put("errors", Map.of("token",
-                    messageSource.getMessage("password.reset.token.invalid",
-                            null, new Locale(locale))));
+            props.put("errors", Map.of("token", getMessage("password.reset.token.invalid")));
+            passwordResetTokenRepository.deleteByToken(token);
         }
 
         return inertia.render("Auth/Reset", props);
@@ -132,126 +94,80 @@ public class PasswordResetController {
                                           HttpServletRequest request,
                                           HttpSession session) {
 
-        String locale = resolveLocale(request);
-
         if (!passwordResetService.isTokenValid(token)) {
-            var errorProps = flashPropsService.buildProps(locale, request);
-            errorProps.put("token", token);
-            errorProps.put("form", form);
-            errorProps.put("locale", locale);
-            errorProps.put("errors", Map.of("token",
-                    messageSource.getMessage("password.reset.token.invalid",
-                            null, new Locale(locale))));
-
-            passwordResetTokenRepository.deleteByToken(token);
-
-            return inertia.render("Auth/Reset", errorProps);
+            return handleInvalidToken(token, form, request);
         }
 
-        if (!form.isAutoGenerate() && !isPasswordValid(form.getPassword())) {
-            var errorProps = flashPropsService.buildProps(locale, request);
-            errorProps.put("token", token);
-            errorProps.put("form", form);
-            errorProps.put("locale", locale);
-            errorProps.put("errors", Map.of("password",
-                    messageSource.getMessage("password.reset.invalid",
-                            null, new Locale(locale))));
-            return inertia.render("Auth/Reset", errorProps);
-        }
+        passwordResetValidator.validate(form);
 
-        String newPassword = form.isAutoGenerate()
-                ? passwordGeneratorService.generateStrongPassword() : form.getPassword();
+        String passwordToSet = form.isAutoGenerate()
+                ? passwordGeneratorService.generateStrongPassword()
+                : form.getPassword();
 
-        PasswordResetResponseDTO resetResult = passwordResetService.resetPassword(token, newPassword);
+        PasswordResetResponseDTO resetResult = passwordResetService.resetPassword(token, passwordToSet);
 
         if (form.isAutoGenerate()) {
-            emailService.sendNewPasswordEmail(resetResult.getEmail(), newPassword);
+            emailService.sendNewPasswordEmail(resetResult.getEmail(), passwordToSet);
         }
 
-        String successMessage = messageSource.getMessage(
-                "password.reset.success",
-                null,
-                new Locale(locale)
-        );
+        return createSuccessResponse(request, session, "password.reset.success");
+    }
+
+    private ResponseEntity<?> createSuccessResponse(HttpServletRequest request,
+                                                    HttpSession session,
+                                                    String messageKey) {
+        String successMessage = getMessage(messageKey);
 
         if (isInertiaRequest(request)) {
             session.setAttribute("flash", Map.of("success", successMessage));
             return inertia.redirect("/users/sign_in");
-        } else {
-            return ResponseEntity.ok(Map.of(
-                    "success", true,
-                    "message", successMessage
-            ));
         }
+
+        return ResponseEntity.ok(new SuccessResponse(successMessage));
     }
 
-    private String resolveLocale(HttpServletRequest request) {
+    private ResponseEntity<?> handleInvalidToken(String token,
+                                                 PasswordResetDTO form,
+                                                 HttpServletRequest request) {
+        passwordResetTokenRepository.deleteByToken(token);
 
-        var cookies = request.getCookies();
-        if (cookies != null) {
-            for (var cookie : cookies) {
-                if ("locale".equals(cookie.getName()) || "i18next".equals(cookie.getName())) {
-                    String locale = cookie.getValue();
-                    if (SUPPORTED_LOCALES.contains(locale)) {
-                        return locale;
-                    }
-                }
-            }
-        }
+        var props = flashPropsService.buildProps(request);
+        props.put("token", token);
+        props.put("form", form);
+        props.put("errors", Map.of("token", getMessage("password.reset.token.invalid")));
 
-        String acceptLanguage = request.getHeader("Accept-Language");
-        if (acceptLanguage != null && !acceptLanguage.isEmpty()) {
-            String[] languages = acceptLanguage.split(",");
-            for (String lang : languages) {
-                String locale = lang.split(";")[0].trim().split("-")[0];
-                if (SUPPORTED_LOCALES.contains(locale)) {
-                    return locale;
-                }
-            }
-        }
+        return inertia.render("Auth/Reset", props);
+    }
 
-        String langParam = request.getParameter("lang");
-        if (langParam != null && SUPPORTED_LOCALES.contains(langParam)) {
-            return langParam;
-        }
-
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("locale") != null) {
-            String locale = (String) session.getAttribute("locale");
-            if (SUPPORTED_LOCALES.contains(locale)) {
-                return locale;
-            }
-        }
-
-        return DEFAULT_LOCALE;
+    private String getMessage(String key) {
+        return messageSource.getMessage(key, null,
+                org.springframework.context.i18n.LocaleContextHolder.getLocale());
     }
 
     private boolean isInertiaRequest(HttpServletRequest request) {
-        return request.getHeader("X-Inertia") != null;
+        return "true".equals(request.getHeader("X-Inertia"));
     }
 
-    private String generateResetUrl(HttpServletRequest request, String locale, String email) {
-
+    private String generateResetUrl(HttpServletRequest request, String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new ClientException("email", "User not found", HttpStatus.NOT_FOUND));
 
         String token = passwordResetService.createPasswordResetToken(user);
-        System.out.println("Token generated: " + token);
+
+        log.debug("Generated reset token for email {}: {}", email, token);
 
         String baseUrl = request.getScheme() + "://"
                 + request.getServerName()
                 + ":"
                 + request.getServerPort();
-
-        return baseUrl + "/auth/reset?token=" + token + "&lang=" + locale;
+        // Подставляем текущую локаль в URL
+        String lang = org.springframework.context.i18n.LocaleContextHolder.getLocale().getLanguage();
+        return baseUrl + "/auth/reset?token=" + token + "&lang=" + lang;
     }
 
-    private boolean isPasswordValid(String password) {
-        return password != null
-                && password.length() >= 8
-                && password.matches(".*[A-Z].*")
-                && password.matches(".*[a-z].*")
-                && password.matches(".*\\d.*");
+    public record SuccessResponse(boolean success, String message) {
+        public SuccessResponse(String message) {
+            this(true, message);
+        }
     }
-
 }

@@ -1,24 +1,22 @@
 package io.hexlet.cv.model;
 
-import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -50,18 +48,6 @@ public class PasswordResetToken {
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
-        if (this.createdAt == null) {
-            this.createdAt = now;
-        }
-        if (this.expiryDate == null) {
-            this.expiryDate = now.plusHours(EXPIRATION_HOURS);
-        }
-    }
-
-    public PasswordResetToken(String token, User user) {
-        this.token = token;
-        this.user = user;
-        LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.expiryDate = now.plusHours(EXPIRATION_HOURS);
     }
@@ -75,11 +61,7 @@ public class PasswordResetToken {
     }
 
     public long getRemainingTimeInMinutes() {
-        return Duration.between(LocalDateTime.now(), expiryDate).toMinutes();
-    }
-
-    public static PasswordResetToken createForUser(User user) {
-        String token = UUID.randomUUID().toString();
-        return new PasswordResetToken(token, user);
+        long minutes = Duration.between(LocalDateTime.now(), expiryDate).toMinutes();
+        return Math.max(0, minutes);
     }
 }

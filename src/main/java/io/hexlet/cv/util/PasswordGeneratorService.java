@@ -1,112 +1,119 @@
 package io.hexlet.cv.util;
 
-import org.springframework.stereotype.Service;
-
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.hexlet.cv.handler.exception.ClientException;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.LengthRule;
+import org.passay.PasswordData;
+import org.passay.PasswordGenerator;
+import org.passay.PasswordValidator;
+import org.passay.RuleResult;
+import org.passay.WhitespaceRule;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PasswordGeneratorService {
 
-    private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
-    private static final String DIGITS = "0123456789";
-    private static final String SPECIAL = "!@#$%^&*()_+-=[]{}|;:,.<>?";
-    private static final String ALL = UPPER + LOWER + DIGITS + SPECIAL;
+    private static final int DEFAULT_PASSWORD_LENGTH = 20;
+    private static final int MIN_PASSWORD_LENGTH = 8;
+    private static final int MAX_PASSWORD_LENGTH = 64;
 
+    private final PasswordGenerator passwordGenerator = new PasswordGenerator();
+    private final PasswordValidator passwordValidator;
 
-    private final SecureRandom random = new SecureRandom();
+    public PasswordGeneratorService() {
 
-    public String generateStrongPassword() {
-        return generatePassword(20);
+        this.passwordValidator = new PasswordValidator(
+                new LengthRule(MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH),
+                new CharacterRule(EnglishCharacterData.UpperCase, 1),
+                new CharacterRule(EnglishCharacterData.LowerCase, 1),
+                new CharacterRule(EnglishCharacterData.Digit, 1),
+                new CharacterRule(EnglishCharacterData.Special, 1),
+                new WhitespaceRule()
+        );
     }
 
-    public String generatePassword(int length) {
-        if (length < 8) {
-            throw new IllegalArgumentException("Password must be at least 8 characters");
-        }
+    public String generateStrongPassword(int length) {
+        validateLength(length);
 
-        StringBuilder password = new StringBuilder();
+        CharacterRule upperCaseRule = new CharacterRule(EnglishCharacterData.UpperCase, 1);
+        CharacterRule lowerCaseRule = new CharacterRule(EnglishCharacterData.LowerCase, 1);
+        CharacterRule digitRule = new CharacterRule(EnglishCharacterData.Digit, 1);
+        CharacterRule specialRule = new CharacterRule(EnglishCharacterData.Special, 1);
 
-        password.append(UPPER.charAt(random.nextInt(UPPER.length())));
-        password.append(LOWER.charAt(random.nextInt(LOWER.length())));
-        password.append(DIGITS.charAt(random.nextInt(DIGITS.length())));
-        password.append(SPECIAL.charAt(random.nextInt(SPECIAL.length())));
+        return passwordGenerator.generatePassword(
+                length,
+                upperCaseRule,
+                lowerCaseRule,
+                digitRule,
+                specialRule
+        );
+    }
 
-        for (int i = 4; i < length; i++) {
-            password.append(ALL.charAt(random.nextInt(ALL.length())));
-        }
-
-        return shuffleString(password.toString());
+    public String generateStrongPassword() {
+        return generateStrongPassword(DEFAULT_PASSWORD_LENGTH);
     }
 
     public String generateMemorablePassword(int wordCount) {
-
-        String[] words = {"apple", "banana", "carrot", "dragon", "elephant", "flower",
-            "guitar", "happiness", "island", "jupiter", "kangaroo", "lighthouse",
-            "mountain", "notebook", "ocean", "penguin", "quantum", "rainbow",
-            "sunshine", "tiger", "universe", "victory", "waterfall", "xylophone"};
-
-        StringBuilder password = new StringBuilder();
-        for (int i = 0; i < wordCount; i++) {
-            if (i > 0) {
-                password.append("-");
-            }
-            password.append(words[random.nextInt(words.length)]);
+        if (wordCount < 2) {
+            wordCount = 2;
+        }
+        if (wordCount > 6) {
+            wordCount = 6;
         }
 
-        return password.toString();
+        String[] dictionary = {
+            "apple", "banana", "carrot", "dragon", "elephant", "flower",
+            "guitar", "happiness", "island", "jupiter", "kangaroo", "lighthouse",
+            "mountain", "notebook", "ocean", "penguin", "quantum", "rainbow",
+            "sunshine", "tiger", "universe", "victory", "waterfall"
+        };
+
+        SecureRandom random = new SecureRandom();
+        List<String> words = new ArrayList<>();
+
+        for (int i = 0; i < wordCount; i++) {
+            words.add(dictionary[random.nextInt(dictionary.length)]);
+        }
+
+        int number = random.nextInt(100);
+        return String.join("-", words) + "-" + number;
     }
 
     public boolean isPasswordStrong(String password) {
-        if (password == null || password.length() < 8) {
+        if (password == null || password.isEmpty()) {
             return false;
         }
-
-        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
-        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
-        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
-        boolean hasSpecial = password.chars()
-                .anyMatch(ch -> SPECIAL.indexOf(ch) >= 0);
-
-        return hasUpper && hasLower && hasDigit && hasSpecial;
+        RuleResult result = passwordValidator.validate(new PasswordData(password));
+        return result.isValid();
     }
 
-    public int passwordStrength(String password) {
-        if (password == null || password.length() < 8) {
-            return 1;
+    public List<String> getPasswordErrors(String password) {
+        if (password == null) {
+            return List.of("Password cannot be null");
         }
-
-        int score = 0;
-
-        if (password.length() >= 12) {
-            score++;
+        RuleResult result = passwordValidator.validate(new PasswordData(password));
+        if (result.isValid()) {
+            return List.of();
         }
-
-        if (password.chars().anyMatch(Character::isUpperCase)) {
-            score++;
-        }
-        if (password.chars().anyMatch(Character::isLowerCase)) {
-            score++;
-        }
-        if (password.chars().anyMatch(Character::isDigit)) {
-            score++;
-        }
-        if (password.chars().anyMatch(ch -> SPECIAL.indexOf(ch) >= 0)) {
-            score++;
-        }
-
-        return Math.min(score, 5);
+        return passwordValidator.getMessages(result);
     }
 
-
-    private String shuffleString(String input) {
-        char[] chars = input.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            int j = random.nextInt(chars.length);
-            char temp = chars[i];
-            chars[i] = chars[j];
-            chars[j] = temp;
+    private void validateLength(int length) {
+        if (length < MIN_PASSWORD_LENGTH) {
+            throw new ClientException("password",
+                    "Password length must be at least " + MIN_PASSWORD_LENGTH,
+                    HttpStatus.BAD_REQUEST);
         }
-        return new String(chars);
+        if (length > MAX_PASSWORD_LENGTH) {
+            throw new ClientException("password",
+                    "Password length must not exceed " + MAX_PASSWORD_LENGTH,
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -49,6 +49,8 @@ dependencies {
     implementation(libs.jsonunitAssertj)
     implementation(libs.guava)
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2")
+    implementation(libs.passay)
+//    implementation ("org.passay:passay:1.6.4")
 
     // MapStruct
     implementation(libs.mapstruct)
@@ -119,11 +121,15 @@ spotless {
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+    java {
+        sourceCompatibility = JavaVersion.toVersion(24)
+        targetCompatibility = JavaVersion.toVersion(24)
+//toolchain можно раскомментировать, а этот вариант закомментить, если требует того сборка
+
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(21)
+//    }
     }
-}
 
 // sonar {
 //     properties {

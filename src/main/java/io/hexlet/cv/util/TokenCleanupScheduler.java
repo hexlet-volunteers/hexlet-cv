@@ -1,11 +1,10 @@
 package io.hexlet.cv.util;
 
 import io.hexlet.cv.repository.PasswordResetTokenRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
