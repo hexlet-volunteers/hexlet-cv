@@ -9,6 +9,7 @@ import io.hexlet.cv.model.CareerStepMember;
 import io.hexlet.cv.model.Country;
 import io.hexlet.cv.model.Event;
 import io.hexlet.cv.model.Impression;
+import io.hexlet.cv.model.NewsletterSettings;
 import io.hexlet.cv.model.Notification;
 import io.hexlet.cv.model.Resume;
 import io.hexlet.cv.model.ResumeAnswer;
@@ -32,6 +33,7 @@ import io.hexlet.cv.repository.CareerStepRepository;
 import io.hexlet.cv.repository.CountryRepository;
 import io.hexlet.cv.repository.EventRepository;
 import io.hexlet.cv.repository.ImpressionRepository;
+import io.hexlet.cv.repository.NewsletterSettingsRepository;
 import io.hexlet.cv.repository.NotificationRepository;
 import io.hexlet.cv.repository.ResumeAnswerCommentRepository;
 import io.hexlet.cv.repository.ResumeAnswerLikeRepository;
@@ -79,6 +81,7 @@ public class DataInitializer {
     private final EventRepository eventRepository;
     private final VersionRepository versionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final NewsletterSettingsRepository newsletterSettingsRepository;
 
     @PostConstruct
     public void initializeData() {
@@ -86,9 +89,15 @@ public class DataInitializer {
             return;
         }
 
+        //+уведомления
         User ivan = createUser("ivan@google.com", "Иван", "Иванов", RoleType.CANDIDATE);
+        createNewsletterSettings(ivan);
+
         User olga = createUser("olga@yandex.ru", "Ольга", "Петрова", RoleType.CANDIDATE);
+        createNewsletterSettings(olga);
+
         User sergey = createUser("sergey@gmail.com", "Сергей", "Сидоров", RoleType.ADMIN);
+        createNewsletterSettings(sergey);
 
         // резюме
         Resume ivanResume = createResume(ivan, "Резюме backend-разработчика");
@@ -146,6 +155,9 @@ public class DataInitializer {
                 .forEach(user -> {
                     System.out.println("User ID: " + user.getId() + " email: "
                             + user.getEmail() + " password: qweqweqwe");
+                    if (user.getNewsletterSettings() != null) {
+                        System.out.println("   Newsletter settings created");
+                    }
                 });
         System.out.println(" ----------------------------------------------");
         System.out.println();
@@ -395,5 +407,21 @@ public class DataInitializer {
         cv.setWhodunnit(who);
         cv.setCareerMember(careerMember);
         return careerMemberVersionRepository.save(cv);
+    }
+
+    private NewsletterSettings createNewsletterSettings(User user) {
+        NewsletterSettings settings = NewsletterSettings.builder()
+                .user(user)
+                .newCourses(true)
+                .courseUpdates(true)
+                .promotions(user.getRole() == RoleType.ADMIN)
+                .achievements(true)
+                .commentsReplies(true)
+                .resumeViews(true)
+                .vacancyMatches(true)
+                .communityNews(user.getRole() == RoleType.ADMIN)
+                .marketingTips(false)
+                .build();
+        return newsletterSettingsRepository.save(settings);
     }
 }
