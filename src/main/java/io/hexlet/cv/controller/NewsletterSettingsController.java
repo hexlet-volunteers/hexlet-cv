@@ -54,7 +54,7 @@ public class NewsletterSettingsController {
         String resolvedLocale = resolveLocale(locale, request);
         NewsletterSettingsDTO settings = newsletterSettingsService.getCurrentUserSettings();
 
-        var props = flashPropsService.buildProps(resolvedLocale, request);
+        var props = flashPropsService.buildProps(request);
         props.put("settings", settings);
         props.put("form", settings);
         props.put("locale", resolvedLocale);
@@ -78,7 +78,7 @@ public class NewsletterSettingsController {
         String resolvedLocale = resolveLocale(locale, request);
 
         if (bindingResult.hasErrors()) {
-            var props = flashPropsService.buildProps(resolvedLocale, request);
+            var props = flashPropsService.buildProps(request);
             props.put("form", form);
             props.put("locale", resolvedLocale);
 
