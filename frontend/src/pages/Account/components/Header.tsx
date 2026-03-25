@@ -1,8 +1,11 @@
-import { Autocomplete, Group } from '@mantine/core'
+import { Autocomplete, Group, Burger } from '@mantine/core'
 import classes from './Header.module.css'
 import { IconSearch } from '@tabler/icons-react'
+import { useNavbar } from './NavigationProvider.tsx'
 
 export const Header: React.FC = () => {
+  const { opened, toggle } = useNavbar()
+
   return (
     <header className={classes.header}>
       <div className={classes.inner}>
@@ -15,6 +18,7 @@ export const Header: React.FC = () => {
             data={[]}
             visibleFrom="xs"
           />
+          <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
         </Group>
       </div>
     </header>

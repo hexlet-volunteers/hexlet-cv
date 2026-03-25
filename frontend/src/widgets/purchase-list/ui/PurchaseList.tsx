@@ -1,12 +1,4 @@
-import {
-  Table,
-  Container,
-  Group,
-  ThemeIcon,
-  Paper,
-  Title,
-  Button,
-} from '@mantine/core'
+import { Table, Paper, Button } from '@mantine/core'
 import { IconShoppingCart, IconDownload } from '@tabler/icons-react'
 import { usePage } from '@inertiajs/react'
 import { useTranslation } from 'react-i18next'
@@ -23,21 +15,14 @@ export const PurchaseList: React.FC = () => {
       <EmptyPlaceholder
         title={t('emptyPlaceholders.noPurchasesTitle')}
         icon={IconShoppingCart}
-        buttonLink='https://hexlet.io/courses'
+        buttonLink="https://hexlet.io/courses"
         buttonLabel={t('buttonsLabels.goToCatalog')}
       />
     )
 
   return (
-    <Container fluid>
-      <Group mb="sm">
-        <ThemeIcon size="lg" variant="default" radius="md">
-          <IconShoppingCart size={24} />
-        </ThemeIcon>
-        <Title order={2}>{t('accountPage.purchases.title')}</Title>
-      </Group>
-
-      <Paper shadow="sm" radius="md" withBorder>
+    <Paper shadow="sm" radius="md" withBorder>
+      <Table.ScrollContainer minWidth="sm" type="native">
         <Table>
           <Table.Thead>
             <Table.Tr>
@@ -60,7 +45,7 @@ export const PurchaseList: React.FC = () => {
                 <Table.Td>{item.id}</Table.Td>
                 <Table.Td>{item.name}</Table.Td>
                 <Table.Td>{item.date}</Table.Td>
-                <Table.Td>{`${item.price} ₽`}</Table.Td>
+                <Table.Td>{`${item.price}₽`}</Table.Td>
                 <Table.Td>{item.status}</Table.Td>
                 <Table.Td>
                   {item.recieptUrl && (
@@ -80,7 +65,7 @@ export const PurchaseList: React.FC = () => {
             ))}
           </Table.Tbody>
         </Table>
-      </Paper>
-    </Container>
+      </Table.ScrollContainer>
+    </Paper>
   )
 }

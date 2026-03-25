@@ -10,15 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import java.util.Locale;
 import java.util.Map;
 import lombok.AllArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -36,27 +33,18 @@ public class LoginController {
 
     private final TokenCookieService tokenCookieService;
 
-    private MessageSource messageSource;
+    @GetMapping("/users/sign_in")
+    public ResponseEntity<?> signInForm(HttpServletRequest request) {
 
-    @GetMapping("/{locale}/users/sign_in")
-    public ResponseEntity<?> signInForm(@PathVariable String locale,
-                                        HttpServletRequest request) {
-
-
-
-        var props = flashPropsService.buildProps(locale, request);
+        var props = flashPropsService.buildProps(request);
 
         return inertia.render("Users/SignIn", props);
     }
 
-    @PostMapping(path = "/{locale}/users/sign_in")
+    @PostMapping(path = "/users/sign_in")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginDTO,
-                                   @PathVariable String locale,
                                    HttpServletResponse response,
                                    HttpSession session) {
-
-
-
 
         loginService.login(loginDTO);
         var tokens = tokenService.authenticateAndGenerate(
@@ -64,27 +52,15 @@ public class LoginController {
                 loginDTO.getPassword()
         );
 
-
-
         var access = tokenCookieService.buildAccessCookie(tokens.access());
         var refresh = tokenCookieService.buildRefreshCookie(tokens.refresh());
 
         response.addHeader(HttpHeaders.SET_COOKIE, access.toString());
         response.addHeader(HttpHeaders.SET_COOKIE, refresh.toString());
 
-        //   return ResponseEntity.status(HttpStatus.SEE_OTHER)
-        //          .header(HttpHeaders.LOCATION, "/" + locale + "/dashboard")
-        //         .build();
+        session.setAttribute("flash", Map.of("success", true));
 
-        String successMessage = messageSource.getMessage(
-                "login.success",
-                null,
-                new Locale(locale)
-        );
-
-        session.setAttribute("flash", Map.of("success", successMessage));
-
-        return inertia.redirect("/" + locale + "/dashboard");
+        return inertia.redirect("/dashboard");
 
         //  return authResponseService.success(locale, tokens, response);
     }

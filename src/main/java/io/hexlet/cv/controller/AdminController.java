@@ -9,12 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/{locale}/admin")
+@RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
@@ -22,75 +21,65 @@ public class AdminController {
     private final FlashPropsService flashPropsService;
 
     @GetMapping()
-    public ResponseEntity<?> adminHomeController(@PathVariable("locale") String locale,
-                                                 HttpServletRequest request) {
+    public ResponseEntity<?> adminHomeController(HttpServletRequest request) {
 
-        var props = flashPropsService.buildProps(locale, request);
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Index", props);
     }
 
     @GetMapping("/marketing")
-    public ResponseEntity<?> adminMarketingController(@PathVariable("locale") String locale,
-                                                      HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminMarketingController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Marketing/Index", props);
     }
 
     @GetMapping("/webinars")
-    public ResponseEntity<?> adminWebinarsController(@PathVariable("locale") String locale,
-                                                     HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminWebinarsController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Webinars/Index", props);
     }
 
     @GetMapping("/knowledgebase")
-    public ResponseEntity<?> adminKnowledgebaseController(@PathVariable("locale") String locale,
-                                                          HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminKnowledgebaseController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Knowledgebase/Index", props);
 
     }
 
     @GetMapping("/interview")
-    public ResponseEntity<?> adminInterviewController(@PathVariable("locale") String locale,
-                                                      HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminInterviewController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Interview/Index", props);
 
     }
 
     @GetMapping("/grading")
-    public ResponseEntity<?> adminGradingController(@PathVariable("locale") String locale,
-                                                    HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminGradingController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Grading/Index", props);
     }
 
     @GetMapping("/programs")
-    public ResponseEntity<?> adminProgramsController(@PathVariable("locale") String locale,
-                                                     HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminProgramsController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Programs/Index", props);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> adminUsersController(@PathVariable("locale") String locale,
-                                                  HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminUsersController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Users/Index", props);
     }
 
     @GetMapping("/settings")
-    public ResponseEntity<?> adminSettingsController(@PathVariable("locale") String locale,
-                                                     HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    public ResponseEntity<?> adminSettingsController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Settings/Index", props);
     }
 
-    @GetMapping("/admin/help")
-    public ResponseEntity<?> adminHelpController(@PathVariable("locale") String locale,
-                                                 HttpServletRequest request) {
-        var props = flashPropsService.buildProps(locale, request);
+    @GetMapping("/help")
+    public ResponseEntity<?> adminHelpController(HttpServletRequest request) {
+        var props = flashPropsService.buildProps(request);
         return inertia.render("Admin/Help/Index", props);
     }
 }

@@ -1,15 +1,16 @@
 .navbar {
-  height: 700px;
-  width: 300px;
   padding: var(--mantine-spacing-md);
-  display: flex;
   flex-direction: column;
+  display: none;
 }
 
-@media screen and (min-width: 576px) {
-    .navbar {
-        border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-    }
+@media (min-width: 992px) {
+  .navbar {
+    display: flex;
+    width: 300px;
+    border-right: 1px solid
+      light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  }
 }
 
 .navbarMain {
@@ -27,7 +28,10 @@
   font-weight: 500;
 
   @mixin hover {
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    background-color: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-dark-6)
+    );
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 
     .linkIcon {

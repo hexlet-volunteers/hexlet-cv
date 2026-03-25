@@ -19,7 +19,7 @@ export const StudyPrograms: React.FC<TProps> = (props): JSX.Element => {
 
     if (!programs) {
         return (
-            <Container size='xl' py='md'>
+            <Container fluid py='md'>
                 <Center h={200}>
                     <Loader color="blue" size="lg" />
                     {/* Вместо Loader можно будет добавить Skeleton */}
@@ -90,7 +90,7 @@ export const StudyPrograms: React.FC<TProps> = (props): JSX.Element => {
     }
 
     return (
-        <Container size='xl' py='md'>
+        <Container fluid py='md'>
             <Title order={2} mb='md' fw={500}>
                 {t('adminPage.studyPrograms.title')}
             </Title>

@@ -1,16 +1,25 @@
 import { http, delay } from 'msw'
 import { inertiaJson } from '@mocks/inertia'
-import type { MenuItem } from '@shared/types/inertiaSharedData'
+import type { TMenuItem } from '@shared/types/inertiaSharedData'
 import { purchaseHandlers } from './purchase'
+import { progressHandlers, lessonsHandlers } from '@mocks/account/progress'
+import { notificationsHandlers } from './notifications'
 
-export const menu: MenuItem[] = [
-  { label: 'Мое обучение' },
+export const menu: TMenuItem[] = [
+  { label: 'Мое обучение', link: '/account/my-progress' },
   { label: 'Покупки и подписки', link: '/account/purchase' },
   { label: 'Вебинары', link: '/account/webinars' },
   { label: 'База знаний' },
   { label: 'Интервью' },
   { label: 'Грейдирование' },
   { label: 'Программы обучения' },
+  { label: 'Резюме' },
+  { label: 'Сопроводительное' },
+  { label: 'Автоотклики' },
+  { label: 'Избранное' },
+  { label: 'Уведомления', link: '/account/notifications' },
+  { label: 'Поддержка' },
+  { label: 'Настройки' },
 ]
 
 export const activityCards = {
@@ -56,4 +65,10 @@ const routes = [
   },
 ] as const
 
-export const handlers = [...routes.map(makeHandler), ...purchaseHandlers]
+export const handlers = [
+  ...routes.map(makeHandler),
+  ...purchaseHandlers,
+  ...progressHandlers,
+  ...lessonsHandlers,
+  ...notificationsHandlers,
+]

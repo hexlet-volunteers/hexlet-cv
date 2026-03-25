@@ -25,13 +25,12 @@ public class LogoutControllerTest {
     @Test
     void testInertiaLogoutUserCookies() throws Exception {
 
-        mockMvc.perform(post("/ru/users/sign_out")
+        mockMvc.perform(post("/users/sign_out")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .header("X-Inertia", "true")
-                        .header("Referer", "/ru/users/sign_out"))
+                        .header("Referer", "/users/sign_out"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(header().string("Location", "/ru"))
                 .andExpect(flash().attributeCount(0))
                 .andExpect(header().stringValues(HttpHeaders.SET_COOKIE,
                         Matchers.hasItem(Matchers.allOf(

@@ -1,36 +1,38 @@
 import { Container, Card, Text, Title, Grid, Button } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
+import type { TrainingCardDto } from '../types'
 
-interface TrainingCard {
-  key: string
-  title: string
-  description: string
-  buttonText: string
+type TProps = {
+  trainingPrograms: TrainingCardDto[]
 }
 
-export const TrainingPrograms: React.FC = () => {
+export const TrainingPrograms: React.FC<TProps> = (props) => {
+  const { trainingPrograms } = props
   const { t } = useTranslation()
 
-  const trainingCards: TrainingCard[] = [
-    {
-      key: 'jobSearch',
-      title: t('homePage.trainingPrograms.cards.jobSearch.title'),
-      description: t('homePage.trainingPrograms.cards.jobSearch.description'),
-      buttonText: t('homePage.trainingPrograms.cards.jobSearch.button'),
-    },
-    {
-      key: 'freelance',
-      title: t('homePage.trainingPrograms.cards.freelance.title'),
-      description: t('homePage.trainingPrograms.cards.freelance.description'),
-      buttonText: t('homePage.trainingPrograms.cards.freelance.button'),
-    },
-    {
-      key: 'foreignJobs',
-      title: t('homePage.trainingPrograms.cards.foreignJobs.title'),
-      description: t('homePage.trainingPrograms.cards.foreignJobs.description'),
-      buttonText: t('homePage.trainingPrograms.cards.foreignJobs.button'),
-    },
-  ]
+  const renderItem = ({ title, description }: TrainingCardDto, index: number) => {
+    return (
+      <Grid.Col
+        key={index}
+        span={{
+          base: 12,
+          md: 4,
+        }}
+      >
+        <Card radius="lg" h="100%">
+          <Title order={3}>
+            {title}
+          </Title>
+          <Text size="sm" mb="lg" mt="xs">
+            {description}
+          </Text>
+          <Button radius="lg" w="fit-content">
+            {t('homePage.trainingPrograms.button')}
+          </Button>
+        </Card>
+      </Grid.Col>
+    )
+  }
 
   return (
     <Container size="lg" py="xs">
@@ -38,29 +40,7 @@ export const TrainingPrograms: React.FC = () => {
         {t('homePage.trainingPrograms.title')}
       </Title>
       <Grid>
-        {trainingCards.map(card => (
-          <Grid.Col
-            key={card.key}
-            span={{
-              base: 12,
-              md: 4,
-            }}
-          >
-            <Card radius="lg" h="100%">
-              <Text fz="h3">
-                {card.title}
-              </Text>
-              <Text size="sm" mb="lg" mt="xs">
-                {card.description}
-              </Text>
-              <Button radius="lg" w="fit-content">
-                <Text size="sm">
-                  {card.buttonText}
-                </Text>
-              </Button>
-            </Card>
-          </Grid.Col>
-        ))}
+        {trainingPrograms.map(renderItem)}
       </Grid>
     </Container>
   )

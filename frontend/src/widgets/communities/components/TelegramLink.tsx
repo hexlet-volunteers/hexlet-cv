@@ -1,5 +1,6 @@
-import { Paper, Text } from '@mantine/core'
+import { Text } from '@mantine/core'
 import { openTelegramLink } from '../helpers/openTelegramInNewTab'
+import { DsCard } from '@shared/uikit/DsCard/DsCard'
 
 const FONT_SIZE_TELEGRAM_TITLE = 'lg'
 const FONT_SIZE_TELEGRAM_TEXT = 'xs'
@@ -15,22 +16,21 @@ export const TelegramLink: React.FC<TProps> = (props) => {
   const { text, title, username } = props
 
   return (
-    <Paper
-      bg="dark.6"
+    <DsCard
+      aria-label={`Open ${title} on Telegram`}
       onClick={() => {
         openTelegramLink(username)
       }}
-      p="sm"
-      radius="md"
       style={STYLE_CURSOR_POINTER}
-      withBorder
     >
-      <Text c="white" fw={500} fz={FONT_SIZE_TELEGRAM_TITLE} ta="left">
-        {title}
-      </Text>
-      <Text c="white" fz={FONT_SIZE_TELEGRAM_TEXT} ta="left">
-        {text}
-      </Text>
-    </Paper>
+      <DsCard.Content>
+        <Text c="white" fw={500} fz={FONT_SIZE_TELEGRAM_TITLE} ta="left">
+          {title}
+        </Text>
+        <Text c="white" fz={FONT_SIZE_TELEGRAM_TEXT} ta="left">
+          {text}
+        </Text>
+      </DsCard.Content>
+    </DsCard>
   )
 }

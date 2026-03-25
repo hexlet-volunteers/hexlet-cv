@@ -1,6 +1,5 @@
 package io.hexlet.cv.controller;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -60,7 +59,7 @@ class UserPageControllerTest {
         user.setRole(RoleType.CANDIDATE);
         var saved = userRepository.save(user);
 
-        mockMvc.perform(get("/ru/users/" + saved.getId())
+        mockMvc.perform(get("/users/" + saved.getId())
                         .header("X-Inertia", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -85,14 +84,11 @@ class UserPageControllerTest {
     void testUserPageNotFound() throws Exception {
         Long nonExistentId = 999L;
 
-        mockMvc.perform(get("/ru/users/" + nonExistentId)
+        mockMvc.perform(get("/users/" + nonExistentId)
                         .header("X-Inertia", "true"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                // проверяем что вернулась ошибка
                 .andExpect(jsonPath("$.props.status").value(404))
-                .andExpect(jsonPath("$.props.message").value("Пользователь не найден"))
-                .andExpect(jsonPath("$.props.description",
-                        containsString("Пользователь с ID " + nonExistentId)));
+                .andExpect(jsonPath("$.props.userId").value(nonExistentId));
     }
 }

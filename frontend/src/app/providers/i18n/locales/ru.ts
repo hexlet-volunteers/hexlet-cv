@@ -1,5 +1,14 @@
 export default {
   translation: {
+    articles: {
+      description: 'Статьи, новости и советы о поиске работы',
+      readNextActionLabel: 'Читать далее',
+      readingTime_one: '{{count}} минута',
+      readingTime_few: '{{count}} минуты',
+      readingTime_many: '{{count}} минут',
+      readingTime_other: '{{count}} минут',
+      title: 'Новости',
+    },
     communities: {
       action_connect_to: 'Присоединиться к сообществу',
       anchor: 'Сообщество',
@@ -80,26 +89,11 @@ export default {
       },
       trainingPrograms: {
         title: 'Наши программы обучения',
-        cards: {
-          jobSearch: {
-            title: 'Как искать работу',
-            description:
-              'Стратегия поиска, позиционирование, резюме, собеседования.',
-            button: 'Узнать подробнее',
-          },
-          freelance: {
-            title: 'Как работать на фрилансе',
-            description:
-              'Портфолио, бриф, коммуникации, ценообразование, договорённости.',
-            button: 'Узнать подробнее',
-          },
-          foreignJobs: {
-            title: 'Как искать валютную работу',
-            description:
-              'Рынки, площадки, подготовка профилей и откликов на английском.',
-            button: 'Узнать подробнее',
-          },
-        },
+        button: 'Узнать подробнее',
+      },
+      performanceReview: {
+        title: 'Performance review и определение грейда',
+        button: 'Записаться',
       },
       knowledgeBaseAndInterview: {
         title: 'База знаний и интервью',
@@ -115,7 +109,15 @@ export default {
         title: 'Вебинары с HR и экспертами',
         viewSchedule: 'Смотреть расписание',
       },
-
+      ourTeam: {
+        sectionTitle: 'Наша команда',
+        aboutBadge: 'О нас',
+      },
+      totaAi: {
+        aiAssistant: 'ИИ-помощник',
+        title: 'Тота ИИ — агент-ускоритель карьеры',
+        description: 'Помогает с резюме, откликами, перепиской с рекрутерами и подготовкой к собеседованиям.',
+      },
     },
     accountPage: {
       purchases: {
@@ -136,9 +138,33 @@ export default {
           receipt: 'Чек',
         },
       },
+      progress: {
+        title: 'Моё обучение',
+        dates: {
+          today: 'обновлено сегодня',
+          yesterday: 'обновлено вчера',
+          days_ago: 'обновлено {{count}} дн. назад',
+        },
+        status: {
+          done: 'Завершено',
+          inProgress: 'В процессе',
+        },
+        programBadge: {
+          newProgram: 'Новый',
+          completedProgram: 'Сертификат',
+        },
+      },
+      notifications: {
+        title: 'Уведомления',
+        today: 'сегодня',
+        yesterday: 'вчера',
+        daysAgo: 'давно',
+        noNotifications: 'Уведомлений нет'
+      }
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',
+      noLearningProgress: 'Начните обучение сейчас',
     },
     activityCards: {
       courses_in_process: 'Курсов в работе',
@@ -149,8 +175,14 @@ export default {
     },
     buttonsLabels: {
       goToCatalog: 'В каталог',
+      open: 'Открыть',
+      continue: 'Продолжить'
     },
     adminPage: {
+      header: {
+        title: 'Admin Panel',
+        logoutButton: 'Выход',
+      },
       interviews: {
         title: 'Интервью',
         input: 'Поиск: заголовок/спикер',

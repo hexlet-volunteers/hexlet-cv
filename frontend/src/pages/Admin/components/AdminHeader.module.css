@@ -1,0 +1,7 @@
+.group {
+    width: 100%; 
+    height: 75px;
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
+    border-bottom: 1px solid var(--mantine-color-dark-4);
+}

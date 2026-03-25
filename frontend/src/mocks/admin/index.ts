@@ -3,6 +3,34 @@ import { inertiaJson } from '../inertia'
 import type { InterviewsEntry } from '@widgets/admin-interviews/ui/AdminInterviews'
 import type { KnowledgeBaseEntry } from '@widgets/knowledge-base'
 import type { StudyProgramsEntry } from '@widgets/admin-study-programs'
+import type { AdminMenuDTO } from '@pages/Admin/components/AdminNavbar'
+
+const mockMenu: AdminMenuDTO[] = [
+  {
+    category: 'КОНТЕНТ',
+    items: [
+      { label: 'Маркетинг', link: '/admin/marketing', icon: 'IconSpeakerphone' },
+      { label: 'Вебинары', link: '/admin/webinars', icon: 'IconVideo' },
+      { label: 'База знаний', link: '/admin/knowledgebase', icon: 'IconBooks' },
+      { label: 'Интервью', link: '/admin/interview', icon: 'IconMicrophone' },
+      { label: 'Грейдирование', link: '/admin/grading', icon: 'IconStar' },
+      { label: 'Программы обучения', link: '/admin/programs', icon: 'IconSchool' },
+    ],
+  },
+  {
+    category: 'АДМИНИСТРИРОВАНИЕ',
+    items: [
+      { label: 'Пользователи', link: '/admin/users', icon: 'IconUsers' },
+      { label: 'Настройки', link: '/admin/settings', icon: 'IconSettings' },
+    ],
+  },
+  {
+    category: 'ПОМОЩЬ',
+    items: [
+      { label: 'Помощь', link: '/admin/help', icon: 'IconHelp' },
+    ],
+  },
+]
 
 const mockInterviews: InterviewsEntry[] = [
     { id: 1, title: 'Интервью с продактом', speaker: 'Алексей С.', videoUrl: '', isPublished: true },
@@ -29,6 +57,7 @@ export const adminHandlers = [
       component: 'Admin/Interview/Index',
       props: {
         interviews: mockInterviews,
+        adminMenu: mockMenu,
       },
       url: new URL(request.url).pathname,
       version: 'msw-dev',
@@ -43,6 +72,7 @@ export const adminHandlers = [
       component: 'Admin/Knowledgebase/Index',
       props: {
         articles: mockArticles,
+        adminMenu: mockMenu,
       },
       url: new URL(request.url).pathname,
       version: 'msw-dev',
@@ -57,6 +87,7 @@ export const adminHandlers = [
       component: 'Admin/Programs/Index',
       props: {
         programs: mockPrograms,
+        adminMenu: mockMenu,
       },
       url: new URL(request.url).pathname,
       version: 'msw-dev',

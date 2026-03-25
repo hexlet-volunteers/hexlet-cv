@@ -1,10 +1,10 @@
-export type MenuItem = {
+export type TMenuItem = {
   icon?: React.ElementType
   label: string
   link?: string
 }
 
-export type ActivityCardsData = {
+export type TActivityCardsData = {
   coursesCount: number
   progress: string
   lastResult: {
@@ -18,4 +18,11 @@ export type ActivityCardsData = {
       time: string
     }
   }
+}
+
+export type TPagination = {
+  currentPage: number
+  totalPages: number
+  totalElements: number
+  pageSize: number
 }

@@ -17,7 +17,7 @@ export const ActivityCards: React.FC = () => {
   if (!data) return null
 
   return (
-    <SimpleGrid cols={{ base: 1, sm: 4, lg: 4 }} spacing="sm">
+    <SimpleGrid cols={{ base: 1, xs: 2, lg: 4 }} spacing="sm">
       <DashboardCard
         label={t('activityCards.courses_in_process')}
         value={data.coursesCount}

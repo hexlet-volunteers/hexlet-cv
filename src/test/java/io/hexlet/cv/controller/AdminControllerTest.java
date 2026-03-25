@@ -62,7 +62,7 @@ class AdminControllerTest {
         // создаём access_token для ADMIN
         var token = jwtUtils.generateAccessToken(ADMIN_EMAIL);
 
-        mockMvc.perform(get("/ru/admin")
+        mockMvc.perform(get("/admin")
                         .cookie(new Cookie("access_token", token))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isOk());
@@ -72,7 +72,7 @@ class AdminControllerTest {
     void testCandidateAccessAdminPanel() throws Exception {
         var token = jwtUtils.generateAccessToken(CANDIDATE_EMAIL);
 
-        mockMvc.perform(get("/ru/admin")
+        mockMvc.perform(get("/admin")
                         .cookie(new Cookie("access_token", token))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isForbidden());
@@ -80,7 +80,7 @@ class AdminControllerTest {
 
     @Test
     void testAnonymousAccessAdminPanel() throws Exception {
-        mockMvc.perform(get("/ru/admin")
+        mockMvc.perform(get("/admin")
                         .header("X-Inertia", "true"))
                 .andExpect(status().is4xxClientError());
     }

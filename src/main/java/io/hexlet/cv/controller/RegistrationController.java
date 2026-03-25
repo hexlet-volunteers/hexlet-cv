@@ -11,15 +11,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import java.util.Locale;
 import java.util.Map;
 import lombok.AllArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -36,20 +33,16 @@ public class RegistrationController {
 
     private final TokenCookieService tokenCookieService;
 
-    private MessageSource messageSource;
+    @GetMapping("/users/sign_up")
+    public ResponseEntity<?> signUpForm(HttpServletRequest request) {
 
-    @GetMapping("/{locale}/users/sign_up")
-    public ResponseEntity<?> signUpForm(@PathVariable String locale,
-                                        HttpServletRequest request) {
-
-        var props = flashPropsService.buildProps(locale, request);
+        var props = flashPropsService.buildProps(request);
 
         return inertia.render("Users/SignUp", props);
     }
 
-    @PostMapping(path = "/{locale}/users")
+    @PostMapping(path = "/users")
     public Object registration(@Valid @RequestBody RegistrationRequestDTO inputDTO,
-                               @PathVariable String locale,
                                HttpServletResponse response,
                                HttpSession session) {
 
@@ -60,29 +53,15 @@ public class RegistrationController {
                 inputDTO.getPassword()
         );
 
-        // ------
-
         var access = tokenCookieService.buildAccessCookie(tokens.access());
         var refresh = tokenCookieService.buildRefreshCookie(tokens.refresh());
 
         response.addHeader(HttpHeaders.SET_COOKIE, access.toString());
         response.addHeader(HttpHeaders.SET_COOKIE, refresh.toString());
 
-        /*
-        return ResponseEntity.status(HttpStatus.SEE_OTHER)
-                .header(HttpHeaders.LOCATION, "/" + locale + "/dashboard")
-                .build();
-        */
+        session.setAttribute("flash", Map.of("success", true));
 
-        String successMessage = messageSource.getMessage(
-                "registration.success",
-                null,
-                new Locale(locale)
-        );
-
-        session.setAttribute("flash", Map.of("success", successMessage));
-
-        return inertia.redirect("/" + locale + "/dashboard");
+        return inertia.redirect("/dashboard");
 
 
 // ----------

@@ -26,7 +26,7 @@ export const AdminInterviews: React.FC<TProps> = (props): JSX.Element => {
     )
 
     return (
-        <Container size='xl' py='md'>
+        <Container fluid py='md'>
             <Title order={2} mb='md' fw={500}>
                 {t('adminPage.interviews.title')}
             </Title>

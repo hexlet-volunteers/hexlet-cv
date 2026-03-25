@@ -81,7 +81,7 @@ public class LoginControllerTest {
         data.setEmail(userData.getEmail());
         data.setPassword(testPassword);
 
-        var request = post("/ru/users/sign_in").contentType(MediaType.APPLICATION_JSON)
+        var request = post("/users/sign_in").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
         mockMvc.perform(request).andExpect(status().isFound())
@@ -98,7 +98,7 @@ public class LoginControllerTest {
         data.setEmail("new_email@yandex.ru");
         data.setPassword(testPassword);
 
-        var request = post("/ru/users/sign_in").contentType(MediaType.APPLICATION_JSON)
+        var request = post("/users/sign_in").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
         mockMvc.perform(request).andExpect(status().isUnauthorized())
@@ -113,7 +113,7 @@ public class LoginControllerTest {
         data.setEmail(userData.getEmail());
         data.setPassword("another_password");
 
-        var request = post("/ru/users/sign_in").contentType(MediaType.APPLICATION_JSON)
+        var request = post("/users/sign_in").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
         mockMvc.perform(request).andExpect(status().isUnauthorized())
@@ -129,13 +129,13 @@ public class LoginControllerTest {
         dto.setEmail(userData.getEmail());
         dto.setPassword("another_password");
 
-        mockMvc.perform(post("/ru/users/sign_in")
+        mockMvc.perform(post("/users/sign_in")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
-                        .header("Referer", "/ru/users/sign_in"))
+                        .header("Referer", "/users/sign_in"))
                 .andExpect(status().isSeeOther())
-                .andExpect(header().string("Location", "/ru/users/sign_in"))
+                .andExpect(header().string("Location", "/users/sign_in"))
                 .andExpect(flash().attributeExists("errors"))
                 .andExpect(flash().attribute("errors", hasKey("password")))
                 .andReturn();
@@ -147,13 +147,13 @@ public class LoginControllerTest {
         dto.setEmail("new_email@yandex.ru");
         dto.setPassword(testPassword);
 
-        mockMvc.perform(post("/ru/users/sign_in")
+        mockMvc.perform(post("/users/sign_in")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
-                        .header("Referer", "/ru/users/sign_in"))
+                        .header("Referer", "/users/sign_in"))
                 .andExpect(status().isSeeOther())
-                .andExpect(header().string("Location", "/ru/users/sign_in"))
+                .andExpect(header().string("Location", "/users/sign_in"))
                 .andExpect(flash().attributeExists("errors"))
                 .andExpect(flash().attribute("errors", hasKey("email")))
                 .andReturn();
@@ -165,13 +165,13 @@ public class LoginControllerTest {
         dto.setEmail(userData.getEmail());
         dto.setPassword(testPassword);
 
-        mockMvc.perform(post("/ru/users/sign_in")
+        mockMvc.perform(post("/users/sign_in")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
-                        .header("Referer", "/ru/users/sign_in"))
+                        .header("Referer", "/users/sign_in"))
                 .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/ru/dashboard"))
+                .andExpect(header().string("Location", "/dashboard"))
                 .andExpect(flash().attributeCount(0))
                 .andExpect(header().stringValues(HttpHeaders.SET_COOKIE,
                         Matchers.hasItem(Matchers.containsString("access_token"))))

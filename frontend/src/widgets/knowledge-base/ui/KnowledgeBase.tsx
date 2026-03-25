@@ -22,7 +22,7 @@ export const KnowledgeBase: React.FC<TProps> = (props): JSX.Element => {
 
     if (!articles) {
         return (
-            <Container size='xl' py='md'>
+            <Container fluid py='md'>
                 <Center h={200}>
                     <Loader color="blue" size="lg" />
                     {/* Вместо Loader можно будет добавить Skeleton */}
@@ -83,7 +83,7 @@ export const KnowledgeBase: React.FC<TProps> = (props): JSX.Element => {
     }
 
     return (
-        <Container size='xl' py='md'>
+        <Container fluid py='md'>
             <Title order={2} mb='md' fw={500}>
                 {t('adminPage.knowledgeBase.title')}
             </Title>

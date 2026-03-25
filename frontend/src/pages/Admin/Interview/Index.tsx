@@ -1,7 +1,10 @@
 import { AdminInterviews, type TProps } from "@widgets/admin-interviews"
+import { AdminLayout } from "../components/AdminLayout"
 
-const Index = ({ interviews }: TProps) => {
+const Interview = ({ interviews }: TProps) => {
     return <AdminInterviews interviews={interviews}/>
 }
 
-export default Index
+Interview.layout = (page: React.ReactNode) => <AdminLayout>{page}</AdminLayout>
+
+export default Interview

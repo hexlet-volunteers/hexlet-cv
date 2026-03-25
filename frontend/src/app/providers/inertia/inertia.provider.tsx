@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { UIProvider } from '@ui/ui.provider'
 import I18nProvider from '@i18n/i18n.provider'
 import { StrictMode } from 'react'
+import type { Page } from 'node_modules/@inertiajs/core/types/types'
 
-export const initInertia = () => {
+export const initInertia = (page: Page) => {
   createInertiaApp({
+    page,
     resolve: (name) => {
       console.log('Inertia ищет компонент:', name)
       const pages = import.meta.glob('../../../pages/**/*.tsx', { eager: true })

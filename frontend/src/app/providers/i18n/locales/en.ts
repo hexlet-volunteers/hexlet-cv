@@ -1,5 +1,12 @@
 export default {
   translation: {
+    articles: {
+      description: 'Articles, news, and tips about job searching',
+      readNextActionLabel: 'Next',
+      readingTime_one: '{{count}} minute',
+      readingTime_other: '{{count}} minutes',
+      title: 'News',
+    },
     communities: {
       action_connect_to: 'Присоединиться к сообществу',
       anchor: 'Сообщество',
@@ -80,25 +87,11 @@ export default {
       },
       trainingPrograms: {
         title: 'Our training programs',
-        cards: {
-          jobSearch: {
-            title: 'How to search for a job',
-            description: 'Search strategy, positioning, resume, interviews.',
-            button: 'Learn more',
-          },
-          freelance: {
-            title: 'How to work as a freelancer',
-            description:
-              'Portfolio, brief, communications, pricing, agreements.',
-            button: 'Learn more',
-          },
-          foreignJobs: {
-            title: 'How to find work abroad',
-            description:
-              'Markets, platforms, preparing profiles and applications in English.',
-            button: 'Learn more',
-          },
-        },
+        button: 'Learn more',
+      },
+      performanceReview: {
+        title: 'Performance review and grade determination',
+        button: 'Sign up',
       },
       knowledgeBaseAndInterview: {
         title: 'Knowledge base and interviews',
@@ -114,7 +107,15 @@ export default {
         title: 'Webinars with HR and Experts',
         viewSchedule: 'View Schedule',
       },
-
+      ourTeam: {
+        sectionTitle: 'Our Team',
+        aboutBadge: 'About Us',
+      },
+      totaAi: {
+        aiAssistant: 'AI Assistant',
+        title: 'Tota AI — Career Accelerator Agent',
+        description: 'Helps with resumes, applications, correspondence with recruiters, and interview preparation.',
+      }, 
     },
     accountPage: {
       purchases: {
@@ -135,6 +136,29 @@ export default {
           receipt: 'Receipt',
         },
       },
+      progress: {
+        title: 'My training',
+        dates: {
+          today: 'updated today',
+          yesterday: 'updated yesterday',
+          days_ago: 'updated {{count}} d. ago',
+        },
+        status: {
+          done: 'Done',
+          inProgress: 'In progress',
+        },
+        courseBadge: {
+          newProgram: 'New',
+          completedProgram: 'Сertificate',
+        }
+      },
+      notifications: {
+        title: 'Notifications',
+        today: 'today',
+        yesterday: 'yesterday',
+        daysAgo: 'long ago',
+        noNotifications: 'No notifications'
+      }
     },
     activityCards: {
       courses_in_process: 'Courses in Progress',
@@ -149,8 +173,14 @@ export default {
 
     buttonsLabels: {
       goToCatalog: 'Go to Catalog',
+      open: 'Open',
+      continue: 'Continue',
     },
     adminPage: {
+      header: {
+        title: 'Admin Panel',
+        logoutButton: 'Logout',
+      },
       interviews: {
         title: 'Interviews',
         input: 'Search: title/speaker',

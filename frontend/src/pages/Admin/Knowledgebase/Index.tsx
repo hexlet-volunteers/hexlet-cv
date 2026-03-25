@@ -1,7 +1,10 @@
 import { KnowledgeBase, type TProps } from "@widgets/knowledge-base"
+import { AdminLayout } from "../components/AdminLayout"
 
-const Index = ({ articles }: TProps) => {
+const Knowledgebase = ({ articles }: TProps) => {
     return <KnowledgeBase articles={articles} />
 }
 
-export default Index
+Knowledgebase.layout = (page: React.ReactNode) => <AdminLayout>{page}</AdminLayout>
+
+export default Knowledgebase

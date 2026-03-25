@@ -8,9 +8,8 @@ type TProps = {
 
 export const SectionLayout: React.FC<TProps> = (props) => {
   const { children } = props
-
   return (
-    <Container fluid pt="md">
+    <Container fluid pt="md" flex={1}>
       <Stack gap="md">
         <ActivityCards />
         <main className={classes.section}>{children}</main>
