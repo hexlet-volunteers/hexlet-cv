@@ -78,10 +78,7 @@ dependencies {
 
     // 📧 Email+
     implementation("org.springframework.boot:spring-boot-starter-mail")
-
-    // 🎯 Thymeleaf для email шаблонов+
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-
+    
     implementation("org.flywaydb:flyway-core")
 
 }
