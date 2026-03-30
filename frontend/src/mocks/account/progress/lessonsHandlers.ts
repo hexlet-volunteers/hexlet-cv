@@ -1,6 +1,5 @@
-import { http, delay } from 'msw'
-import { inertiaJson } from '@mocks/inertia'
-import { menu, activityCards } from '../index'
+import { defineGet } from '@mocks/msw/define'
+import { menu, activityCards } from '@mocks/account/index'
 
 const lessons = [
   {
@@ -50,14 +49,12 @@ const lessons = [
 ]
 
 export const lessonsHandlers = [
-  http.get(
-    '/account/my-progress/program/:id/lessons',
-    async ({ params, request }) => {
+  defineGet(
+    '*/account/my-progress/program/:id/lessons',
+    (ctx, request) => {
       // 1. Получаем ID программы из URL (params.id всегда строка)
-      const { id } = params
-      const programId = parseInt(id as string, 10)
-
-      await delay()
+      const id = ctx.pathNoLocale.split('/').filter(Boolean).at(3) ?? ''
+      const programId = parseInt(id, 10)
 
       // Оставляем только те уроки, которые относятся к этой программе
       const programLessons = lessons.filter(lesson => lesson.programProgressId === programId
@@ -72,9 +69,12 @@ export const lessonsHandlers = [
       const end = start + pageSize
       const pagedLessons = programLessons.slice(start, end)
 
-      return inertiaJson({
-        component: 'Account/Learning/MyProgress/Lessons',
-        props: {
+      return ctx.inertiaPage(
+        'Account/Learning/MyProgress/Lessons',
+        {
+          flash: {},
+          errors: {},
+          auth: { user: ctx.user },
           menu,
           activityCards,
           lessonsProgress: pagedLessons,
@@ -88,8 +88,8 @@ export const lessonsHandlers = [
           activeMainSection: 'account',
           activeSubSection: 'my-progress',
         },
-        url: url.pathname + url.search,
-      })
+        200
+      )
     },
   ),
 ]
