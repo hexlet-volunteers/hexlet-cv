@@ -21,7 +21,6 @@
    - **Name** — `hexlet-cv-db`
    - **Database** — `hexlet_cv`
    - **User** — `hexlet_cv_user`
-   - **Password** — придумайте и сохраните (показывается один раз)
    - **Region** — Frankfurt (или ближайший к пользователям)
 4. Нажмите **Create Database**.
 5. Дождитесь статуса **Available**.
@@ -55,15 +54,15 @@
 
 В разделе **Environment** добавьте переменные для Web Service:
 
-| Key                     | Пример значения                                                                                            | Описание                          |
-| :---------------------- |:-----------------------------------------------------------------------------------------------------------| :-------------------------------- |
-| `SPRING_PROFILES_ACTIVE` | `prod`                                                                                                     | Включение продакшен-конфигурации  |
-| `JDBC_DATABASE_URL`     | `jdbc:postgresql://dpg-xxx123-a:5432/hexlet_cv_db_xf4t?password=YOUR_PASSWORD&user=hexlet_cv_db_xf4t_user` | Полный JDBC URL (подставьте HOST, PASSWORD и USER из карточки БД) |
-| `USERNAME`              | `hexlet_cv_user`                                                                                           | Из карточки PostgreSQL (см. шаг 1) |
-| `PASSWORD`              | *ваш пароль из шага 1*                                                                                     | Из карточки PostgreSQL            |
-| `DATABASE`              | `hexlet_cv_db`                                                                                             | Из карточки PostgreSQL (см. шаг 1) |
-| `HOST`                  | `dpg-xxx123-a`                                                                                             | Internal hostname из карточки БД  |
-| `DB_PORT`               | `5432`                                                                                                     | Порт PostgreSQL                   |
+| Key                     | Пример значения                                                                      | Описание                          |
+| :---------------------- |:-------------------------------------------------------------------------------------| :-------------------------------- |
+| `SPRING_PROFILES_ACTIVE` | `prod`                                                                               | Включение продакшен-конфигурации  |
+| `JDBC_DATABASE_URL`     | `jdbc:postgresql://{Hostname}:{Port}/{Database}?password={Password}&user={Username}` | Полный JDBC URL (подставьте HOST, PASSWORD и USER из карточки БД) |
+| `USERNAME`              | `hexlet_cv_user`                                                                     | Из карточки PostgreSQL (см. шаг 1) |
+| `PASSWORD`              | *ваш пароль из шага 1*                                                               | Из карточки PostgreSQL            |
+| `DATABASE`              | `hexlet_cv_db`                                                                       | Из карточки PostgreSQL (см. шаг 1) |
+| `HOST`                  | `dpg-xxx123-a`                                                                       | Internal hostname из карточки БД  |
+| `DB_PORT`               | `5432`                                                                               | Порт PostgreSQL                   |
 
 ---
 
@@ -72,10 +71,9 @@
 1. Проверьте, что все переменные окружения сохранены.
 2. Нажмите **Create Web Service**.
 3. Render соберёт образ по Dockerfile и запустит контейнер. Первый деплой может занять несколько минут.
-4. В логах сервиса убедитесь, что приложение стартовало без ошибок и что оно подключается к PostgreSQL.
-
-После успешного деплоя сервису будет выдан URL вида:  
-`https://hexlet-cv.onrender.com` (или ваш **Name**).
+4. **Критерии успешного деплоя:**
+   - В карточке Web Service в Dashboard статус **Live**.
+   - По ссылке вида `https://…onrender.com` в браузере открывается сайт (главная страница приложения).
 
 ---
 
@@ -134,13 +132,5 @@ services:
 > **Важно:** `JDBC_DATABASE_URL` Render не задаёт автоматически (connectionString в формате `postgresql://...`, а Spring Boot ждёт `jdbc:postgresql://...`). Добавьте эту переменную вручную в Dashboard. Формат: `jdbc:postgresql://HOST:5432/DATABASE?password=PASSWORD&user=USER` — подставьте значения из карточки БД (Info).
 
 Схема и свойства уточняйте в [документации Render](https://render.com/docs/blueprint-spec).
-
----
-
-## Проверка
-
-1. Откройте URL сервиса в браузере — должна открыться главная страница приложения.
-2. Убедитесь, что нет ошибок в **Logs** в панели Render.
-3. При проблемах с БД проверьте, что используется **Internal Database URL** и что переменные `USERNAME` и `PASSWORD` совпадают с учётными данными этой базы.
 
 ---
