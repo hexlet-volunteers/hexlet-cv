@@ -4,11 +4,8 @@ export type TCoverLetterData = {
   textLetter: string
 }
 
-export type TCoverProps = {
-  onPreview: (value: TCoverLetterData) => void
-}
 export type TCoverLetterContextValue = {
-  coverLetterData: TCoverLetterData
+  coverLetterData?: TCoverLetterData
   setCoverLetterData: (data: TCoverLetterData) => void
 }
 export type TCoverLetterProviderProps = {

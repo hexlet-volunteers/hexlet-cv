@@ -6,6 +6,8 @@ import { downloadJson } from '@shared/lib/helpers/downloadJson'
 export const CoverLetterExportButton = () => {
   const { coverLetterData } = useCoverLetterContext()
   const { t } = useTranslation()
+  const isDisabled =
+    !coverLetterData?.header.trim() && !coverLetterData?.textLetter.trim()
 
   return (
     <Button
@@ -14,8 +16,9 @@ export const CoverLetterExportButton = () => {
       radius="md"
       size="md"
       type="button"
+      disabled={isDisabled}
       onClick={() =>
-        coverLetterData && downloadJson(coverLetterData, 'Cover letter')
+        !isDisabled && downloadJson(coverLetterData, 'Cover letter')
       }
     >
       {t('accountPage.coverLetter.download')}

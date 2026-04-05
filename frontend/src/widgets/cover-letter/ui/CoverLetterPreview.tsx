@@ -10,9 +10,9 @@ export const CoverLetterPreview = () => {
     <Paper withBorder radius="md" p="lg">
       <Stack gap="md">
         <Title order={3}>{t('accountPage.coverLetter.preview')}</Title>
-        <Text fw="bold">{coverLetterData.header}</Text>
+        <Text fw="bold">{coverLetterData?.header}</Text>
 
-        <Text>{coverLetterData.textLetter}</Text>
+        <Text>{coverLetterData?.textLetter}</Text>
       </Stack>
     </Paper>
   )

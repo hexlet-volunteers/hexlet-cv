@@ -14,7 +14,11 @@ import { SimpleGrid } from '@mantine/core'
 import { usePage } from '@inertiajs/react'
 import type { PageProps } from '@inertiajs/core'
 
-const CoverLetterInfo: InertiaPage = () => {
+interface CoverLetterInfoProps {
+  coverLetter: TCoverLetterData
+}
+
+const CoverLetterInfo: InertiaPage<CoverLetterInfoProps> = () => {
   const { props } = usePage<PageProps & { coverLetter: TCoverLetterData }>()
 
   const { t } = useTranslation()

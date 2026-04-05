@@ -1,35 +1,41 @@
 import { Textarea, Button, Stack, Group, Paper } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm } from '@inertiajs/react'
 import { useTranslation } from 'react-i18next'
 import { useCoverLetterContext } from '../context/useCoverLetterContext'
+import { type TCoverLetterData } from '../types'
 
 export const CoverLetterEditor = () => {
   const { coverLetterData, setCoverLetterData } = useCoverLetterContext()
   const { t } = useTranslation()
 
-  const form = useForm({
-    initialValues: {
-      header: '',
-      textLetter: '',
-    },
+  const form = useForm<TCoverLetterData>({
+    header: coverLetterData?.header ?? '',
+    textLetter: coverLetterData?.textLetter ?? '',
   })
 
-  const applyTemplate = () => {
-    form.setValues({
-      header: coverLetterData.header ?? '',
-      textLetter: coverLetterData.textLetter ?? '',
+  const handleApplyCoverLetterData = () => {
+    form.setData({
+      header: coverLetterData?.header ?? '',
+      textLetter: coverLetterData?.textLetter ?? '',
     })
+  }
+
+  const handleSubmit = () => {
+    setCoverLetterData(form.data)
   }
 
   return (
     <Paper withBorder radius="md" p="lg">
-      <form onSubmit={form.onSubmit((values) => setCoverLetterData(values))}>
+      <form onSubmit={handleSubmit}>
         <Stack>
           <Textarea
             label={t('accountPage.coverLetter.header')}
             autosize
             radius="lg"
-            {...form.getInputProps('header')}
+            value={form.data.header}
+            onChange={(event) =>
+              form.setData('header', event.currentTarget.value)
+            }
           />
 
           <Textarea
@@ -37,7 +43,10 @@ export const CoverLetterEditor = () => {
             autosize
             minRows={2}
             maxRows={8}
-            {...form.getInputProps('textLetter')}
+            value={form.data.textLetter}
+            onChange={(event) =>
+              form.setData('textLetter', event.currentTarget.value)
+            }
             radius="lg"
             styles={{
               input: {
@@ -51,7 +60,7 @@ export const CoverLetterEditor = () => {
               radius="md"
               size="md"
               type="button"
-              onClick={applyTemplate}
+              onClick={handleApplyCoverLetterData}
             >
               {t('accountPage.coverLetter.template')}
             </Button>
