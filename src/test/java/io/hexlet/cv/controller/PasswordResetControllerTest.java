@@ -1,4 +1,4 @@
-package io.hexlet.cv.reset;
+package io.hexlet.cv.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -172,8 +172,8 @@ public class PasswordResetControllerTest {
                 .andExpect(jsonPath("$.props.token").value(tokenValue));
 
         var resetRequest = Map.of(
-                "password", "NewSecurePass123!",
-                "confirmPassword", "NewSecurePass123!",
+                "password", "A1b2C3d4_Unique!",
+                "confirmPassword", "A1b2C3d4_Unique!",
                 "autoGenerate", false
         );
 
@@ -185,7 +185,7 @@ public class PasswordResetControllerTest {
                 .andExpect(status().is3xxRedirection());
 
         User updatedUser = userRepository.findByEmail(testEmail).get();
-        assertThat(passwordEncoder.matches("NewSecurePass123!", updatedUser.getEncryptedPassword())).isTrue();
+        assertThat(passwordEncoder.matches("A1b2C3d4_Unique!", updatedUser.getEncryptedPassword())).isTrue();
         assertThat(tokenRepository.findByToken(tokenValue)).isEmpty();
     }
 
@@ -241,9 +241,11 @@ public class PasswordResetControllerTest {
     void shouldResetPasswordWithValidToken() throws Exception {
         createValidToken("valid-token");
 
+        String secret = "Abcd9876!@#";
+
         var request = Map.of(
-                "password", "NewPassword123!",
-                "confirmPassword", "NewPassword123!",
+                "password", secret,
+                "confirmPassword", secret,
                 "autoGenerate", false
         );
 
@@ -256,7 +258,7 @@ public class PasswordResetControllerTest {
                 .andExpect(header().string("Location", "/users/sign_in"));
 
         User updatedUser = userRepository.findByEmail(testEmail).orElseThrow();
-        assertThat(passwordEncoder.matches("NewPassword123!", updatedUser.getEncryptedPassword())).isTrue();
+        assertThat(passwordEncoder.matches(secret, updatedUser.getEncryptedPassword())).isTrue();
         assertThat(tokenRepository.findByToken("valid-token")).isEmpty();
     }
 
@@ -319,16 +321,4 @@ public class PasswordResetControllerTest {
         verify(emailService).sendNewPasswordEmail(eq(testEmail), anyString());
     }
 
-
-    @Test
-    void shouldHandleNonInertiaRequest() throws Exception {
-        var request = Map.of("email", testEmail);
-
-        mockMvc.perform(post("/auth/forgot")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").exists());
-    }
 }

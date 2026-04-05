@@ -83,10 +83,12 @@ public class PasswordResetService {
                 .build();
 
         tokenRepository.save(resetToken);
-        log.info("Created password reset token for user: {}", user.getEmail());
+        log.info("DEBUG TOKEN: {}", tokenValue);// чтобы видеть токен временно
+//        log.info("Created password reset token for user: {}", user.getEmail());
 
         return tokenValue;
     }
+
     public boolean isTokenValid(String token) {
         return tokenRepository.findByTokenWithUser(token)
                 .map(resetToken ->
@@ -116,5 +118,13 @@ public class PasswordResetService {
             tokenRepository.deleteAllByExpiryDateBefore(now);
             log.info("Cleaned up {} expired password reset tokens", deletedCount);
         }
+    }
+
+    public User getUserByToken(String token) {
+        return tokenRepository.findByTokenWithUser(token)
+                .filter(PasswordResetToken::isValid)
+                .filter(resetToken -> resetToken.getUser().isEnabled())
+                .map(PasswordResetToken::getUser)
+                .orElseThrow(() -> new ClientException("token", "Invalid or expired token", HttpStatus.BAD_REQUEST));
     }
 }

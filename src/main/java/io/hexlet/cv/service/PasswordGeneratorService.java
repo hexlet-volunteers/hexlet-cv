@@ -1,4 +1,4 @@
-package io.hexlet.cv.util;
+package io.hexlet.cv.service;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

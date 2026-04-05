@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.guava)
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2")
     implementation(libs.passay)
-//    implementation ("org.passay:passay:1.6.4")
 
     // MapStruct
     implementation(libs.mapstruct)
@@ -78,7 +77,7 @@ dependencies {
 
     // 📧 Email+
     implementation("org.springframework.boot:spring-boot-starter-mail")
-    
+
     implementation("org.flywaydb:flyway-core")
 
 }

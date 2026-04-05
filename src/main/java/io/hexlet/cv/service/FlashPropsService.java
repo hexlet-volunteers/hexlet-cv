@@ -18,10 +18,6 @@ public class FlashPropsService {
             props.put("flash", flash);
         }
 
-        // 2. Добавляем локаль из контекста Spring, если она нужна во фронтенде
-        String currentLocale = org.springframework.context.i18n.LocaleContextHolder.getLocale().getLanguage();
-        props.put("locale", currentLocale);
-
         return props;
     }
 }

@@ -15,7 +15,7 @@ public class PasswordResetValidator {
     private final PasswordValidationService passwordValidationService;
     private final MessageSource messageSource;
 
-    public void validate(PasswordResetDTO dto) {
+    public void validate(PasswordResetDTO dto, String firstName, String lastName) {
 
         if (dto.isAutoGenerate()) {
             return;
@@ -23,18 +23,21 @@ public class PasswordResetValidator {
 
         validatePasswordsMatch(dto.getPassword(), dto.getConfirmPassword());
 
-        passwordValidationService.validatePassword(dto.getPassword());
+        passwordValidationService.validatePassword(
+                dto.getPassword(),
+                firstName,
+                lastName);
     }
 
     private void validatePasswordsMatch(String password, String confirmPassword) {
         if (password == null || !password.equals(confirmPassword)) {
             throw new ClientException("confirmPassword",
-                    getMsg("password.mismatch"),
+                    getMessage("password.mismatch"),
                     HttpStatus.BAD_REQUEST);
         }
     }
 
-    private String getMsg(String key) {
+    private String getMessage(String key) {
         return messageSource.getMessage(key, null,
                 org.springframework.context.i18n.LocaleContextHolder.getLocale());
     }
