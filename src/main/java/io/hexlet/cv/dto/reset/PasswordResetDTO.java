@@ -13,5 +13,3 @@ public class PasswordResetDTO {
     private String confirmPassword;
     private boolean autoGenerate = false;
 }
-
-

@@ -11,7 +11,6 @@ import io.hexlet.cv.util.TokenGenerator;
 import io.hexlet.cv.validator.CommonPasswordValidator;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

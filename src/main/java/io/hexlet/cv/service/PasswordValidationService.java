@@ -2,10 +2,10 @@ package io.hexlet.cv.service;
 
 import io.hexlet.cv.dto.user.auth.RegistrationRequestDTO;
 import io.hexlet.cv.handler.exception.ClientException;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import jakarta.validation.Validator;
 
 
 @Service
@@ -43,4 +43,3 @@ public class PasswordValidationService {
         }
     }
 }
-
