@@ -4,9 +4,8 @@ import io.hexlet.cv.dto.UserResponseDTO;
 import io.hexlet.cv.dto.reset.PasswordResetResponseDTO;
 import io.hexlet.cv.dto.reset.TokenValidationDTO;
 import io.hexlet.cv.model.User;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {

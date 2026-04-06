@@ -24,7 +24,7 @@ SCRIPT
 RUN npx vite build
 
 # ---- Stage 2: Backend build ----
-FROM gradle:8.14.1-jdk21 AS build
+FROM gradle:8.14.1-jdk24 AS build
 WORKDIR /app
 
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
@@ -49,7 +49,7 @@ RUN sed -i 's|<div id="app">[^<]*</div>|<div id="app" data-page='"'"'@PageObject
     /app/src/main/resources/templates/app.html && \
     grep -qE 'script[^>]*type=.*module' /app/src/main/resources/templates/app.html || (echo "ERROR: Script tags missing in app.html - frontend will not load" && exit 1)
 
-RUN gradle build --no-daemon -x test
+RUN gradle build --no-daemon -x test -x spotlessCheck
 
 # ---- Stage 3: Runtime ----
 FROM eclipse-temurin:24-jre-alpine

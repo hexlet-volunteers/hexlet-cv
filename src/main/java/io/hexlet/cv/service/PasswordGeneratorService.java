@@ -1,10 +1,9 @@
 package io.hexlet.cv.service;
 
+import io.hexlet.cv.handler.exception.ClientException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.hexlet.cv.handler.exception.ClientException;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.LengthRule;
