@@ -82,8 +82,7 @@ public class PasswordResetService {
                 .build();
 
         tokenRepository.save(resetToken);
-        log.info("DEBUG TOKEN: {}", tokenValue);// чтобы видеть токен временно
-//        log.info("Created password reset token for user: {}", user.getEmail());
+        log.info("Created password reset token for user: {}", user.getEmail());
 
         return tokenValue;
     }
