@@ -3,6 +3,7 @@ package io.hexlet.cv.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -155,6 +156,7 @@ public class ReviewControllerTest {
             """;
 
         mockMvc.perform(post("/admin/marketing/reviews")
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -190,6 +192,7 @@ public class ReviewControllerTest {
             """;
 
         mockMvc.perform(put("/admin/marketing/reviews/{id}", testReview.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -214,6 +217,7 @@ public class ReviewControllerTest {
         var reviewId = testReview.getId();
 
         mockMvc.perform(delete("/admin/marketing/reviews/{id}", testReview.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isSeeOther())
@@ -231,6 +235,7 @@ public class ReviewControllerTest {
         boolean initialPublished = testReview.getIsPublished();
 
         mockMvc.perform(post("/admin/marketing/reviews/{id}/toggle-publish", testReview.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isFound())
@@ -249,6 +254,7 @@ public class ReviewControllerTest {
         boolean initialHomepage = testReview.getShowOnHomepage();
 
         mockMvc.perform(post("/admin/marketing/reviews/{id}/toggle-homepage", testReview.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isFound())
@@ -268,6 +274,7 @@ public class ReviewControllerTest {
         String json = "{\"display_order\": 3}";
 
         mockMvc.perform(put("/admin/marketing/reviews/{id}/display-order", testReview.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

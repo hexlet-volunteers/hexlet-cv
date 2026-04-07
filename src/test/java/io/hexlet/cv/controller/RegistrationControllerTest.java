@@ -2,6 +2,7 @@ package io.hexlet.cv.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasKey;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -74,7 +75,7 @@ public class RegistrationControllerTest {
         var request = post("/users").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
-        mockMvc.perform(request).andExpect(status().isFound());
+        mockMvc.perform(request.with(csrf())).andExpect(status().isFound());
 
         var user = userRepository.findByEmail(data.getEmail()).orElse(null);
         assertThat(user).isNotNull();
@@ -92,6 +93,7 @@ public class RegistrationControllerTest {
                 .content(om.writeValueAsString(data));
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(data)))
                 .andExpect(status().isUnprocessableEntity())
@@ -110,7 +112,7 @@ public class RegistrationControllerTest {
         var request = post("/users").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
-        mockMvc.perform(request).andExpect(status().isConflict());
+        mockMvc.perform(request.with(csrf())).andExpect(status().isConflict());
     }
 
     @Test
@@ -127,6 +129,7 @@ public class RegistrationControllerTest {
                 .content(om.writeValueAsString(data));
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(data)))
                 .andExpect(status().isUnprocessableEntity())
@@ -143,6 +146,7 @@ public class RegistrationControllerTest {
                 .content(om.writeValueAsString(data));
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(data)))
                 .andExpect(status().isUnprocessableEntity())
@@ -179,6 +183,7 @@ public class RegistrationControllerTest {
         data.setPassword("test_p");
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(data)))
                 .andExpect(status().isUnprocessableEntity())
@@ -192,6 +197,7 @@ public class RegistrationControllerTest {
         // имя совпадает
         data.setPassword("firstName");
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(data)))
                 .andExpect(status().isUnprocessableEntity())
@@ -200,6 +206,7 @@ public class RegistrationControllerTest {
         // фамилия совпадает
         data.setPassword("lastName");
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(data)))
                 .andExpect(status().isUnprocessableEntity())
@@ -208,6 +215,7 @@ public class RegistrationControllerTest {
         // email совпадает
         data.setPassword("test@gmail.com");
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(data)))
                 .andExpect(status().isUnprocessableEntity())
@@ -233,6 +241,7 @@ public class RegistrationControllerTest {
         dto.setEmail("test@google.com");
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -251,6 +260,7 @@ public class RegistrationControllerTest {
         dto.setPassword("firstName");
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -267,6 +277,7 @@ public class RegistrationControllerTest {
         dto.setPassword("test_p");
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -283,6 +294,7 @@ public class RegistrationControllerTest {
         dto.setEmail("testgmail.com");
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -299,6 +311,7 @@ public class RegistrationControllerTest {
         dto.setEmail("test@goopmal.com");
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -315,6 +328,7 @@ public class RegistrationControllerTest {
         dto.setEmail("test@sharklasers.com");
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -330,6 +344,7 @@ public class RegistrationControllerTest {
         var dto = createValidDto();
 
         mockMvc.perform(post("/users")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")

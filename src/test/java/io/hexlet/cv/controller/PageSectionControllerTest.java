@@ -3,6 +3,7 @@ package io.hexlet.cv.controller;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -132,6 +133,7 @@ public class PageSectionControllerTest {
         dto.setActive(section1.isActive());
 
         var response = mockMvc.perform(post("/api/pages/sections")
+                .with(csrf())
                 .header("X-Inertia", "true")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto)))
@@ -144,6 +146,22 @@ public class PageSectionControllerTest {
         assertThat(section.getTitle()).isEqualTo(dto.getTitle());
         assertThat(section.getContent()).isEqualTo(dto.getContent());
         assertThat(section.isActive()).isEqualTo(dto.getActive());
+    }
+
+    @Test
+    public void testCreateRejectedWithoutCsrfToken() throws Exception {
+        var dto = new PageSectionCreateDTO();
+        dto.setPageKey("main");
+        dto.setSectionKey("csrf_test_section");
+        dto.setTitle("t");
+        dto.setContent("c");
+        dto.setActive(true);
+
+        mockMvc.perform(post("/api/pages/sections")
+                .header("X-Inertia", "true")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(dto)))
+            .andExpect(status().isForbidden());
     }
 
     @Test
@@ -161,6 +179,7 @@ public class PageSectionControllerTest {
         var oldContent = section1.getContent();
 
         var response = mockMvc.perform(put("/api/pages/sections/" + section1.getId())
+                .with(csrf())
                 .header("X-Inertia", "true")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto)))
@@ -181,6 +200,7 @@ public class PageSectionControllerTest {
     public void testDelete() throws Exception {
 
         mockMvc.perform(delete("/api/pages/sections/" + section1.getId())
+                .with(csrf())
                 .header("X-Inertia", "true"))
             .andExpect(status().isSeeOther());
 

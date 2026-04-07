@@ -26,6 +26,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,9 +43,17 @@ public class SecurityConfig {
                                  BearerTokenResolver cookieTokenResolver,
                                  Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthConverter)
             throws Exception {
+        var csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        csrfTokenRepository.setCookiePath("/");
+
+        var csrfHandler = new XorCsrfTokenRequestAttributeHandler();
+        csrfHandler.setCsrfRequestAttributeName("_csrf");
+
         http
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(csrfTokenRepository)
+                        .csrfTokenRequestHandler(csrfHandler))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**", "/*/admin/**", "/*/admin/").hasRole("ADMIN")
                         .requestMatchers("/account/**").authenticated()
@@ -76,6 +86,7 @@ public class SecurityConfig {
                 "Authorization",
                 "Content-Type",
                 "X-Requested-With",
+                "X-XSRF-TOKEN",
                 "X-Inertia",
                 "X-Inertia-Version",
                 "Accept",

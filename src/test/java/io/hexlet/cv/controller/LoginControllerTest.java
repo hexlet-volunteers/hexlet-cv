@@ -1,6 +1,7 @@
 package io.hexlet.cv.controller;
 
 import static org.hamcrest.Matchers.hasKey;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -84,7 +85,7 @@ public class LoginControllerTest {
         var request = post("/users/sign_in").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
-        mockMvc.perform(request).andExpect(status().isFound())
+        mockMvc.perform(request.with(csrf())).andExpect(status().isFound())
                 .andExpect(header().stringValues(HttpHeaders.SET_COOKIE,
                         Matchers.hasItem(Matchers.containsString("access_token"))))
                 .andExpect(header().stringValues(HttpHeaders.SET_COOKIE,
@@ -101,7 +102,7 @@ public class LoginControllerTest {
         var request = post("/users/sign_in").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
-        mockMvc.perform(request).andExpect(status().isUnauthorized())
+        mockMvc.perform(request.with(csrf())).andExpect(status().isUnauthorized())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors.email")
                         .value("Пользователь не найден"));
@@ -116,7 +117,7 @@ public class LoginControllerTest {
         var request = post("/users/sign_in").contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
-        mockMvc.perform(request).andExpect(status().isUnauthorized())
+        mockMvc.perform(request.with(csrf())).andExpect(status().isUnauthorized())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors.password")
                         .value("Неверный пароль"));
@@ -130,6 +131,7 @@ public class LoginControllerTest {
         dto.setPassword("another_password");
 
         mockMvc.perform(post("/users/sign_in")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -148,6 +150,7 @@ public class LoginControllerTest {
         dto.setPassword(testPassword);
 
         mockMvc.perform(post("/users/sign_in")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
@@ -166,6 +169,7 @@ public class LoginControllerTest {
         dto.setPassword(testPassword);
 
         mockMvc.perform(post("/users/sign_in")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                         .header("X-Inertia", "true")
