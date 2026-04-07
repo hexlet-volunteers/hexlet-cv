@@ -1,6 +1,7 @@
 package io.hexlet.cv.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -176,6 +177,7 @@ public class LearningProgressControllerTest {
     @Test
     void testStartProgram() throws Exception {
         mockMvc.perform(post("/account/my-progress/program/start")
+                        .with(csrf())
                         .param("programId", testProgram.getId().toString())
                         .cookie(new Cookie("access_token", candidateToken))
                         .header("X-Inertia", "true"))
@@ -190,6 +192,7 @@ public class LearningProgressControllerTest {
     @Test
     void testStartLesson() throws Exception {
         mockMvc.perform(post("/account/my-progress/lesson/start")
+                        .with(csrf())
                         .param("programProgressId", testProgramProgress.getId().toString())
                         .param("lessonId", testLesson.getId().toString())
                         .cookie(new Cookie("access_token", candidateToken))
@@ -215,6 +218,7 @@ public class LearningProgressControllerTest {
         lessonProgress = userLessonProgressRepository.save(lessonProgress);
 
         mockMvc.perform(post("/account/my-progress/lesson/" + lessonProgress.getId() + "/complete")
+                        .with(csrf())
                         .param("programProgressId", testProgramProgress.getId().toString())
                         .cookie(new Cookie("access_token", candidateToken))
                         .header("X-Inertia", "true"))
@@ -232,6 +236,7 @@ public class LearningProgressControllerTest {
     @Test
     void testCompleteProgram() throws Exception {
         mockMvc.perform(post("/account/my-progress/program/" + testProgramProgress.getId() + "/complete")
+                        .with(csrf())
                         .param("programProgressId", testProgramProgress.getId().toString())
                         .cookie(new Cookie("access_token", candidateToken))
                         .header("X-Inertia", "true"))

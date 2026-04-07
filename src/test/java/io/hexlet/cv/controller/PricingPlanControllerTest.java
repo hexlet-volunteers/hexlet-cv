@@ -2,6 +2,7 @@ package io.hexlet.cv.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -179,6 +180,7 @@ public class PricingPlanControllerTest {
                 """;
 
         mockMvc.perform(post("/admin/marketing/pricing")
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createPricingJson)
@@ -208,6 +210,7 @@ public class PricingPlanControllerTest {
                 """;
 
         mockMvc.perform(post("/admin/marketing/pricing")
+                        .with(csrf())
                         .cookie(new Cookie("access_token", candidateToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createPricingJson))
@@ -227,6 +230,7 @@ public class PricingPlanControllerTest {
                 """;
 
         mockMvc.perform(post("/admin/marketing/pricing")
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPricingJson))
@@ -250,6 +254,7 @@ public class PricingPlanControllerTest {
                 """;
 
         mockMvc.perform(put("/admin/marketing/pricing/" + pricingPlan.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatePricingJson)
@@ -276,6 +281,7 @@ public class PricingPlanControllerTest {
                 """;
 
         mockMvc.perform(put("/admin/marketing/pricing/99999")
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatePricingJson))
@@ -291,6 +297,7 @@ public class PricingPlanControllerTest {
         var planId = pricingPlan.getId();
 
         mockMvc.perform(delete("/admin/marketing/pricing/" + planId)
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isSeeOther())
@@ -308,6 +315,7 @@ public class PricingPlanControllerTest {
         var pricingPlan = createPricingPlan("План на удаление", 200.0, 20.0);
 
         mockMvc.perform(delete("/admin/marketing/pricing/" + pricingPlan.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", candidateToken)))
                 .andExpect(status().isForbidden());
     }

@@ -1,6 +1,7 @@
 package io.hexlet.cv.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -152,6 +153,7 @@ public class ArticleControllerTest {
             """;
 
         mockMvc.perform(post("/admin/marketing/articles")
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -175,6 +177,7 @@ public class ArticleControllerTest {
             """;
 
         mockMvc.perform(put("/admin/marketing/articles/{id}", testArticle.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -192,6 +195,7 @@ public class ArticleControllerTest {
         var articleId = testArticle.getId();
 
         mockMvc.perform(delete("/admin/marketing/articles/{id}", testArticle.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isSeeOther())
@@ -206,6 +210,7 @@ public class ArticleControllerTest {
         boolean initialHomepage = testArticle.getShowOnHomepage();
 
         mockMvc.perform(post("/admin/marketing/articles/{id}/toggle-homepage", testArticle.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isFound())
@@ -223,6 +228,7 @@ public class ArticleControllerTest {
         boolean initialPublished = testArticle.getIsPublished();
 
         mockMvc.perform(post("/admin/marketing/articles/{id}/toggle-publish", testArticle.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isFound())
@@ -240,6 +246,7 @@ public class ArticleControllerTest {
         String json = "{\"display_order\": 5}";
 
         mockMvc.perform(put("/admin/marketing/articles/{id}/display-order", testArticle.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

@@ -3,6 +3,7 @@ package io.hexlet.cv.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -155,6 +156,7 @@ public class StoryControllerTest {
                 """;
 
         mockMvc.perform(post("/admin/marketing/stories")
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -190,6 +192,7 @@ public class StoryControllerTest {
             """;
 
         mockMvc.perform(put("/admin/marketing/stories/{id}", testStory.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -214,6 +217,7 @@ public class StoryControllerTest {
         var storyId = testStory.getId();
 
         mockMvc.perform(delete("/admin/marketing/stories/{id}", testStory.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isSeeOther())
@@ -230,6 +234,7 @@ public class StoryControllerTest {
         boolean initialPublishStatus = testStory.getIsPublished();
 
         mockMvc.perform(post("/admin/marketing/stories/{id}/toggle-publish", testStory.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isFound())
@@ -247,6 +252,7 @@ public class StoryControllerTest {
         boolean initialHomepageStatus = testStory.getShowOnHomepage();
 
         mockMvc.perform(post("/admin/marketing/stories/{id}/toggle-homepage", testStory.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isFound())
@@ -265,6 +271,7 @@ public class StoryControllerTest {
         String json = "{\"display_order\": 5}";
 
         mockMvc.perform(put("/admin/marketing/stories/{id}/display-order", testStory.getId())
+                        .with(csrf())
                         .cookie(new Cookie("access_token", adminToken))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
