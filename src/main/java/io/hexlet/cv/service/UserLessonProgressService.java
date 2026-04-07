@@ -8,6 +8,9 @@ import io.hexlet.cv.repository.LessonRepository;
 import io.hexlet.cv.repository.UserLessonProgressRepository;
 import io.hexlet.cv.repository.UserProgramProgressRepository;
 import io.hexlet.cv.repository.UserRepository;
+
+
+import org.springframework.security.access.AccessDeniedException;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -76,9 +79,13 @@ public class UserLessonProgressService {
     }
 
     @Transactional
-    public void completeLesson(Long progressId) {
+    public void completeLesson(Long progressId, Long userId) {
         var progress = userLessonProgressRepository.findById(progressId)
                 .orElseThrow(() -> new ResourceNotFoundException("lesson.progress.not.found" + progressId));
+
+        if (!progress.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("Access denied");
+        }
 
         LocalDateTime now = LocalDateTime.now(clock);
         progress.setIsCompleted(true);

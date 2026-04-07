@@ -65,6 +65,9 @@ public class LearningProgressControllerTest {
     private Program testProgram;
     private Lesson testLesson;
     private UserProgramProgress testProgramProgress;
+    private User anotherUser;
+    private String anotherToken;
+    private static final String ANOTHER_EMAIL = "another_user@example.com";
 
 
     @AfterEach
@@ -87,6 +90,13 @@ public class LearningProgressControllerTest {
         testUser = userRepository.save(testUser);
 
         candidateToken = jwtUtils.generateAccessToken(CANDIDATE_EMAIL);
+
+        anotherUser = new User();
+        anotherUser.setEmail(ANOTHER_EMAIL);
+        anotherUser.setEncryptedPassword(passwordEncoder.encode("another_password"));
+        anotherUser.setRole(RoleType.CANDIDATE);
+        anotherUser = userRepository.save(anotherUser);
+        anotherToken = jwtUtils.generateAccessToken(ANOTHER_EMAIL);
 
         testProgram = new Program();
         testProgram.setTitle("Test Program");
@@ -299,5 +309,31 @@ public class LearningProgressControllerTest {
                         .cookie(new Cookie("access_token", candidateToken))
                         .header("X-Inertia", "true"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void completeLessonByAnotherUserReturnsForbidden() throws Exception {
+        UserLessonProgress lessonProgress = new UserLessonProgress();
+        lessonProgress.setUser(testUser);
+        lessonProgress.setLesson(testLesson);
+        lessonProgress.setProgramProgress(testProgramProgress);
+        lessonProgress.setStartedAt(LocalDateTime.now());
+        lessonProgress.setIsCompleted(false);
+        lessonProgress = userLessonProgressRepository.save(lessonProgress);
+
+        mockMvc.perform(post("/account/my-progress/lesson/" + lessonProgress.getId() + "/complete")
+                .param("programProgressId", testProgramProgress.getId().toString())
+                .cookie(new Cookie("access_token", anotherToken))
+                .header("X-Inertia", true))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void completeProgramByAnotherUserReturnsForbidden() throws Exception {
+        mockMvc.perform(post("/account/my-progress/program/" + testProgramProgress.getId() + "/complete")
+                        .param("programProgressId", testProgramProgress.getId().toString())
+                        .cookie(new Cookie("access_token", anotherToken))
+                        .header("X-Inertia", true))
+                .andExpect(status().isForbidden());
     }
 }

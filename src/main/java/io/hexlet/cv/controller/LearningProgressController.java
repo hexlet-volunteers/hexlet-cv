@@ -112,13 +112,15 @@ public class LearningProgressController {
     @PostMapping("/lesson/{lessonProgressId}/complete")
     public Object completeLesson(@PathVariable Long lessonProgressId,
                                  @RequestParam Long programProgressId) {
-        userLessonProgressService.completeLesson(lessonProgressId);
+        var user = userUtils.getCurrentUser();
+        userLessonProgressService.completeLesson(lessonProgressId, user.getId());
         return inertia.redirect("/account/my-progress/program/" + programProgressId + "/lessons");
     }
 
     @PostMapping("/program/{programProgressId}/complete")
     public Object completeProgram(@PathVariable Long programProgressId) {
-        userProgramProgressService.completeProgram(programProgressId);
+        var user = userUtils.getCurrentUser();
+        userProgramProgressService.completeProgram(programProgressId, user.getId());
         return inertia.redirect("/account/my-progress");
     }
 

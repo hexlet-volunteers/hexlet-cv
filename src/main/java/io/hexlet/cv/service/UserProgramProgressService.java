@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -72,10 +73,14 @@ public class UserProgramProgressService {
     }
 
     @Transactional
-    public void completeProgram(Long progressId) {
+    public void completeProgram(Long progressId, Long userId) {
         log.debug("Completing program progress {}", progressId);
         var progress = programProgressRepository.findById(progressId)
                 .orElseThrow(() -> new ResourceNotFoundException("program.progress.not.found"));
+
+        if (!progress.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("Access denied");
+        }
 
         LocalDateTime now = LocalDateTime.now(clock);
         int totalLessons = progress.getProgram().getLessons().size();
