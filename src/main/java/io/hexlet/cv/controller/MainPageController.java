@@ -31,6 +31,6 @@ public class MainPageController {
             "pageSections", sections
         );
 
-        return inertia.render("Home/Index", props);
+        return inertia.render("Home", props);
     }
 }
