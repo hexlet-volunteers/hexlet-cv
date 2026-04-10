@@ -82,7 +82,7 @@ public class PasswordResetService {
                 .build();
 
         tokenRepository.save(resetToken);
-        log.info("Created password reset token for user: {} | TOKEN: {}", user.getEmail(), tokenValue);
+        log.info("Created password reset token for user: {}", user.getEmail());
 
         return tokenValue;
     }
