@@ -9,6 +9,9 @@ import {
 import { useTranslation } from 'react-i18next'
 import { usePage } from '@inertiajs/react'
 
+/**
+ * Отображает набор карточек активности пользователя в личном кабинете.
+ */
 export const ActivityCards: React.FC = () => {
   const { props } = usePage()
   const data = props.activityCards

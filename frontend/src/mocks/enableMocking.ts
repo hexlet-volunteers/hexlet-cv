@@ -7,4 +7,6 @@ export async function enableMocking() {
   await worker.start({
     onUnhandledRequest: 'bypass',
   })
+
+  return true
 }

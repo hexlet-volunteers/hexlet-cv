@@ -1,11 +1,22 @@
 import { Card, Flex, Stack, Text, ThemeIcon } from '@mantine/core'
 
+/**
+ * Описывает пропсы карточки со сводным показателем.
+ */
 type DashboardCardProps = {
+  /** Заголовок метрики. */
   label: string
+  /** Основное значение метрики. */
   value: string | number
+  /** Дополнительная подпись под значением. */
   description?: string
+  /** Иконка, визуализирующая тип метрики. */
   icon: React.ElementType
 }
+
+/**
+ * Отображает одну карточку со сводным показателем активности пользователя.
+ */
 export const DashboardCard = (props: DashboardCardProps) => {
   const { label, value, description, icon: Icon } = props
 

@@ -26,3 +26,15 @@ export type TPagination = {
   totalElements: number
   pageSize: number
 }
+
+export type User = {
+  id: number
+  email: string
+  roles: string[]
+}
+
+export interface AuthProps {
+  auth?: {
+    user: User
+  }
+}
