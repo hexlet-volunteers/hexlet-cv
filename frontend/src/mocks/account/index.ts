@@ -5,6 +5,10 @@ import { notificationsHandlers } from '@mocks/account/notifications/index'
 import { defineGet } from '@mocks/msw/define'
 import type { MswCtx } from '@mocks/msw/createCtx'
 import { programsHandlers } from '@mocks/account/programs/index'
+import {
+  // favoritesHandlers,
+  mockFavoritesList,
+} from '@mocks/account/favorites/index'
 
 export const menu: TMenuItem[] = [
   { label: 'Мое обучение', link: '/account/my-progress' },
@@ -17,7 +21,7 @@ export const menu: TMenuItem[] = [
   { label: 'Резюме' },
   { label: 'Сопроводительное' },
   { label: 'Автоотклики' },
-  { label: 'Избранное' },
+  { label: 'Избранное', link: '/account/favorites' },
   { label: 'Уведомления', link: '/account/notifications' },
   { label: 'Поддержка' },
   { label: 'Настройки' },
@@ -45,6 +49,7 @@ const baseProps = (ctx: MswCtx) => ({
   auth: { user: ctx.user },
   menu,
   activityCards,
+  list: mockFavoritesList,
 })
 
 const makeHandler = ({ component, url }: { component: string; url: string }) =>
@@ -61,6 +66,10 @@ const routes = [
     component: 'Account/Webinars/Index',
     url: '/account/webinars',
   },
+  {
+    component: 'Account/components/Favorites',
+    url: '/account/favorites',
+  },
 ] as const
 
 export const handlers = [
@@ -70,4 +79,5 @@ export const handlers = [
   ...lessonsHandlers,
   ...programsHandlers,
   ...notificationsHandlers,
+  // ...favoritesHandlers,
 ]
