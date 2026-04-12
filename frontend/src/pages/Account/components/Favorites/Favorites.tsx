@@ -1,21 +1,9 @@
 import { Link } from '@inertiajs/react'
 import { useState } from 'react'
-import { Text, Button, Group } from '@mantine/core'
+import { Text, Button } from '@mantine/core'
 import { Pagination } from '@mantine/core'
-import { IconHeart } from '@tabler/icons-react'
 
-/**
-{
-"component": "Favorites",
-"props": { 
-"list": "Array<
-{ id: number,
-  type: 'course' | 'article',
-  title: string,
-  url: string }> },
-"url": "/account/favorites",
-}
- */
+import { useTranslation } from 'react-i18next'
 
 export interface FavoritesProps {
   list?: Array<{
@@ -27,6 +15,7 @@ export interface FavoritesProps {
 }
 
 const Favorites = ({ list }: FavoritesProps) => {
+  const { t } = useTranslation()
   const [activePage, setPage] = useState(1)
   const itemsPerPage: number = 10
   const paginatedList = list?.slice(
@@ -38,16 +27,11 @@ const Favorites = ({ list }: FavoritesProps) => {
 
   return (
     <div>
-      <Group mb="md">
-        <IconHeart size={24} />
-        <Text fz="xl" fw={700}>
-          Избранное
-        </Text>
-      </Group>
-
       <div>
         {!list || list?.length === 0 ? (
-          <Text>Нет избранных материалов</Text>
+          <Text>
+            {t('accountPage.favorites.noFavorites', 'Нет избранных материалов')}
+          </Text>
         ) : (
           <>
             <ul>
@@ -55,7 +39,7 @@ const Favorites = ({ list }: FavoritesProps) => {
                 <li key={item.id}>
                   <p>{item.title}</p>
                   <Button component={Link} href={item.url}>
-                    Открыть
+                    {t('accountPage.favorites.butOpen', 'Открыть')}
                   </Button>
                 </li>
               ))}
