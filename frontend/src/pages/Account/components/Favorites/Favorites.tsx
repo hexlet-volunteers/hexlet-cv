@@ -1,9 +1,8 @@
 import { Link } from '@inertiajs/react'
 import { useState } from 'react'
-import { Text, Button } from '@mantine/core'
-import { Pagination } from '@mantine/core'
-
+import { Text, Button, Pagination, Paper } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
+import classes from './Favorite.module.css'
 
 export interface FavoritesProps {
   list?: Array<{
@@ -17,7 +16,7 @@ export interface FavoritesProps {
 const Favorites = ({ list }: FavoritesProps) => {
   const { t } = useTranslation()
   const [activePage, setPage] = useState(1)
-  const itemsPerPage: number = 10
+  const itemsPerPage: number = 3
   const paginatedList = list?.slice(
     (activePage - 1) * itemsPerPage,
     activePage * itemsPerPage,
@@ -29,28 +28,61 @@ const Favorites = ({ list }: FavoritesProps) => {
     <div>
       <div>
         {!list || list?.length === 0 ? (
-          <Text>
-            {t('accountPage.favorites.noFavorites', 'Нет избранных материалов')}
-          </Text>
+          <Paper
+            shadow="xs"
+            radius="lg"
+            withBorder
+            p={0}
+            bg="var(--mantine-color-dark-5)"
+            bd="1px solid var(--mantine-color-gray-6)"
+          >
+            <Text>
+              {t(
+                'accountPage.favorites.noFavorites',
+                'Нет избранных материалов',
+              )}
+            </Text>
+          </Paper>
         ) : (
           <>
-            <ul>
-              {paginatedList?.map((item) => (
-                <li key={item.id}>
-                  <p>{item.title}</p>
-                  <Button component={Link} href={item.url}>
-                    {t('accountPage.favorites.butOpen', 'Открыть')}
-                  </Button>
-                </li>
-              ))}
-            </ul>
-            {showPagination && (
-              <Pagination
-                value={activePage}
-                onChange={setPage}
-                total={totalPages}
-              />
-            )}
+            <Paper
+              shadow="xs"
+              radius="lg"
+              withBorder
+              p={0}
+              bg="var(--mantine-color-dark-5)"
+              bd="1px solid var(--mantine-color-gray-6)"
+            >
+              <ul className={classes.list}>
+                {paginatedList?.map((item) => (
+                  <li key={item.id} className={classes.listItem}>
+                    <p>{item.title}</p>
+                    <Button
+                      component={Link}
+                      href={item.url}
+                      variant="light"
+                      color="blue"
+                      size="md"
+                      radius="lx"
+                    >
+                      {t('accountPage.favorites.butOpen', 'Открыть')}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+              {showPagination && (
+                <div className={classes.paginationWrapper}>
+                  <Pagination
+                    value={activePage}
+                    onChange={setPage}
+                    total={totalPages}
+                    classNames={{
+                      control: classes.paginationControl,
+                    }}
+                  />
+                </div>
+              )}
+            </Paper>
           </>
         )}
       </div>

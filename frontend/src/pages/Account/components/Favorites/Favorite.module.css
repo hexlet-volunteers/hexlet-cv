@@ -1,0 +1,37 @@
+.list {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--mantine-spacing-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.listItem:not(:last-child) {
+  border-bottom: 1px solid var(--mantine-color-gray-6);
+}
+
+.paginationWrapper {
+  padding: var(--mantine-spacing-md);
+  border-top: 1px solid var(--mantine-color-gray-6);
+  display: flex;
+  justify-content: start;
+}
+
+/* Стиль для кнопок пагинации (обычных) */
+.paginationControl {
+  border-radius: 0.75rem;
+}
+
+/* Стиль для активной кнопки */
+.paginationControl[data-active] {
+  background-color: var(--mantine-color-blue-light);
+  color: var(--mantine-color-blue-light-color);
+  border: none;
+}

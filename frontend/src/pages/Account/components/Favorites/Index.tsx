@@ -1,5 +1,5 @@
 import { AppLayout } from '../AppLayout'
-import { Container, ScrollArea } from '@mantine/core'
+import { Container, ScrollArea, ThemeIcon } from '@mantine/core'
 import { IconHeart } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { PageHeader } from '@widgets/page-header'
@@ -34,7 +34,11 @@ const FavoritesPage: InertiaPage<FavoritesPageProps> = ({ list }) => {
   return (
     <Container fluid>
       <PageHeader
-        icon={<IconHeart />}
+        icon={
+          <ThemeIcon size="xl" variant="light" color="blue">
+            <IconHeart />
+          </ThemeIcon>
+        }
         title={t('accountPage.favorites.title', 'Избранное')}
       />
       <ScrollArea h={600}>
