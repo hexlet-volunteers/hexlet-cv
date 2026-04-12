@@ -24,12 +24,10 @@
   justify-content: start;
 }
 
-/* Стиль для кнопок пагинации (обычных) */
 .paginationControl {
   border-radius: 0.75rem;
 }
 
-/* Стиль для активной кнопки */
 .paginationControl[data-active] {
   background-color: var(--mantine-color-blue-light);
   color: var(--mantine-color-blue-light-color);

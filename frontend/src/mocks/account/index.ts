@@ -18,7 +18,7 @@ export const menu: TMenuItem[] = [
   { label: 'Резюме' },
   { label: 'Сопроводительное' },
   { label: 'Автоотклики' },
-  { label: 'Избранное', link: '/account/favorites' },
+  { label: 'Избранное', link: '/ru/account/favorites' },
   { label: 'Уведомления', link: '/account/notifications' },
   { label: 'Поддержка' },
   { label: 'Настройки' },

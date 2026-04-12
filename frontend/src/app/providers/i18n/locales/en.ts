@@ -219,6 +219,13 @@ export default {
       },
     },
     accountPage: {
+      favorites: {
+        title: 'Favorites',
+        noFavorites: 'No featured content',
+        course: 'Course',
+        article: 'Article',
+        butOpen: 'Open',
+      },
       purchases: {
         title: 'My purchases and subscriptions',
         dashboard_cards: {

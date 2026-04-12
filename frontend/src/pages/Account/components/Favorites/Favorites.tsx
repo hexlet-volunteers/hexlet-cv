@@ -36,12 +36,7 @@ const Favorites = ({ list }: FavoritesProps) => {
             bg="var(--mantine-color-dark-5)"
             bd="1px solid var(--mantine-color-gray-6)"
           >
-            <Text>
-              {t(
-                'accountPage.favorites.noFavorites',
-                'Нет избранных материалов',
-              )}
-            </Text>
+            <Text>{t('accountPage.favorites.noFavorites')}</Text>
           </Paper>
         ) : (
           <>
@@ -56,7 +51,12 @@ const Favorites = ({ list }: FavoritesProps) => {
               <ul className={classes.list}>
                 {paginatedList?.map((item) => (
                   <li key={item.id} className={classes.listItem}>
-                    <p>{item.title}</p>
+                    <p>
+                      {item.type === 'course'
+                        ? t('accountPage.favorites.course')
+                        : t('accountPage.favorites.article')}
+                      . {item.title}
+                    </p>
                     <Button
                       component={Link}
                       href={item.url}
@@ -65,7 +65,7 @@ const Favorites = ({ list }: FavoritesProps) => {
                       size="md"
                       radius="lx"
                     >
-                      {t('accountPage.favorites.butOpen', 'Открыть')}
+                      {t('accountPage.favorites.butOpen')}
                     </Button>
                   </li>
                 ))}

@@ -39,7 +39,7 @@ const FavoritesPage: InertiaPage<FavoritesPageProps> = ({ list }) => {
             <IconHeart />
           </ThemeIcon>
         }
-        title={t('accountPage.favorites.title', 'Избранное')}
+        title={t('accountPage.favorites.title')}
       />
       <ScrollArea h={600}>
         <Favorites list={list} />
