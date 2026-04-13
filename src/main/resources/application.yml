@@ -20,7 +20,6 @@ spring:
       write-dates-as-timestamps: false
 
   jpa:
-    show-sql: true
     generate-ddl: true
     hibernate:
       ddl-auto: update
