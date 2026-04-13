@@ -265,6 +265,14 @@ export default {
         daysAgo: 'long ago',
         noNotifications: 'No notifications',
       },
+      knowledgeBase: {
+        title: 'Knowledge base',
+        openJournalButton: 'Open journal',
+        readButton: 'Read',
+        incorrectData: 'Knowledge base loading error',
+        baseIsEmpty: 'The knowledge base is empty',
+        modalTitle: 'Journal',
+      }
     },
     activityCards: {
       courses_in_process: 'Courses in Progress',
