@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.cv.dto.pagesection.PageSectionCreateDTO;
 import io.hexlet.cv.dto.pagesection.PageSectionUpdateDTO;
-import io.hexlet.cv.mapper.PageSectionMapper;
 import io.hexlet.cv.model.PageSection;
 import io.hexlet.cv.model.User;
 import io.hexlet.cv.model.enums.RoleType;
@@ -22,7 +21,6 @@ import io.hexlet.cv.util.JWTUtils;
 import io.hexlet.cv.utils.ModelGenerator;
 import jakarta.servlet.http.Cookie;
 import org.instancio.Instancio;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,34 +53,10 @@ public class PageSectionControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private PageSectionMapper pageSectionMapper;
-
-    @Autowired
     private ModelGenerator modelGenerator;
 
     private static final String ADMIN_EMAIL = "page_section_admin@example.com";
     private static final String CANDIDATE_EMAIL = "page_section_candidate@example.com";
-
-    private PageSection section1;
-    private PageSection section2;
-
-    @BeforeEach
-    public void setUp() {
-
-        userRepository.deleteAll();
-        pageSectionRepository.deleteAll();
-
-        section1 = Instancio.of(modelGenerator.getPageSectionModel()).create();
-        section2 = Instancio.of(modelGenerator.getPageSectionModel()).create();
-
-        section1.setPageKey("main");
-        section2.setPageKey("profile");
-
-        section2.setActive(false);
-
-        pageSectionRepository.save(section1);
-        pageSectionRepository.save(section2);
-    }
 
     private String givenAdminAccessToken() {
         userRepository.save(User.builder()
@@ -104,6 +78,18 @@ public class PageSectionControllerTest {
     public void testGetAll() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
+        var section1Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section1Draft.setPageKey("main");
+        var section1 = pageSectionRepository.save(section1Draft);
+
+        var section2Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section2Draft.setPageKey("profile");
+        section2Draft.setActive(false);
+        var section2 = pageSectionRepository.save(section2Draft);
+
         var adminToken = givenAdminAccessToken();
 
         // when
@@ -124,11 +110,24 @@ public class PageSectionControllerTest {
     public void testGetAllWithParams() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
+        var section1Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section1Draft.setPageKey("main");
+        var section1 = pageSectionRepository.save(section1Draft);
+
+        var section2Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section2Draft.setPageKey("profile");
+        section2Draft.setActive(false);
+        var section2 = pageSectionRepository.save(section2Draft);
+
+        var section3Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section3Draft.setPageKey(section1.getPageKey());
+        section3Draft.setActive(section2.isActive());
+        var section3 = pageSectionRepository.save(section3Draft);
+
         var adminToken = givenAdminAccessToken();
-        var section3 = Instancio.of(modelGenerator.getPageSectionModel()).create();
-        section3.setPageKey(section1.getPageKey());
-        section3.setActive(section2.isActive());
-        pageSectionRepository.save(section3);
 
         // when
         var result = mockMvc.perform(get("/api/pages/sections")
@@ -149,6 +148,13 @@ public class PageSectionControllerTest {
     public void testGet() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
+        var section1Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section1Draft.setPageKey("main");
+        var section1 = pageSectionRepository.save(section1Draft);
+
         var adminToken = givenAdminAccessToken();
 
         // when
@@ -169,14 +175,20 @@ public class PageSectionControllerTest {
     public void testCreate() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
         var adminToken = givenAdminAccessToken();
-        pageSectionRepository.delete(section1);
+
+        var template = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        template.setPageKey("main");
+
         var dto = new PageSectionCreateDTO();
-        dto.setPageKey(section1.getPageKey());
-        dto.setSectionKey(section1.getSectionKey());
-        dto.setTitle(section1.getTitle());
-        dto.setContent(section1.getContent());
-        dto.setActive(section1.isActive());
+        dto.setPageKey(template.getPageKey());
+        dto.setSectionKey(template.getSectionKey());
+        dto.setTitle(template.getTitle());
+        dto.setContent(template.getContent());
+        dto.setActive(template.isActive());
 
         // when
         var result = mockMvc.perform(post("/api/pages/sections")
@@ -199,7 +211,15 @@ public class PageSectionControllerTest {
     public void testUpdate() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
+        var section1Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section1Draft.setPageKey("main");
+        var section1 = pageSectionRepository.save(section1Draft);
+
         var adminToken = givenAdminAccessToken();
+
         var dto = new PageSectionUpdateDTO();
         dto.setPageKey(JsonNullable.of("profile"));
         dto.setSectionKey(JsonNullable.of("tech_stack"));
@@ -231,6 +251,18 @@ public class PageSectionControllerTest {
     public void testDelete() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
+        var section1Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section1Draft.setPageKey("main");
+        var section1 = pageSectionRepository.save(section1Draft);
+
+        var section2Draft = Instancio.of(modelGenerator.getPageSectionModel()).create();
+        section2Draft.setPageKey("profile");
+        section2Draft.setActive(false);
+        var section2 = pageSectionRepository.save(section2Draft);
+
         var adminToken = givenAdminAccessToken();
 
         // when
@@ -248,6 +280,9 @@ public class PageSectionControllerTest {
     public void testPostUnauthorizedReturns401() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
         var dto = arbitraryPageSectionCreateDto();
 
         // when
@@ -264,6 +299,9 @@ public class PageSectionControllerTest {
     public void testPostAsNonAdminReturns403() throws Exception {
 
         // given
+        userRepository.deleteAll();
+        pageSectionRepository.deleteAll();
+
         userRepository.save(User.builder()
                 .email(CANDIDATE_EMAIL)
                 .encryptedPassword(encoder.encode("password"))
