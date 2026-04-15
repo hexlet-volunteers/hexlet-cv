@@ -29,8 +29,7 @@ public class UserUtils {
             throw new InsufficientAuthenticationException("User is not authenticated");
         }
         var email = authentication.getName();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + email));
+        return userRepository.findByEmail(email).get();
     }
 
     public boolean isAuthor(long userId) {
