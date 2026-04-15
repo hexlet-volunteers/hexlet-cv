@@ -18,7 +18,6 @@ public class UserUtils {
      * Метод извлекает email из контекста аутентификации Spring Security
      * и загружает соответствующего пользователя из базы данных.
      * @return текущий {@link User} из репозитория по email из контекста аутентификации
-     * @return текущий аутентифицированный пользователь
      * @throws InsufficientAuthenticationException если пользователь не аутентифицирован
      * @throws UserNotFoundException если пользователь не найден в базе данных
      */
