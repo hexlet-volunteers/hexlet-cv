@@ -29,7 +29,6 @@ public class GlobalExceptionHandler {
                                 HttpServletRequest request,
                                 RedirectAttributes redirectAttributes,
                                 HttpStatus status) {
-
         // Обработка AJAX-запроса (Inertia)
         if ("true".equals(request.getHeader("X-Inertia"))) {
             redirectAttributes.addFlashAttribute("errors", errors);
@@ -127,10 +126,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<Map<String, String>> handleAccessDenied(AccessDeniedException e) {
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(Map.of("error", e.getMessage()));
+    public Object handleAccessDenied(AccessDeniedException ex,
+                                     HttpServletRequest request,
+                                     RedirectAttributes redirectAttributes) {
+        Map<String, String> errors = Map.of("Access denied error", ex.getMessage());
+        if ("true".equals(request.getHeader("X-Inertia"))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("errors", errors));
+        }
+        return commonHandle(errors, request, redirectAttributes, HttpStatus.FORBIDDEN);
     }
 
 // это просто ошибки все остальное
