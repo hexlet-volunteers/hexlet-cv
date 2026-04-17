@@ -4,7 +4,7 @@ import {
   Loader,
 } from '@mantine/core'
 import { EmptyPlaceholder } from '@shared/ui'
-import { IconAlertCircle, IconFilesOff } from '@tabler/icons-react'
+import { IconFilesOff } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import type { KnowledgeBaseDTO } from '@entities/account-knowledge-base'
 import { KnowledgeBaseCard } from '@entities/account-knowledge-base'

@@ -271,7 +271,6 @@ export default {
         title: 'База знаний',
         openJournalButton: 'Открыть журнал',
         readButton: 'Читать',
-        incorrectData: 'Произошла ошибка при загрузке базы знаний',
         baseIsEmpty: 'База знаний пока пуста',
         modalTitle: 'Журнал',
       }

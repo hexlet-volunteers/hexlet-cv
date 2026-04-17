@@ -269,7 +269,6 @@ export default {
         title: 'Knowledge base',
         openJournalButton: 'Open journal',
         readButton: 'Read',
-        incorrectData: 'Knowledge base loading error',
         baseIsEmpty: 'The knowledge base is empty',
         modalTitle: 'Journal',
       }
