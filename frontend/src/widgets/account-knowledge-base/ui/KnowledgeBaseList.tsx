@@ -30,7 +30,6 @@ interface KnowledgeBaseListProps {
 export const KnowledgeBaseList: React.FC<KnowledgeBaseListProps> = (props) => {
   const { knowledgebase, cardsToShow } = props
   const { t } = useTranslation()
-  const requiredKeys = ['id', 'title', 'duration', 'type', 'url']
 
   if (!knowledgebase) {
     return (
@@ -40,32 +39,11 @@ export const KnowledgeBaseList: React.FC<KnowledgeBaseListProps> = (props) => {
     )
   }
 
-  if (!Array.isArray(knowledgebase)) {
-    return (
-      <EmptyPlaceholder
-        title={t('accountPage.knowledgeBase.incorrectData')}
-        icon={IconAlertCircle}
-      />
-    )
-  }
-
   if (!knowledgebase.length) {
     return (
       <EmptyPlaceholder
         title={t('accountPage.knowledgeBase.baseIsEmpty')}
         icon={IconFilesOff}
-      />
-    )
-  }
-
-  if (
-    typeof knowledgebase[0] !== 'object' ||
-    !requiredKeys.every((key) => Object.hasOwn(knowledgebase[0], key))
-  ) {
-    return (
-      <EmptyPlaceholder
-        title={t('accountPage.knowledgeBase.incorrectData')}
-        icon={IconAlertCircle}
       />
     )
   }

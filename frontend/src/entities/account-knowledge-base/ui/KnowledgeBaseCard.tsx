@@ -7,7 +7,7 @@ import {
 import { Link } from '@inertiajs/react'
 import { IconArrowRight } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import type { KnowledgeBaseDTO } from './types'
+import type { KnowledgeBaseDTO } from '@entities/account-knowledge-base'
 
 /**
  * Интерфейс пропсов компонента KnowledgeBaseCard.
