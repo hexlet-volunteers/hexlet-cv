@@ -1,6 +1,6 @@
-import { http, delay } from 'msw'
+import type { MswCtx } from '@mocks/msw/createCtx'
+import { defineGet } from '@mocks/msw/define'
 import type { IArticle } from '@widgets/articles'
-import { inertiaJson } from '@mocks/inertia'
 import type { PerformanceCardDto } from '@widgets/performance-review'
 import type { TrainingCardDto } from '@widgets/training-programs'
 import type { OurTeamCardDto } from '@widgets/our-team'
@@ -80,25 +80,23 @@ const ourTeam: OurTeamCardDto[] = [
   },
 ]
 
+const baseProps = (ctx: MswCtx) => ({
+  trainingPrograms,
+  performanceReview,
+  articles,
+  ourTeam,
+  errors: {},
+  flash: {},
+  auth: { user: ctx.user },
+})
+
 export const handlers = [
-  http.get(/\/(\?.*)?$/, async ({ request }) => {
-    console.log('MSW handler hit:', request.method, request.url)
-
-    await delay()
-
-    const page = {
-      component: 'Home',
-      props: {
-        trainingPrograms,
-        performanceReview,
-        articles,
-        ourTeam,
-        errors: {},
-      },
-      url: '/',
-      version: 'msw-dev',
-    }
-
-    return inertiaJson(page)
-  }),
+  defineGet(/\/(\?.*)?$/, ctx =>
+    ctx.inertiaPage(
+      'Home',
+      baseProps(ctx),
+      200,
+      `/${ctx.locale}/`
+    )
+  ),
 ]

@@ -5,9 +5,9 @@ import I18nProvider from '@i18n/i18n.provider'
 import { StrictMode } from 'react'
 import type { Page } from 'node_modules/@inertiajs/core/types/types'
 
-export const initInertia = (page: Page) => {
+export const initInertia = (page?: Page) => {
   createInertiaApp({
-    page,
+    page: page ? page : undefined,
     resolve: (name) => {
       console.log('Inertia ищет компонент:', name)
       const pages = import.meta.glob('../../../pages/**/*.tsx', { eager: true })
@@ -17,15 +17,17 @@ export const initInertia = (page: Page) => {
       return page
     },
     setup({ el, App, props }) {
+      const locale = props.initialPage?.props?.locale
+
       const root = createRoot(el)
       root.render(
         <StrictMode>
           <UIProvider>
-            <I18nProvider>
+            <I18nProvider locale={locale}>
               <App {...props} />
             </I18nProvider>
           </UIProvider>
-        </StrictMode>
+        </StrictMode>,
       )
     },
   })

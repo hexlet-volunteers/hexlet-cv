@@ -1,6 +1,5 @@
-import { http, delay } from 'msw'
-import { inertiaJson } from '@mocks/inertia'
-import { menu, activityCards } from '../index'
+import { defineGet } from '@mocks/msw/define'
+import { menu, activityCards } from '@mocks/account/index'
 
 const progress = [
   {
@@ -149,9 +148,7 @@ const progress = [
 ]
 
 export const progressHandlers = [
-  http.get('/account/my-progress', async ({ request }) => {
-    await delay()
-
+  defineGet('*/account/my-progress', (ctx, request) => {
     // 1. Извлекаем номер страницы из URL (Inertia пришлет ?page=0, ?page=1 и т.д.)
     const url = new URL(request.url)
     const page = parseInt(url.searchParams.get('page') || '0', 9)
@@ -161,9 +158,12 @@ export const progressHandlers = [
     const end = start + pageSize
     const pagedProgress = progress.slice(start, end)
 
-    return inertiaJson({
-      component: 'Account/Learning/MyProgress/Index',
-      props: {
+    return ctx.inertiaPage(
+      'Account/Learning/MyProgress/Index',
+      {
+        flash: {},
+        errors: {},
+        auth: { user: ctx.user },
         menu,
         activityCards,
         progress: pagedProgress,
@@ -176,7 +176,7 @@ export const progressHandlers = [
         activeMainSection: 'account',
         activeSubSection: 'my-progress',
       },
-      url: '/account/my-progress',
-    })
+      200
+    )
   }),
 ]

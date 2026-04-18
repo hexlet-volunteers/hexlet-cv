@@ -1,9 +1,10 @@
-import { http, delay } from 'msw'
-import { inertiaJson } from '@mocks/inertia'
 import type { TMenuItem } from '@shared/types/inertiaSharedData'
-import { purchaseHandlers } from './purchase'
+import { purchaseHandlers } from '@mocks/account/purchase'
 import { progressHandlers, lessonsHandlers } from '@mocks/account/progress'
-import { notificationsHandlers } from './notifications'
+import { notificationsHandlers } from '@mocks/account/notifications/index'
+import { defineGet } from '@mocks/msw/define'
+import type { MswCtx } from '@mocks/msw/createCtx'
+import { programsHandlers } from '@mocks/account/programs/index'
 
 export const menu: TMenuItem[] = [
   { label: 'Мое обучение', link: '/account/my-progress' },
@@ -12,7 +13,7 @@ export const menu: TMenuItem[] = [
   { label: 'База знаний' },
   { label: 'Интервью' },
   { label: 'Грейдирование' },
-  { label: 'Программы обучения' },
+  { label: 'Программы обучения', link: '/account/programs' },
   { label: 'Резюме' },
   { label: 'Сопроводительное' },
   { label: 'Автоотклики' },
@@ -38,25 +39,22 @@ export const activityCards = {
   },
 }
 
+const baseProps = (ctx: MswCtx) => ({
+  flash: {},
+  errors: {},
+  auth: { user: ctx.user },
+  menu,
+  activityCards,
+})
+
 const makeHandler = ({ component, url }: { component: string; url: string }) =>
-  http.get(url, async ({ request }) => {
-    console.log('MSW handler hit:', request.method, request.url)
-    await delay()
-    return inertiaJson({
-      component,
-      props: {
-        errors: {},
-        menu,
-        activityCards,
-      },
-      url,
-      version: 'msw-dev',
-    })
-  })
+  defineGet(`*${url}`, (ctx) =>
+    ctx.inertiaPage(component, baseProps(ctx), 200, `/${ctx.locale}${url}`),
+  )
 
 const routes = [
   {
-    component: 'Account/Index',
+    component: 'Account/Purchase/Index',
     url: '/account',
   },
   {
@@ -70,5 +68,6 @@ export const handlers = [
   ...purchaseHandlers,
   ...progressHandlers,
   ...lessonsHandlers,
+  ...programsHandlers,
   ...notificationsHandlers,
 ]

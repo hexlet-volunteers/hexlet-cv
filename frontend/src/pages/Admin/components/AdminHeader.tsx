@@ -1,26 +1,29 @@
-import { Group, Text, Button } from '@mantine/core'
-import { Link } from '@inertiajs/react'
-import { IconOutbound } from '@tabler/icons-react'
+import { Group, Text } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import classes from './AdminHeader.module.css'
 
-export const AdminHeader = () => {
+/**
+ * Описывает пропсы header-а административного раздела.
+ */
+interface AdminHeaderProps {
+  /** Функция рендера блока авторизационных действий. */
+  renderLogin: () => JSX.Element
+}
+
+/**
+ * Отображает шапку административного раздела.
+ */
+export const AdminHeader = (props: AdminHeaderProps) => {
+  const { renderLogin } = props
+
   const { t } = useTranslation()
 
   return (
-    <Group className={classes.group} justify='space-between'>
-      <Text fw={700} size='lg'>
+    <Group className={classes.group} justify="space-between">
+      <Text fw={700} size="lg">
         {t('adminPage.header.title')}
       </Text>
-      <Button 
-        component={Link} 
-        href='' 
-        leftSection={<IconOutbound size={20}/>}
-        variant='default'
-        radius='xs'
-      >
-        {t('adminPage.header.logoutButton')}
-      </Button>
+      {renderLogin()}
     </Group>
   )
 }

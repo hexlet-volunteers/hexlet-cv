@@ -5,7 +5,10 @@ import { Link, usePage } from '@inertiajs/react'
 import { normalizePathname } from '@shared/lib/helpers/normalizePathname'
 import { useNavbar } from './NavigationProvider.tsx'
 
-export const Navbar: React.FC = React.memo(() => {
+/**
+ * Отображает боковую и мобильную навигацию личного кабинета.
+ */
+const Navbar: React.FC = React.memo(() => {
   const { props: pageProps, url } = usePage()
   const { menu } = pageProps
   const { opened, toggle: navbarToggle } = useNavbar()
@@ -48,3 +51,7 @@ export const Navbar: React.FC = React.memo(() => {
     </>
   )
 })
+
+Navbar.displayName = 'Navbar'
+
+export { Navbar }
