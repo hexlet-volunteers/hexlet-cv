@@ -20,7 +20,6 @@ import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -135,11 +134,9 @@ public class PasswordResetController {
 
         String token = passwordResetService.createPasswordResetToken(user);
 
-        String lang = LocaleContextHolder.getLocale().getLanguage();
-
         String baseUrl = String.format("%s://%s:%d",
                 request.getScheme(), request.getServerName(), request.getServerPort());
-        return baseUrl + "/auth/reset?token=" + token + "&lang=" + lang;
+        return baseUrl + "/auth/reset?token=" + token;
     }
 
 }
