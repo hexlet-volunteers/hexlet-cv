@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hexlet.cv.dto.NewsletterSettingsDTO;
 import io.hexlet.cv.model.NewsletterSettings;
 import io.hexlet.cv.model.User;
@@ -32,6 +33,9 @@ public class NewsletterSettingsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private ModelGenerator modelGenerator;
@@ -62,7 +66,7 @@ public class NewsletterSettingsControllerTest {
     @Test
     @WithMockUser(username = "test@example.com")
     void testGetEditPage() throws Exception {
-        mockMvc.perform(get("/ru/account/newsletters/edit")
+        mockMvc.perform(get("/account/newsletters/edit")
                         .header("X-Inertia", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Account/Newsletters/Edit")))
@@ -84,28 +88,15 @@ public class NewsletterSettingsControllerTest {
                 .marketingTips(false)
                 .build();
 
-        String requestBody = String.format(
-                "{\"newCourses\":%b,\"courseUpdates\":%b,\"promotions\":%b,"
-                        + "\"achievements\":%b,\"commentsReplies\":%b,\"resumeViews\":%b,\"vacancyMatches\":%b,"
-                        + "\"communityNews\":%b,\"marketingTips\":%b}",
-                updateDto.getNewCourses(),
-                updateDto.getCourseUpdates(),
-                updateDto.getPromotions(),
-                updateDto.getAchievements(),
-                updateDto.getCommentsReplies(),
-                updateDto.getResumeViews(),
-                updateDto.getVacancyMatches(),
-                updateDto.getCommunityNews(),
-                updateDto.getMarketingTips()
-        );
+        String requestBody = objectMapper.writeValueAsString(updateDto);
 
-        mockMvc.perform(post("/ru/account/newsletters/edit")
+        mockMvc.perform(post("/account/newsletters/edit")
                         .with(csrf())
                         .header("X-Inertia", "true")
                         .contentType("application/json")
                         .content(requestBody))
                 .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/ru/account/newsletters/edit"));
+                .andExpect(header().string("Location", "/account/newsletters/edit"));
 
         NewsletterSettings savedSettings = newsletterSettingsRepository.findByUserId(testUser.getId()).orElseThrow();
         assertThat(savedSettings.getNewCourses()).isFalse();
@@ -131,7 +122,7 @@ public class NewsletterSettingsControllerTest {
 
         userRepository.save(userWithoutSettings);
 
-        mockMvc.perform(get("/ru/account/newsletters/edit")
+        mockMvc.perform(get("/account/newsletters/edit")
                         .header("X-Inertia", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Account/Newsletters/Edit")));
