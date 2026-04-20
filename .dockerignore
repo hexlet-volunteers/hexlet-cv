@@ -1,5 +1,22 @@
-.git
-vendor
-node_modules
-log
-tmp
+# Gradle cache и результаты сборки
+.gradle/
+build/
+
+# Frontend зависимости и сборка
+frontend/node_modules/
+frontend/dist/
+node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Документация и конфиги IDE
+*.md
+.idea/
+*.iml
+*.iws
+
+# Секреты
+.env
+.env.*
