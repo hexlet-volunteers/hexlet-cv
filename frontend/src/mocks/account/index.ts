@@ -5,6 +5,7 @@ import { notificationsHandlers } from '@mocks/account/notifications/index'
 import { defineGet } from '@mocks/msw/define'
 import type { MswCtx } from '@mocks/msw/createCtx'
 import { programsHandlers } from '@mocks/account/programs/index'
+import { webinarsHandlers } from '@mocks/account/webinars'
 
 export const menu: TMenuItem[] = [
   { label: 'Мое обучение', link: '/account/my-progress' },
@@ -57,10 +58,6 @@ const routes = [
     component: 'Account/Purchase/Index',
     url: '/account',
   },
-  {
-    component: 'Account/Webinars/Index',
-    url: '/account/webinars',
-  },
 ] as const
 
 export const handlers = [
@@ -70,4 +67,5 @@ export const handlers = [
   ...lessonsHandlers,
   ...programsHandlers,
   ...notificationsHandlers,
+  ...webinarsHandlers,
 ]

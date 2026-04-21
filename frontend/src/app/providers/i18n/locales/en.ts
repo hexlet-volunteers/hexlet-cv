@@ -207,17 +207,6 @@ export default {
           'Helps with resumes, applications, correspondence with recruiters, and interview preparation.',
       },
     },
-    header: {
-      auth: {
-        account: 'Account',
-        admin: 'Admin',
-        signOut: 'Sign out',
-        tryFreeLine1: 'Try',
-        tryFreeLine2: 'for free',
-        signIn: 'Sign in',
-        signUp: 'Sign up',
-      },
-    },
     accountPage: {
       purchases: {
         title: 'My purchases and subscriptions',
@@ -253,17 +242,23 @@ export default {
           completedProgram: 'Сertificate',
         },
       },
-      studyPrograms: {
-        title: 'Study programs',
-        noPrograms: 'You have no any active study programs yet',
-        incorrectData: 'Study programs loading error',
-      },
       notifications: {
         title: 'Notifications',
         today: 'today',
         yesterday: 'yesterday',
         daysAgo: 'long ago',
         noNotifications: 'No notifications',
+      },
+      webinars: {
+        title: 'Webinars',
+        registration: 'Register',
+        addToCalendar: 'Add to Calendar',
+        shedule: 'Schedule',
+        noWebinars: 'No webinars scheduled yet',
+        location: {
+          online: 'Online',
+          offline: 'Offline',
+        },
       },
     },
     activityCards: {

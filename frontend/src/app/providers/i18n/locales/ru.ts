@@ -267,6 +267,17 @@ export default {
         daysAgo: 'давно',
         noNotifications: 'Уведомлений нет',
       },
+      webinars: {
+        title: 'Вебинары',
+        registration: 'Зарегистрироваться',
+        addToCalendar: 'Добавить в календарь',
+        shedule: 'Расписание',
+        noWebinars: 'Пока нет запланированных вебинаров',
+        location: {
+          online: 'Онлайн',
+          offline: 'Офлайн',
+        },
+      },
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',

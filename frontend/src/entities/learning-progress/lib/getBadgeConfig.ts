@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { TFunction } from 'i18next'
 import type { MantineColor } from '@mantine/core'
-import type { BadgeStatus } from '@entities/learning-progress/model/getBadgeStatus'
+import type { BadgeStatus } from '../index'
 
 export const getBadgeConfig = (
   status: BadgeStatus,

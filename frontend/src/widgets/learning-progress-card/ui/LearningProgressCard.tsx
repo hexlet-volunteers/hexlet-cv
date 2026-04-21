@@ -10,17 +10,16 @@ import {
 } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { getRelativeDayI18nKey, getDaysDiff } from '@shared/lib'
-import type { TProgress } from '../../../entities/learning-progress/model'
-import { getBadgeConfig } from '@entities/learning-progress/ui/lib/getBadgeConfig'
-import { getBadgeStatus } from '@entities/learning-progress/model/getBadgeStatus'
+import type { LearningProgressDTO } from '@entities/learning-progress'
+import { getBadgeConfig } from '@entities/learning-progress/'
+import { getBadgeStatus } from '@entities/learning-progress/'
 
-interface LearningProgressCardProps {
-  key?: number
-  program: TProgress
+interface ILearningProgressCardProps {
+  program: LearningProgressDTO
   actionButton: React.ReactNode
 }
 
-export const LearningProgressCard: React.FC<LearningProgressCardProps> = ({
+export const LearningProgressCard: React.FC<ILearningProgressCardProps> = ({
   program,
   actionButton,
 }) => {
@@ -63,12 +62,7 @@ export const LearningProgressCard: React.FC<LearningProgressCardProps> = ({
 
         <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
           <Flex justify="space-between" wrap="wrap" align="center">
-            <Text
-              fw="bold"
-              size="lg"
-              lineClamp={2}
-              title={program.programTitle}
-            >
+            <Text fw="bold" size="lg" lineClamp={2}>
               {program.programTitle}
             </Text>
             {badgeConfig && (

@@ -1,6 +1,8 @@
 import type { TPagination } from '@shared/types'
 
-export type TProgress = {
+export type BadgeStatus = 'completed' | 'new' | null
+
+export type LearningProgressDTO = {
   id: number
   programTitle: string
   lastLessonTitle: string
@@ -13,6 +15,6 @@ export type TProgress = {
 }
 
 export interface IProgressResponse {
-  progress: TProgress[]
+  progress: LearningProgressDTO[]
   pagination: TPagination
 }
