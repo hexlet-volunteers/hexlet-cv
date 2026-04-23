@@ -221,6 +221,13 @@ export default {
       },
     },
     accountPage: {
+      favorites: {
+        title: 'Избранное',
+        noFavorites: 'Нет избранных материалов',
+        course: 'Курс',
+        article: 'Статья',
+        butOpen: 'Открыть',
+      },
       purchases: {
         title: 'Мои покупки и подписки',
         dashboard_cards: {
