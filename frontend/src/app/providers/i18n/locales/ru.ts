@@ -316,6 +316,52 @@ export default {
         programLessons: 'Уроков',
         programPublished: 'Публикация',
       },
+      marketing: {
+        title: 'Маркетинг',
+        EmptyData: 'Нет данных',
+        loadError: 'Ошибка загрузки',
+        buttonCreate: 'Создать',
+        buttonReload: 'Перезагрузить',
+        menu: {
+          articles: 'Статьи',
+          stories: 'Истории',
+          reviews: 'Отзывы',
+          team: 'Команда',
+          pricing: 'Тарифы и скидки',
+        },
+        articles: {
+          title: 'Заголовок',
+          inBlog: 'В блоге',
+          onHomepage: 'На главной',
+        },
+        stories: {
+          title: 'История',
+          onHomepage: 'На главной',
+        },
+        reviews: {
+          author: 'Автор',
+          text: 'Текст',
+          inBlog: 'В блоге',
+          onHomepage: 'На главной',
+        },
+        team: {
+          author: 'Автор',
+          siteRole: 'Роль на сайте',
+          systemRole: 'Роль (система)',
+          onHomepage: 'На главной',
+        },
+        pricing: {
+          name: 'Тариф',
+          originalPrice: 'Цена (₽)',
+          discountPercent: 'Скидка (%)',
+          total: 'Итого (₽)',
+          description: 'Описание',
+        },
+        aria: {
+          published: 'Опубликовано: {{title}}',
+          showOnHomepage: 'Показывать на главной: {{title}}',
+        },
+      },
     },
   },
 }

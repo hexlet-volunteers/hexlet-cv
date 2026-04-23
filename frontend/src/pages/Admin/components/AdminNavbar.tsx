@@ -59,6 +59,15 @@ export const AdminNavbar: React.FC = (): JSX.Element => {
   const { url, props } = usePage()
   const menuData = props.adminMenu as AdminMenuDTO[]
 
+  const isActive = (link: string): boolean => {
+    const normalize = (path: string) => path.replace(/\/+$/, '')
+
+    const current = normalize(url).split('/')
+    const target = normalize(link).split('/')
+
+    return target.every((segment, index) => current[index] === segment)
+  }
+
   return (
     <nav className={classes.navbar}>
       {menuData?.map((group) => (
@@ -67,14 +76,13 @@ export const AdminNavbar: React.FC = (): JSX.Element => {
             {group.category}
           </Text>
           {group.items?.map((item) => {
-            const isActive = url.includes(item.link)
             const IconComponent = iconsMap[item.icon]
             return (
               <Link
                 key={item.label}
                 className={classes.link}
                 href={item.link}
-                data-active={isActive || undefined}
+                data-active={isActive(item.link) || undefined}
               >
                 <IconComponent className={classes.linkIcon} stroke={1.5} />
                 <span>{item.label}</span>
