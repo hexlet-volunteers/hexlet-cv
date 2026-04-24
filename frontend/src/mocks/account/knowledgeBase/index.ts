@@ -88,28 +88,28 @@ export const mockKnowledgeBase = [
     url: ''
   },
   {
-    id: 12,
+    id: 13,
     title: 'Название статьи 11',
     duration: '5 мин',
     type: 'Статья',
     url: ''
   },
   {
-    id: 13,
+    id: 14,
     title: 'Название видео 12',
     duration: '12 мин',
     type: 'Видео',
     url: ''
   },
   {
-    id: 14,
+    id: 15,
     title: 'Название статьи 13',
     duration: '5 мин',
     type: 'Статья',
     url: ''
   },
   {
-    id: 15,
+    id: 16,
     title: 'Название видео 14',
     duration: '12 мин',
     type: 'Видео',
@@ -123,14 +123,16 @@ const baseProps = (ctx: MswCtx) => ({
   auth: { user: ctx.user },
   menu: accountMenu,
   activityCards,
-  knowledgebase: mockKnowledgeBase,
 })
 
 export const knowledgeBaseHandlers = [
   defineGet('*/account/knowledge', ctx =>
     ctx.inertiaPage(
       'Account/Knowledge/Index',
-      baseProps(ctx),
+      {
+        ...baseProps(ctx),
+        knowledgebase: mockKnowledgeBase,
+      },
       200,
       `/${ctx.locale}/account/knowledge`
     )
