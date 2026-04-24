@@ -18,5 +18,4 @@ public class LoginRequestDTO {
     @Size(min = 8, message = "{password.minSize}")
     private String password;
 
-
 }

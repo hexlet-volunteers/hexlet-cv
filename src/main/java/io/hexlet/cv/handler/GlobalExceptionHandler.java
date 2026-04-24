@@ -1,8 +1,10 @@
 package io.hexlet.cv.handler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.hexlet.cv.handler.exception.ClientException;
 import io.hexlet.cv.handler.exception.InvalidPasswordException;
 import io.hexlet.cv.handler.exception.ResourceNotFoundException;
+import io.hexlet.cv.handler.exception.ServerException;
 import io.hexlet.cv.handler.exception.UserAlreadyExistsException;
 import io.hexlet.cv.handler.exception.UserNotFoundException;
 import jakarta.persistence.EntityExistsException;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -136,4 +139,39 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = Map.of("error", "Internal server error");
         return commonHandle(errors, request, redirectAttributes, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+    //400 и 500 ошибки
+    @ExceptionHandler(ClientException.class)
+    public Object handleClientException(ClientException ex,
+                                        HttpServletRequest request,
+                                        RedirectAttributes redirectAttributes) {
+
+        Map<String, String> errors = Map.of(ex.getField(), ex.getMessage());
+        return commonHandle(errors, request, redirectAttributes, ex.getStatus());
+    }
+
+    @ExceptionHandler(ServerException.class)
+    public Object handleServerException(ServerException ex,
+                                        HttpServletRequest request,
+                                        RedirectAttributes redirectAttributes) {
+
+        log.error("Server error: {} - {}", ex.getErrorCode(), ex.getMessage(), ex);
+
+        Map<String, String> errors = Map.of("error",
+                "A technical error occurred. Please try again later.");
+
+        return commonHandle(errors, request, redirectAttributes,
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public Object handleAccessDenied(AccessDeniedException ex,
+                                     HttpServletRequest request,
+                                     RedirectAttributes redirectAttributes) {
+        Map<String, String> errors = Map.of("auth", ex.getMessage());
+
+        return commonHandle(errors, request, redirectAttributes, HttpStatus.FORBIDDEN);
+    }
+
 }

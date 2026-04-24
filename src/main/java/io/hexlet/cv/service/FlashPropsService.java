@@ -12,8 +12,8 @@ public class FlashPropsService {
     public Map<String, Object> buildProps(HttpServletRequest request) {
         Map<String, Object> props = new HashMap<>();
 
+        // 1. Получаем flash-сообщения
         var flash = RequestContextUtils.getInputFlashMap(request);
-
         if (flash != null && !flash.isEmpty()) {
             props.put("flash", flash);
         }

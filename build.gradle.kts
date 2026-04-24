@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.jsonunitAssertj)
     implementation(libs.guava)
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2")
+    implementation(libs.passay)
 
     // MapStruct
     implementation(libs.mapstruct)
@@ -64,6 +65,8 @@ dependencies {
     testImplementation(platform(libs.junitBom))
     testImplementation(libs.junitJupiter)
     testRuntimeOnly(libs.junitPlatformLauncher)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.mockito.junit.jupiter)
 
     // Inertia4J
     implementation(libs.inertia4jSpring)
@@ -71,6 +74,11 @@ dependencies {
 
     // Jackson JSR310 для поддержки LocalDateTime
     implementation(libs.jacksonDatatypeJsr310)
+
+    // 📧 Email+
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
+    implementation("org.flywaydb:flyway-core")
 
 }
 
@@ -109,11 +117,15 @@ spotless {
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+    java {
+        sourceCompatibility = JavaVersion.toVersion(24)
+        targetCompatibility = JavaVersion.toVersion(24)
+//toolchain можно раскомментировать, а этот вариант закомментить, если требует того сборка
+
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(24)
+//        }
     }
-}
 
 // sonar {
 //     properties {

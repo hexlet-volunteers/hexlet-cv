@@ -15,6 +15,18 @@ spring:
       max-discount: 100
       min-price: 0
 
+  mail:
+    host: smtp.gmail.com # или SMTP сервер
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -27,12 +39,20 @@ spring:
     output:
  #     ansi:
  #       enabled: always
+    properties:
+      hibernate:
+        format_sql: true
 
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
 
 server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   error:
     include-message: never
     include-binding-errors: never
@@ -54,3 +74,4 @@ app:
     jwt:
       access-token-validity-seconds: 900        # 15 минут
       refresh-token-validity-seconds: 2592000   # 30 дней
+
