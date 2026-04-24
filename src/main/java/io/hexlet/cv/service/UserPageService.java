@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserPageSercive {
+public class UserPageService {
 
     private UserRepository userRepository;
     private ResumeRepository resumeRepository;

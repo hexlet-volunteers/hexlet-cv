@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-@ControllerAdvice
 @Slf4j
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     private Object commonHandle(Map<String, String> errors,
@@ -130,10 +131,13 @@ public class GlobalExceptionHandler {
 
 // это просто ошибки все остальное
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleAll(Exception ex) {
-        Map<String, String> errors = Map.of("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("errors", errors));
+    public Object handleAll(Exception ex,
+                            HttpServletRequest request,
+                            RedirectAttributes redirectAttributes) {
+        log.error("Internal server error", ex);
+
+        Map<String, String> errors = Map.of("error", "Internal server error");
+        return commonHandle(errors, request, redirectAttributes, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
