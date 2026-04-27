@@ -48,7 +48,6 @@ export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = (props) => {
         component={Link}
         href={card.url}
         rightSection={<IconArrowRight size={20}/>}
-        onClick={(event) => event.preventDefault()}
       >
         {t('accountPage.knowledgeBase.readButton')}
       </Button>

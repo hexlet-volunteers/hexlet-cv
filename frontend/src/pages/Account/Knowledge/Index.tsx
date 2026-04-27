@@ -22,6 +22,7 @@ interface KnowledgeBaseProps {
  * @param props - пропсы страницы, приходящие с бэкенда, в том числе список статей и видео { knowledgebase: [...] }
  * @returns React-компонент
  */
+// TODO:  воможно, необходимо настроить роут для перехода на эту страницу с домашней.
 const KnowledgeBase: InertiaPage<KnowledgeBaseProps> = ({
   knowledgebase,
 }): JSX.Element => {
