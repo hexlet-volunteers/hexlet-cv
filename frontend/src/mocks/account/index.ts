@@ -5,12 +5,13 @@ import { notificationsHandlers } from '@mocks/account/notifications/index'
 import { defineGet } from '@mocks/msw/define'
 import type { MswCtx } from '@mocks/msw/createCtx'
 import { programsHandlers } from '@mocks/account/programs/index'
+import { knowledgeBaseHandlers } from '@mocks/account/knowledgeBase/index'
 
 export const menu: TMenuItem[] = [
   { label: 'Мое обучение', link: '/account/my-progress' },
   { label: 'Покупки и подписки', link: '/account/purchase' },
   { label: 'Вебинары', link: '/account/webinars' },
-  { label: 'База знаний' },
+  { label: 'База знаний', link: '/account/knowledge' },
   { label: 'Интервью' },
   { label: 'Грейдирование' },
   { label: 'Программы обучения', link: '/account/programs' },
@@ -70,4 +71,5 @@ export const handlers = [
   ...lessonsHandlers,
   ...programsHandlers,
   ...notificationsHandlers,
+  ...knowledgeBaseHandlers,
 ]

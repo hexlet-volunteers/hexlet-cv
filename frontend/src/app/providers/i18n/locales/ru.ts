@@ -267,6 +267,13 @@ export default {
         daysAgo: 'давно',
         noNotifications: 'Уведомлений нет',
       },
+      knowledgeBase: {
+        title: 'База знаний',
+        openJournalButton: 'Открыть журнал',
+        readButton: 'Читать',
+        baseIsEmpty: 'База знаний пока пуста',
+        modalTitle: 'Журнал',
+      }
     },
     emptyPlaceholders: {
       noPurchasesTitle: 'У вас еще нет подписок и заказов',
