@@ -1,3 +1,4 @@
+import type { WebinarDTO } from '@widgets/admin-webinars'
 import type { KnowledgeBaseEntry } from '@widgets/knowledge-base'
 import type { StudyProgramsEntry } from '@widgets/admin-study-programs'
 import type { AdminMenuDTO } from '@pages/Admin/components/AdminNavbar'
@@ -36,6 +37,11 @@ const mockMenu: AdminMenuDTO[] = [
     category: 'ПОМОЩЬ',
     items: [{ label: 'Помощь', link: '/admin/help', icon: 'IconHelp' }],
   },
+]
+
+const mockWebinars: WebinarDTO[] = [
+  { id: 1, name: 'Онбординг в LMS', date: '2025-10-01', registration: 'https://example.com/reg1', videoUrl: '', feature: true, isPublished: true },
+  { id: 2, name: 'Метрики e-learning', date: '2025-10-15', registration: 'https://example.com/reg2', videoUrl: '', feature: false, isPublished: false }
 ]
 
 const mockInterviews: InterviewsEntry[] = [
@@ -93,6 +99,17 @@ export const adminHandlers = [
       },
       200,
       `/${ctx.locale}/admin/interview`,
+    )
+  }),
+  defineGet('*/admin/webinars', (ctx) => {
+    return ctx.inertiaPage(
+      'Admin/Webinars/Index',
+      {
+        ...baseProps(ctx),
+        webinars: mockWebinars,
+      },
+      200,
+      `/${ctx.locale}/admin/webinars`,
     )
   }),
   defineGet('*/admin/interview', (ctx) => {
