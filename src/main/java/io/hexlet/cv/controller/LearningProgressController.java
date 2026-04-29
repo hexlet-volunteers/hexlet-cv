@@ -5,6 +5,7 @@ import io.hexlet.cv.dto.learning.UserLessonProgressDTO;
 import io.hexlet.cv.dto.learning.UserProgramProgressDTO;
 import io.hexlet.cv.service.UserLessonProgressService;
 import io.hexlet.cv.service.UserProgramProgressService;
+import io.hexlet.cv.util.ControllerUtils;
 import io.hexlet.cv.util.UserUtils;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class LearningProgressController {
     private final UserProgramProgressService userProgramProgressService;
     private final UserLessonProgressService userLessonProgressService;
     private final UserUtils userUtils;
+    private final ControllerUtils controllerUtils;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -41,17 +43,14 @@ public class LearningProgressController {
         Page<UserProgramProgressDTO> progressPage = userProgramProgressService.getUserProgress(user.getId(),
                 pageable);
 
-        Map<String, Object> props = Map.of(
-                "progress", progressPage.getContent(),
-                "pagination", Map.of(
+        Map<String, Object> props = controllerUtils.createAccountProps("my-progress");
+        props.put("progress", progressPage.getContent());
+        props.put("pagination", Map.of(
                         "currentPage", progressPage.getNumber(),
                         "totalPages", progressPage.getTotalPages(),
                         "totalElements", progressPage.getTotalElements(),
                         "pageSize", pageable.getPageSize()
-                ),
-                "activeMainSection", "account",
-                "activeSubSection", "my-progress"
-        );
+                ));
 
         log.debug("[CONTROLLER] Rendering Account/Learning/MyProgress/Index with {} "
                         + "programs and pagination",
@@ -69,18 +68,16 @@ public class LearningProgressController {
 
         Page<UserLessonProgressDTO> lessonsProgressPage = userLessonProgressService
                 .getLessonProgress(user.getId(), programProgressId, pageable);
-        Map<String, Object> props = Map.of(
-                "lessonsProgress", lessonsProgressPage.getContent(),
-                "pagination", Map.of(
-                        "currentPage", lessonsProgressPage.getNumber(),
-                        "totalPages", lessonsProgressPage.getTotalPages(),
-                        "totalElements", lessonsProgressPage.getTotalElements(),
-                        "pageSize", pageable.getPageSize()
-                ),
-                "programProgressId", programProgressId,
-                "activeMainSection", "account",
-                "activeSubSection", "my-progress"
+
+        Map<String, Object> props = controllerUtils.createAccountProps("my-progress");
+        props.put("lessonsProgress", lessonsProgressPage.getContent());
+        props.put("pagination", Map.of(
+                "currentPage", lessonsProgressPage.getNumber(),
+                "totalPages", lessonsProgressPage.getTotalPages(),
+                "totalElements", lessonsProgressPage.getTotalElements(),
+                "pageSize", pageable.getPageSize())
         );
+        props.put("programProgressId", programProgressId);
 
         log.debug("[CONTROLLER] Rendering a Lessons page {} lessons snd pagination",
                 lessonsProgressPage.getContent().size());
