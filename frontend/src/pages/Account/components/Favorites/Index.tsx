@@ -7,19 +7,16 @@ import type { InertiaPage } from '@shared/types/inertia'
 import Favorites from './Favorites'
 
 /**
-{
-"component": "Favorites",
-"props": { 
-"list": "Array<
-{ id: number,
-  type: 'course' | 'article',
-  title: string,
-  url: string }> },
-"url": "/account/favorites",
-}
+ * Свойства компонента {@link Favorites}.
  */
-
 interface FavoritesPageProps {
+  /**
+   * Список избранных материалов пользователя.
+   *
+   * @remarks
+   * Каждый элемент содержит идентификатор, тип (курс или статья),
+   * название и ссылку для перехода.
+   */
   list?: Array<{
     id: number
     type: 'course' | 'article'
@@ -28,6 +25,21 @@ interface FavoritesPageProps {
   }>
 }
 
+/**
+ * Компонент отображает список избранных материалов пользователя.
+ *
+ * @remarks
+ * Используется в личном кабинете на странице `/account/favorites`.
+ * При пустом списке показывает сообщение "Нет избранных материалов".
+ *
+ * @param props - Свойства компонента (см. {@link FavoritesProps}).
+ * @returns React-элемент со списком карточек избранного.
+ *
+ * @example
+ * ```tsx
+ * <FavoritesPage={mockFavoritesList} />
+ * ```
+ */
 const FavoritesPage: InertiaPage<FavoritesPageProps> = ({ list }) => {
   const { t } = useTranslation()
 
