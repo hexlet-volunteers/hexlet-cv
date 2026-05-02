@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { PageHeader } from '@widgets/page-header'
 import type { InertiaPage } from '@shared/types/inertia'
 import Favorites from './Favorites'
+import type { FavoriteDTO } from './Favorites'
 
 /**
  * Свойства компонента {@link Favorites}.
@@ -17,12 +18,7 @@ interface FavoritesPageProps {
    * Каждый элемент содержит идентификатор, тип (курс или статья),
    * название и ссылку для перехода.
    */
-  list?: Array<{
-    id: number
-    type: 'course' | 'article'
-    title: string
-    url: string
-  }>
+  list?: FavoriteDTO[]
 }
 
 /**
