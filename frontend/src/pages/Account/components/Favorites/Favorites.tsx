@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react'
 import { useState } from 'react'
-import { Text, Button, Pagination, Paper } from '@mantine/core'
+import { Text, Button, Pagination, Paper, Table } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import classes from './Favorite.module.css'
 
@@ -24,7 +24,7 @@ export interface FavoritesProps {
 const Favorites = ({ list }: FavoritesProps) => {
   const { t } = useTranslation()
   const [activePage, setPage] = useState(1)
-  const itemsPerPage: number = 3
+  const itemsPerPage: number = 6
   const paginatedList = list?.slice(
     (activePage - 1) * itemsPerPage,
     activePage * itemsPerPage,
@@ -46,6 +46,28 @@ const Favorites = ({ list }: FavoritesProps) => {
       </Paper>
     )
   }
+  const rows = paginatedList?.map((item) => (
+    <Table.Tr key={item.id}>
+      <Table.Td>
+        {item.type === 'course'
+          ? t('accountPage.favorites.course')
+          : t('accountPage.favorites.article')}
+      </Table.Td>
+      <Table.Td>{item.title}</Table.Td>
+      <Table.Td style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          component={Link}
+          href={item.url}
+          variant="light"
+          color="blue"
+          size="md"
+          radius="lx"
+        >
+          {t('accountPage.favorites.butOpen')}
+        </Button>
+      </Table.Td>
+    </Table.Tr>
+  ))
 
   return (
     <Paper
@@ -56,28 +78,9 @@ const Favorites = ({ list }: FavoritesProps) => {
       bg="var(--mantine-color-dark-5)"
       bd="1px solid var(--mantine-color-gray-6)"
     >
-      <ul className={classes.list}>
-        {paginatedList?.map((item) => (
-          <li key={item.id} className={classes.listItem}>
-            <p>
-              {item.type === 'course'
-                ? t('accountPage.favorites.course')
-                : t('accountPage.favorites.article')}
-              . {item.title}
-            </p>
-            <Button
-              component={Link}
-              href={item.url}
-              variant="light"
-              color="blue"
-              size="md"
-              radius="lx"
-            >
-              {t('accountPage.favorites.butOpen')}
-            </Button>
-          </li>
-        ))}
-      </ul>
+      <Table withColumnBorders>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
       {showPagination && (
         <div className={classes.paginationWrapper}>
           <Pagination
