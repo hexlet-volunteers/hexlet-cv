@@ -1,4 +1,4 @@
-import type { TPagination } from '@shared/types'
+import type { Pagination } from '@shared/types/pagination'
 
 export type WebinarDTO = {
   id: number
@@ -11,5 +11,5 @@ export type WebinarDTO = {
 
 export interface WebinarsResponseDTO {
   webinars: WebinarDTO[]
-  pagination: TPagination
+  pagination: Pagination
 }

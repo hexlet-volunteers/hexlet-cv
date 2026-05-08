@@ -1,5 +1,5 @@
 import { defineGet } from '@mocks/msw/define'
-import { menu as accountMenu, activityCards } from '@mocks/account'
+import { menu, activityCards } from '@mocks/account'
 import type { MswCtx } from '@mocks/msw/createCtx'
 
 export const accountPurchases = {
@@ -35,18 +35,18 @@ const baseProps = (ctx: MswCtx) => ({
   flash: {},
   errors: {},
   auth: { user: ctx.user },
-  menu: accountMenu,
+  account: { menu },
   activityCards,
   purchases: accountPurchases,
 })
 
 export const purchaseHandlers = [
-  defineGet('*/account/purchase', ctx =>
+  defineGet('*/account/purchase', (ctx) =>
     ctx.inertiaPage(
       'Account/Purchase/Index',
       baseProps(ctx),
       200,
-      `/${ctx.locale}/account/purchase`
-    )
+      `/${ctx.locale}/account/purchase`,
+    ),
   ),
 ]

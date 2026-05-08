@@ -37,7 +37,7 @@ export const webinarsHandlers = [
     return inertiaJson({
       component: 'Account/Webinars/Index',
       props: {
-        menu,
+        account: { menu },
         activityCards,
         webinars: pagedWebinars,
         pagination: {

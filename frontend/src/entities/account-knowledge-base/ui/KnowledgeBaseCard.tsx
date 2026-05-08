@@ -1,13 +1,8 @@
-import {
-  Paper,
-  Text,
-  Group,
-  Button,
-} from '@mantine/core'
+import { Paper, Text, Group, Button } from '@mantine/core'
 import { Link } from '@inertiajs/react'
 import { IconArrowRight } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
-import type { KnowledgeBaseDTO } from '@entities/account-knowledge-base'
+import type { KnowledgeBaseDTO } from '../model/types'
 
 /**
  * Интерфейс пропсов компонента KnowledgeBaseCard.
@@ -15,7 +10,7 @@ import type { KnowledgeBaseDTO } from '@entities/account-knowledge-base'
  * @prop card - объект с информацией о статье или видео для базы знаний пользователя { id, title, duration, type, url }.
  */
 interface KnowledgeBaseCardProps {
-  card: KnowledgeBaseDTO,
+  card: KnowledgeBaseDTO
 }
 
 /**
@@ -28,11 +23,7 @@ export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = (props) => {
   const { card } = props
   const { t } = useTranslation()
   return (
-    <Paper
-      radius="lg"
-      withBorder
-      p="lg"
-    >
+    <Paper radius="lg" withBorder p="lg">
       <Text size="lg" fw={500}>
         {card.title}
       </Text>
@@ -47,7 +38,7 @@ export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = (props) => {
         mt="md"
         component={Link}
         href={card.url}
-        rightSection={<IconArrowRight size={20}/>}
+        rightSection={<IconArrowRight size={20} />}
       >
         {t('accountPage.knowledgeBase.readButton')}
       </Button>

@@ -164,7 +164,7 @@ export const progressHandlers = [
     return inertiaJson({
       component: 'Account/Learning/MyProgress/Index',
       props: {
-        menu,
+        account: { menu },
         activityCards,
         progress: pagedProgress,
         pagination: {

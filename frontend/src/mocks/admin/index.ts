@@ -1,10 +1,10 @@
 import type { WebinarDTO } from '@widgets/admin-webinars'
 import type { KnowledgeBaseEntry } from '@widgets/knowledge-base'
 import type { StudyProgramsEntry } from '@widgets/admin-study-programs'
-import type { AdminMenuDTO } from '@pages/Admin/components/AdminNavbar'
 import { defineGet } from '@mocks/msw/define'
 import type { InterviewsEntry } from '@widgets/admin-interviews'
 import type { MswCtx } from '@mocks/msw/createCtx'
+import type { AdminMenuDTO } from '@entities/admin-menu'
 
 const mockMenu: AdminMenuDTO[] = [
   {
@@ -40,8 +40,24 @@ const mockMenu: AdminMenuDTO[] = [
 ]
 
 const mockWebinars: WebinarDTO[] = [
-  { id: 1, name: 'Онбординг в LMS', date: '2025-10-01', registration: 'https://example.com/reg1', videoUrl: '', feature: true, isPublished: true },
-  { id: 2, name: 'Метрики e-learning', date: '2025-10-15', registration: 'https://example.com/reg2', videoUrl: '', feature: false, isPublished: false }
+  {
+    id: 1,
+    name: 'Онбординг в LMS',
+    date: '2025-10-01',
+    registration: 'https://example.com/reg1',
+    videoUrl: '',
+    feature: true,
+    isPublished: true,
+  },
+  {
+    id: 2,
+    name: 'Метрики e-learning',
+    date: '2025-10-15',
+    registration: 'https://example.com/reg2',
+    videoUrl: '',
+    feature: false,
+    isPublished: false,
+  },
 ]
 
 const mockInterviews: InterviewsEntry[] = [

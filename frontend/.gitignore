@@ -25,3 +25,7 @@ dist-ssr
 
 mockServiceWorker.js
 .vscode
+
+playwright-report/
+test-results/
+blob-report/

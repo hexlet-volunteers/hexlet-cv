@@ -1,14 +1,11 @@
-import { AdminWebinars, type WebinarDTO } from "@widgets/admin-webinars"
-import { AdminLayout } from "../components/AdminLayout"
+import { AdminWebinars, type WebinarDTO } from '@widgets/admin-webinars'
 
 type WebinarsPageProps = {
-    webinars: WebinarDTO[]
+  webinars: WebinarDTO[]
 }
 
 const Webinars = ({ webinars }: WebinarsPageProps) => {
-    return <AdminWebinars webinars={webinars}/>
+  return <AdminWebinars webinars={webinars} />
 }
-
-Webinars.layout = (page: React.ReactNode) => <AdminLayout>{page}</AdminLayout>
 
 export default Webinars

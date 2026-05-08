@@ -4,6 +4,7 @@ setup:
 	./gradlew build
 
 run:
+	$(MAKE) -C frontend build
 	./gradlew run
 
 test:
@@ -31,4 +32,4 @@ check:
 lint:
 	./gradlew checkstyleMain checkstyleTest
 
-.PHONY: test
+.PHONY: setup run test report deps-update ci-setup check lint

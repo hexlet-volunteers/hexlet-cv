@@ -3,8 +3,8 @@ import { IconShoppingCart, IconDownload } from '@tabler/icons-react'
 import { usePage } from '@inertiajs/react'
 import { useTranslation } from 'react-i18next'
 import { EmptyPlaceholder } from '@shared/ui'
-import type { IPurchasesResponse } from '@widgets/purchase-list/types'
 import type { PageProps } from '@inertiajs/core'
+import type { IPurchasesResponse } from '../types'
 
 export const PurchaseList: React.FC = () => {
   const { props } = usePage<PageProps & { purchases: IPurchasesResponse }>()

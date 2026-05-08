@@ -1,4 +1,3 @@
-import { AppLayout } from '../components/AppLayout'
 import { PageHeader } from '@widgets/page-header'
 import { Container, ScrollArea } from '@mantine/core'
 import { IconBell } from '@tabler/icons-react'
@@ -47,7 +46,5 @@ const Notifications: InertiaPage<TProps> = ({ notifications }): JSX.Element => {
     </Container>
   )
 }
-
-Notifications.layout = (page: React.ReactNode) => <AppLayout>{page}</AppLayout>
 
 export default Notifications

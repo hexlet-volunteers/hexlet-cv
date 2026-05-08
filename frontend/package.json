@@ -5,11 +5,17 @@
   "type": "module",
   "main": "src/main.tsx",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=20.19 <21",
+    "npm": ">=10"
   },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "test:e2e:install": "playwright install chromium",
+    "test:e2e:backend-only": "npm run build && playwright test -c playwright.backend-only.config.ts",
+    "test:e2e:dev-backend": "npm run build && playwright test -c playwright.dev-backend.config.ts",
+    "test:e2e:dev-msw": "playwright test -c playwright.dev-msw.config.ts",
+    "test:e2e:modes": "npm run test:e2e:backend-only && npm run test:e2e:dev-backend && npm run test:e2e:dev-msw",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "cd .. && husky frontend/.husky",
@@ -45,6 +51,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
+    "@playwright/test": "^1.61.0",
     "@types/react": "^18.2.41",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.6.0",

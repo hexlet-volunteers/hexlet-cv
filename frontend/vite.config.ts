@@ -1,13 +1,63 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import type { IncomingMessage } from 'http'
+import type { Plugin } from 'vite'
+
+const inertiaPagePlaceholder = '@PageObject@'
+
+const devInitialPage = {
+  component: 'Home',
+  props: {
+    articles: [],
+    trainingPrograms: [],
+    performanceReview: [],
+    ourTeam: [],
+  },
+  url: '/',
+  version: null,
+}
+
+function escapeHtmlAttribute(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+}
+
+function inertiaDevInitialPagePlugin(): Plugin {
+  return {
+    name: 'inertia-dev-initial-page',
+    apply: 'serve',
+    transformIndexHtml(html) {
+      return html.replace(
+        inertiaPagePlaceholder,
+        escapeHtmlAttribute(JSON.stringify(devInitialPage)),
+      )
+    },
+  }
+}
+
+const backendProxy = {
+  target: 'http://localhost:8080',
+  changeOrigin: true,
+  secure: false,
+
+  bypass(req: IncomingMessage) {
+    const isInertiaRequest = req.headers['x-inertia'] === 'true'
+
+    if (!isInertiaRequest && req.headers.accept?.includes('text/html')) {
+      return req.url
+    }
+  },
+}
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), inertiaDevInitialPagePlugin()],
   preview: {
     host: true,
-    allowedHosts: [
-      '.onrender.com',
-    ],
+    allowedHosts: ['.onrender.com'],
   },
   resolve: {
     alias: {
@@ -28,17 +78,13 @@ export default defineConfig({
   server: {
     open: true,
     proxy: {
-      '^/[a-z]{2}(/|$)': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        secure: false,
-
-        bypass(req) {
-          if (req.headers.accept?.includes('text/html')) {
-            return req.url
-          }
-        },
-      },
+      '^/account(/|$)': backendProxy,
+      '^/admin(/|$)': backendProxy,
+      '^/dashboard(/|$)': backendProxy,
+      '^/users(/|$)': backendProxy,
+      '^/login(/|$)': backendProxy,
+      '^/logout(/|$)': backendProxy,
+      '^/registration(/|$)': backendProxy,
     },
   },
 })

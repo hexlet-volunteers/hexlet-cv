@@ -1,5 +1,4 @@
 import type { InertiaPage } from '@shared/types/inertia'
-import { AppLayout } from '../components/AppLayout'
 import { PurchaseList } from '@widgets/purchase-list'
 import { PageHeader } from '@widgets/page-header'
 import { Container } from '@mantine/core'
@@ -33,7 +32,5 @@ const Purchase: InertiaPage<PurchasePageProps> = () => {
     </Container>
   )
 }
-
-Purchase.layout = (page) => <AppLayout>{page}</AppLayout>
 
 export default Purchase

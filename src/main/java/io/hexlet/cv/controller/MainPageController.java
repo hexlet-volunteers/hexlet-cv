@@ -2,6 +2,7 @@ package io.hexlet.cv.controller;
 
 import io.github.inertia4j.spring.Inertia;
 import io.hexlet.cv.service.PageSectionService;
+import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,11 +25,14 @@ public class MainPageController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> index() {
-
         var sections = pageSectionService.findAllOnPage(PAGE_KEY, true);
 
         Map<String, Object> props = Map.of(
-            "pageSections", sections
+            "pageSections", sections,
+            "articles", List.of(),
+            "trainingPrograms", List.of(),
+            "performanceReview", List.of(),
+            "ourTeam", List.of()
         );
 
         return inertia.render("Home", props);

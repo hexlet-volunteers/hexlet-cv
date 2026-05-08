@@ -1,1 +1,1 @@
-export type { InertiaPage } from './inertiaPage'
+export type { InertiaPage, InertiaPageModule } from './inertiaPage'

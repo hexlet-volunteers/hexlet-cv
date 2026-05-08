@@ -1,4 +1,3 @@
-import { AppLayout } from '../components/AppLayout'
 import { PageHeader } from '@widgets/page-header'
 import { Container, Button } from '@mantine/core'
 import { IconFileText } from '@tabler/icons-react'
@@ -27,21 +26,28 @@ const KnowledgeBase: InertiaPage<KnowledgeBaseProps> = ({
   knowledgebase,
 }): JSX.Element => {
   const { t } = useTranslation()
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false)
 
   return (
     <Container fluid>
       <PageHeader
         icon={<IconFileText />}
         title={t('accountPage.knowledgeBase.title')}
-        actionButton={<Button radius="md" variant="default" onClick={open}>{t('accountPage.knowledgeBase.openJournalButton')}</Button>}
+        actionButton={
+          <Button radius="md" variant="default" onClick={open}>
+            {t('accountPage.knowledgeBase.openJournalButton')}
+          </Button>
+        }
       />
-      <KnowledgeBaseModal knowledgebase={knowledgebase} cardsToShow={knowledgebase?.length} opened={opened} onClose={close}/>
-      <KnowledgeBaseList knowledgebase={knowledgebase} cardsToShow={9}/>
+      <KnowledgeBaseModal
+        knowledgebase={knowledgebase}
+        cardsToShow={knowledgebase?.length}
+        opened={opened}
+        onClose={close}
+      />
+      <KnowledgeBaseList knowledgebase={knowledgebase} cardsToShow={9} />
     </Container>
   )
 }
-
-KnowledgeBase.layout = (page: React.ReactNode) => <AppLayout>{page}</AppLayout>
 
 export default KnowledgeBase
