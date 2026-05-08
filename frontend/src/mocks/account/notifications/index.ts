@@ -6,7 +6,7 @@ export const notificationsHandlers = [
     ctx.inertiaPage(
       'Account/Notifications/Index',
       {
-        menu,
+        account: { menu },
         activityCards,
         notifications: [
           {

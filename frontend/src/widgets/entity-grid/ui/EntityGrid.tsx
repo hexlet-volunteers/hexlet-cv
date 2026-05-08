@@ -1,7 +1,11 @@
-import { SimpleGrid, Group, Pagination } from '@mantine/core'
+import {
+  SimpleGrid,
+  Group,
+  Pagination as MantinePagination,
+} from '@mantine/core'
 import { EmptyPlaceholder } from '@shared/ui'
 import { router } from '@inertiajs/react'
-import type { TPagination } from '@shared/types'
+import type { Pagination } from '@shared/types/pagination'
 
 export interface IEmptyPlaceholderConfig {
   title: string
@@ -12,14 +16,14 @@ export interface IEmptyPlaceholderConfig {
 
 interface IProps<T> {
   data: T[]
-  pagination: TPagination
+  pagination: Pagination
   emptyConfig: IEmptyPlaceholderConfig
   baseUrl: string
   renderItem: (dataItem: T) => React.ReactNode
 }
 
 export const EntityGrid = <T extends { id: string | number }>(
-  props: IProps<T>
+  props: IProps<T>,
 ) => {
   const { data, pagination, emptyConfig, baseUrl, renderItem } = props
   // API ожидает индекс страницы с 0, поэтому вычитаем 1 из значения пагинатора
@@ -37,7 +41,7 @@ export const EntityGrid = <T extends { id: string | number }>(
         }}
         spacing="md"
       >
-        {data.map(dataItem => (
+        {data.map((dataItem) => (
           <div key={dataItem.id}>{renderItem(dataItem)}</div>
         ))}
       </SimpleGrid>
@@ -45,7 +49,7 @@ export const EntityGrid = <T extends { id: string | number }>(
       {/* пагинация */}
       {pagination.totalPages > 1 && (
         <Group justify="center" mt="xl" pb="xl">
-          <Pagination
+          <MantinePagination
             total={pagination.totalPages}
             value={pagination.currentPage + 1}
             onChange={handlePageChange}

@@ -7,8 +7,8 @@ export function AuthorizedEntryPoints() {
   const { t } = useTranslation()
   const { props } = usePage()
 
-  const user = props.auth?.user
-  if (!user) return null
+  const user = props.auth?.user || { roles: [''] }
+  // if (!user) return null
 
   const isAdmin = user.roles.includes('admin')
 

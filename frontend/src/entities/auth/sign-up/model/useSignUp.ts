@@ -56,7 +56,7 @@ export const useSignUp = () => {
     form.setData('firstName', firstNameNormalized)
     form.setData('email', emailNormalized)
 
-    form.post(`/users/sign_up`, {
+    form.post(`/users`, {
       onSuccess: () => {
         form.reset()
         localStorage.setItem('IS_NEW_USER', 'true')

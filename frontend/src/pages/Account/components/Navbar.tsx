@@ -10,7 +10,9 @@ import { useNavbar } from './NavigationProvider.tsx'
  */
 const Navbar: React.FC = React.memo(() => {
   const { props: pageProps, url } = usePage()
-  const { menu } = pageProps
+  const {
+    account: { menu },
+  } = pageProps
   const { opened, toggle: navbarToggle } = useNavbar()
 
   const ativeMenu =

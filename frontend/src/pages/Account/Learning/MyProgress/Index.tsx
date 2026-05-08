@@ -2,7 +2,7 @@ import { Container } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { IconBook, IconShoppingCart } from '@tabler/icons-react'
 import type { InertiaPage } from '@shared/types/inertia'
-import type { IProgressResponse } from '@entities/learning-progress/model'
+import type { IProgressResponse } from '@entities/learning-progress'
 // eslint-disable-next-line fsd/forbidden-imports
 import { AppLayout } from '@pages/Account/components/AppLayout'
 import { EntityGrid } from '@widgets/entity-grid'

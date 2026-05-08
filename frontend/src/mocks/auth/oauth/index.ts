@@ -124,7 +124,8 @@ const oauthCallback = defineGet('*/auth/oauth/*/callback', (ctx, request) => {
   ctx.setCookie('access_token', accessToken, { maxAge: 10 * 60 })
   ctx.setCookie('refresh_token', refreshToken, { maxAge: 14 * 24 * 60 * 60 })
 
-  return ctx.redirect('/{locale}/account/purchase')
+  // return ctx.redirect(`/${ctx.locale}/account/knowledge/articles`)
+  return ctx.redirect('/account/my-progress')
 })
 
 export const handlers = [oauthStart, oauthMockPage, oauthCallback]

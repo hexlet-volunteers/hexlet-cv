@@ -31,33 +31,11 @@ const iconsMap: Record<
 }
 
 /**
- * Описывает один пункт административного меню.
- */
-export type AdminMenuItemDTO = {
-  /** Отображаемое название пункта меню. */
-  label: string
-  /** URL перехода в административный раздел. */
-  link: string
-  /** Ключ иконки из карты `iconsMap`. */
-  icon: string
-}
-
-/**
- * Описывает группу пунктов административного меню.
- */
-export type AdminMenuDTO = {
-  /** Название группы пунктов меню. */
-  category: string
-  /** Список пунктов внутри группы. */
-  items: AdminMenuItemDTO[]
-}
-
-/**
  * Отображает навигацию по административным разделам.
  */
 export const AdminNavbar: React.FC = (): JSX.Element => {
   const { url, props } = usePage()
-  const menuData = props.adminMenu as AdminMenuDTO[]
+  const menuData = props.adminMenu
 
   return (
     <nav className={classes.navbar}>

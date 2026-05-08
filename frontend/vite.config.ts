@@ -1,13 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import type { IncomingMessage } from 'http'
+
+const backendProxy = {
+  target: 'http://localhost:8080',
+  changeOrigin: true,
+  secure: false,
+
+  bypass(req: IncomingMessage) {
+    const isInertiaRequest = req.headers['x-inertia'] === 'true'
+
+    if (!isInertiaRequest && req.headers.accept?.includes('text/html')) {
+      return req.url
+    }
+  },
+}
 
 export default defineConfig({
   plugins: [react()],
   preview: {
     host: true,
-    allowedHosts: [
-      '.onrender.com',
-    ],
+    allowedHosts: ['.onrender.com'],
   },
   resolve: {
     alias: {
@@ -28,17 +41,13 @@ export default defineConfig({
   server: {
     open: true,
     proxy: {
-      '^/[a-z]{2}(/|$)': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        secure: false,
-
-        bypass(req) {
-          if (req.headers.accept?.includes('text/html')) {
-            return req.url
-          }
-        },
-      },
+      '^/account(/|$)': backendProxy,
+      '^/admin(/|$)': backendProxy,
+      '^/dashboard(/|$)': backendProxy,
+      '^/users(/|$)': backendProxy,
+      '^/login(/|$)': backendProxy,
+      '^/logout(/|$)': backendProxy,
+      '^/registration(/|$)': backendProxy,
     },
   },
 })

@@ -11,7 +11,7 @@ export const programsHandlers = [
     return inertiaJson({
       component: 'Account/Programs/Index',
       props: {
-        menu,
+        account: { menu },
         activityCards,
         programs: [
           {
