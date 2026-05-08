@@ -34,7 +34,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class    RegistrationControllerTest {
+public class RegistrationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
