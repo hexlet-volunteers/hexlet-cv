@@ -6,6 +6,7 @@ import io.hexlet.cv.dto.learning.UserProgramProgressDTO;
 import io.hexlet.cv.service.UserLessonProgressService;
 import io.hexlet.cv.service.UserProgramProgressService;
 import io.hexlet.cv.util.AccountPageRenderer;
+import io.hexlet.cv.util.ControllerUtils;
 import io.hexlet.cv.util.UserUtils;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class LearningProgressController {
     private final UserLessonProgressService userLessonProgressService;
     private final UserUtils userUtils;
     private final AccountPageRenderer accountPageRenderer;
+    private final ControllerUtils utils;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -45,12 +47,7 @@ public class LearningProgressController {
 
         Map<String, Object> pageProps = Map.of(
                 "progress", progressPage.getContent(),
-                "pagination", Map.of(
-                        "currentPage", progressPage.getNumber(),
-                        "totalPages", progressPage.getTotalPages(),
-                        "totalElements", progressPage.getTotalElements(),
-                        "pageSize", pageable.getPageSize()
-                ));
+                "pagination", utils.createPaginationMap(progressPage, pageable));
 
         log.debug("[CONTROLLER] Rendering Account/Learning/MyProgress/Index with {} "
                         + "programs and pagination",
@@ -72,11 +69,7 @@ public class LearningProgressController {
 
         Map<String, Object> pageProps = Map.of(
             "lessonsProgress", lessonsProgressPage.getContent(),
-            "pagination", Map.of(
-                "currentPage", lessonsProgressPage.getNumber(),
-                "totalPages", lessonsProgressPage.getTotalPages(),
-                "totalElements", lessonsProgressPage.getTotalElements(),
-                "pageSize", pageable.getPageSize()),
+            "pagination", utils.createPaginationMap(lessonsProgressPage, pageable),
             "programProgressId", programProgressId);
 
         log.debug("[CONTROLLER] Rendering a Lessons page {} lessons snd pagination",
