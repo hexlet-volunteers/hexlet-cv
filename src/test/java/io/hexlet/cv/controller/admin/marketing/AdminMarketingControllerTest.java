@@ -15,7 +15,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +38,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AdminMarketingController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class AdminMarketingControllerTest {
 
     @Autowired
@@ -859,17 +861,13 @@ public class AdminMarketingControllerTest {
 
     @Nested
     class DisplayOrderTests {
-
-        // Валидные запросы доходят до сервиса → нужен verify.
-        // Невалидные (-1, null) отклоняются на уровне валидации → сервис не вызывается, verify не нужен.
-
         @ParameterizedTest
         @CsvSource({
                 "articles,3",
                 "stories,3",
                 "reviews,3",
                 "team,3",
-                "articles,0"  // граничный случай: 0 допустим по @Min(0)
+                "articles,0"
         })
         void shouldUpdateDisplayOrderAndReturn200(String section, int order) throws Exception {
             var body = Map.of("displayOrder", order);
@@ -897,9 +895,6 @@ public class AdminMarketingControllerTest {
 
         @Test
         void shouldRejectNullDisplayOrder() throws Exception {
-            // Если поле Integer + @NotNull → 422 с errors.displayOrder.
-            // Если примитив int → Jackson кидает 400 при десериализации.
-            // Уточни статус после проверки DisplayOrderRequest.
             var body = new HashMap<String, Object>();
             body.put("displayOrder", null);
 
@@ -907,7 +902,7 @@ public class AdminMarketingControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(body))
                             .with(user(ADMIN).roles(ROLE_ADMIN)))
-                    .andExpect(status().is4xxClientError());
+                    .andExpect(status().isUnprocessableEntity());
         }
 
         @Test
@@ -943,11 +938,6 @@ public class AdminMarketingControllerTest {
 
     @Nested
     class UnknownSectionTests {
-
-        // Контроллер бросает ResourceNotFoundException для неизвестных секций.
-        // Ожидаемый статус — 404 (предполагаем стандартный маппинг хендлера).
-        // Если у вас другой ResponseStatus в ExceptionHandler — скорректируй.
-
         @Test
         void shouldReturn404ForUnknownIndexSection() throws Exception {
             mockMvc.perform(get("/admin/marketing/unknown")
