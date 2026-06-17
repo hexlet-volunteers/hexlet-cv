@@ -33,21 +33,27 @@ public class DisplayOrderRequestTest {
     @Test
     void shouldPassValidationWhenDisplayOrderIsZero() {
         DisplayOrderRequest request = createRequestWithDisplayOrder(0);
+
         Set<ConstraintViolation<DisplayOrderRequest>> violations = validator.validate(request);
+
         assertThat(violations).isEmpty();
     }
 
     @Test
     void shouldPassValidationWhenDisplayOrderIsMaxValue() {
         DisplayOrderRequest request = createRequestWithDisplayOrder(Integer.MAX_VALUE);
+
         Set<ConstraintViolation<DisplayOrderRequest>> violations = validator.validate(request);
+
         assertThat(violations).isEmpty();
     }
 
     @Test
     void shouldFailValidationWhenDisplayOrderIsNull() {
         DisplayOrderRequest request = createRequestWithDisplayOrder(null);
+
         Set<ConstraintViolation<DisplayOrderRequest>> violations = validator.validate(request);
+
         assertThat(violations)
                 .hasSize(1)
                 .first()
@@ -60,7 +66,9 @@ public class DisplayOrderRequestTest {
     @Test
     void shouldFailValidationWhenDisplayOrderIsNegative() {
         DisplayOrderRequest request = createRequestWithDisplayOrder(-1);
+
         Set<ConstraintViolation<DisplayOrderRequest>> violations = validator.validate(request);
+
         assertThat(violations)
                 .hasSize(1)
                 .first()
