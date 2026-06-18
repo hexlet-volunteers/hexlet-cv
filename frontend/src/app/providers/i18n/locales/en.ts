@@ -207,17 +207,6 @@ export default {
           'Helps with resumes, applications, correspondence with recruiters, and interview preparation.',
       },
     },
-    header: {
-      auth: {
-        account: 'Account',
-        admin: 'Admin',
-        signOut: 'Sign out',
-        tryFreeLine1: 'Try',
-        tryFreeLine2: 'for free',
-        signIn: 'Sign in',
-        signUp: 'Sign up',
-      },
-    },
     accountPage: {
       favorites: {
         title: 'Favorites',
@@ -263,17 +252,30 @@ export default {
           completedProgram: 'Сertificate',
         },
       },
-      studyPrograms: {
-        title: 'Study programs',
-        noPrograms: 'You have no any active study programs yet',
-        incorrectData: 'Study programs loading error',
-      },
       notifications: {
         title: 'Notifications',
         today: 'today',
         yesterday: 'yesterday',
         daysAgo: 'long ago',
         noNotifications: 'No notifications',
+      },
+      webinars: {
+        title: 'Webinars',
+        registration: 'Register',
+        addToCalendar: 'Add to Calendar',
+        shedule: 'Schedule',
+        noWebinars: 'No webinars scheduled yet',
+        location: {
+          online: 'Online',
+          offline: 'Offline',
+        },
+      },
+      knowledgeBase: {
+        title: 'Knowledge base',
+        openJournalButton: 'Open journal',
+        readButton: 'Read',
+        baseIsEmpty: 'The knowledge base is empty',
+        modalTitle: 'Journal',
       },
     },
     activityCards: {
@@ -323,6 +325,19 @@ export default {
         programDuration: 'Duration',
         programLessons: 'Lessons',
         programPublished: 'Published',
+      },
+      webinars: {
+        title: 'Webinars',
+        input: 'Search: name/date/link',
+        button: 'Create',
+        webinarName: 'Name',
+        webinarDate: 'Date',
+        webinarRegistration: 'Registration',
+        webinarVideo: 'Video',
+        webinarFeature: 'Feature',
+        webinarPublished: 'Published',
+        noWebinars: 'There are no webinars yet',
+        nothingFound: 'Nothing is found by request',
       },
     },
   },
