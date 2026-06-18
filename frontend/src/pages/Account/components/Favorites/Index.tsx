@@ -5,37 +5,20 @@ import { useTranslation } from 'react-i18next'
 import { PageHeader } from '@widgets/page-header'
 import type { InertiaPage } from '@shared/types/inertia'
 import Favorites from './Favorites'
-import type { FavoriteDTO } from './Favorites'
+
+import type { FavoriteDTO } from '@entities/favorite'
 
 /**
- * Свойства компонента {@link Favorites}.
+ * Inertia-страница избранных материалов пользователя.
+ *
+ * Получает список избранного из page props и отображает его
+ * в разделе личного кабинета `/account/favorites`.
  */
+
 interface FavoritesPageProps {
-  /**
-   * Список избранных материалов пользователя.
-   *
-   * @remarks
-   * Каждый элемент содержит идентификатор, тип (курс или статья),
-   * название и ссылку для перехода.
-   */
   list?: FavoriteDTO[]
 }
 
-/**
- * Компонент отображает список избранных материалов пользователя.
- *
- * @remarks
- * Используется в личном кабинете на странице `/account/favorites`.
- * При пустом списке показывает сообщение "Нет избранных материалов".
- *
- * @param props - Свойства компонента (см. {@link FavoritesProps}).
- * @returns React-элемент со списком карточек избранного.
- *
- * @example
- * ```tsx
- * <FavoritesPage={mockFavoritesList} />
- * ```
- */
 const FavoritesPage: InertiaPage<FavoritesPageProps> = ({ list }) => {
   const { t } = useTranslation()
 

@@ -225,6 +225,9 @@ export default {
         course: 'Course',
         article: 'Article',
         butOpen: 'Open',
+        type: 'Material type',
+        titleType: 'Name',
+        actions: 'Action',
       },
       purchases: {
         title: 'My purchases and subscriptions',

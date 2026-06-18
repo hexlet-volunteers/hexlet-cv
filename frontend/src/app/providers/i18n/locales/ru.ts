@@ -227,6 +227,9 @@ export default {
         course: 'Курс',
         article: 'Статья',
         butOpen: 'Открыть',
+        type: 'Тип материала',
+        titleType: 'Название',
+        actions: 'Действие',
       },
       purchases: {
         title: 'Мои покупки и подписки',
