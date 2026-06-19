@@ -1,19 +1,19 @@
 import * as React from 'react'
-import classes from './Navbar.module.css'
+import classes from './AccountNavbar.module.css'
 import { Drawer, Group, Stack } from '@mantine/core'
 import { Link, usePage } from '@inertiajs/react'
 import { normalizePathname } from '@shared/lib/helpers/normalizePathname'
-import { useNavbar } from './NavigationProvider.tsx'
+import { useAccountNavbar } from '../model/useAccountNavbar'
 
 /**
  * Отображает боковую и мобильную навигацию личного кабинета.
  */
-const Navbar: React.FC = React.memo(() => {
+const AccountNavbar: React.FC = React.memo(() => {
   const { props: pageProps, url } = usePage()
   const {
     account: { menu },
   } = pageProps
-  const { opened, toggle: navbarToggle } = useNavbar()
+  const { opened, toggle: navbarToggle } = useAccountNavbar()
 
   const ativeMenu =
     menu?.find(
@@ -54,6 +54,6 @@ const Navbar: React.FC = React.memo(() => {
   )
 })
 
-Navbar.displayName = 'Navbar'
+AccountNavbar.displayName = 'AccountNavbar'
 
-export { Navbar }
+export { AccountNavbar }

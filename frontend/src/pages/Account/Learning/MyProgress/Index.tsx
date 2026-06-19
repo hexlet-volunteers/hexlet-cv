@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { IconBook, IconShoppingCart } from '@tabler/icons-react'
 import type { InertiaPage } from '@shared/types/inertia'
 import type { IProgressResponse } from '@entities/learning-progress'
-// eslint-disable-next-line fsd/forbidden-imports
-import { AppLayout } from '@pages/Account/components/AppLayout'
 import { EntityGrid } from '@widgets/entity-grid'
 import { LearningProgressCard } from '@widgets/learning-progress-card'
 import { PageHeader } from '@widgets/page-header'
@@ -67,7 +65,5 @@ const MyProgress: InertiaPage<IProgressResponse> = ({
     </Container>
   )
 }
-
-MyProgress.layout = (page) => <AppLayout>{page}</AppLayout>
 
 export default MyProgress

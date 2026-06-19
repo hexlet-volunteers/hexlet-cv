@@ -1,12 +1,12 @@
 import { Autocomplete, Group, Burger } from '@mantine/core'
-import classes from './Header.module.css'
+import classes from './AccountHeader.module.css'
 import { IconSearch } from '@tabler/icons-react'
-import { useNavbar } from './NavigationProvider.tsx'
+import { useAccountNavbar } from '../model/useAccountNavbar'
 
 /**
  * Описывает пропсы header-а личного кабинета.
  */
-interface HeaderProps {
+interface AccountHeaderProps {
   /** Функция рендера блока авторизационных действий. */
   renderLogin: () => JSX.Element
 }
@@ -14,10 +14,10 @@ interface HeaderProps {
 /**
  * Отображает шапку личного кабинета с поиском и панелью авторизации.
  */
-export const Header = (props: HeaderProps) => {
+export const AccountHeader = (props: AccountHeaderProps) => {
   const { renderLogin } = props
 
-  const { opened, toggle } = useNavbar()
+  const { opened, toggle } = useAccountNavbar()
 
   return (
     <header className={classes.header}>

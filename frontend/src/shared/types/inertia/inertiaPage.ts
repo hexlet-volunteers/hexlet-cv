@@ -6,3 +6,7 @@ export type InertiaPage<P = Record<string, unknown>> =
   React.ComponentType<P> & {
     layout?: InertiaLayout | ((_page: React.ReactNode) => React.ReactNode)
   }
+
+export type InertiaPageModule = {
+  default: InertiaPage
+}

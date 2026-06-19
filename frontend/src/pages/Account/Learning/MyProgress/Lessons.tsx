@@ -1,7 +1,5 @@
-// eslint-disable-next-line fsd/forbidden-imports
-import { AppLayout } from '@pages/Account/components/AppLayout'
-
 import { Stack, Text } from '@mantine/core'
+
 // временный интерфейс
 interface ILesson {
   id: number
@@ -36,8 +34,5 @@ const LessonsPage = ({ lessonsProgress }: LessonsPageProps) => {
     </Stack>
   )
 }
-
-// Оборачиваем страницу в ваш лайаут
-LessonsPage.layout = (page: React.ReactNode) => <AppLayout>{page}</AppLayout>
 
 export default LessonsPage

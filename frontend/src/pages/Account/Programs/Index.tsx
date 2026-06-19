@@ -1,4 +1,3 @@
-import { AppLayout } from '../components/AppLayout'
 import { PageHeader } from '@widgets/page-header'
 import { Container, ScrollArea } from '@mantine/core'
 import { IconSchool } from '@tabler/icons-react'
@@ -37,7 +36,5 @@ const StudyPrograms: InertiaPage<StudyProgramsProps> = ({
     </Container>
   )
 }
-
-StudyPrograms.layout = (page: React.ReactNode) => <AppLayout>{page}</AppLayout>
 
 export default StudyPrograms

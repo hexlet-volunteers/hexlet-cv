@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { IconVideo, IconShoppingCart } from '@tabler/icons-react'
 import { PageHeader } from '@widgets/page-header'
 import { EntityGrid } from '@widgets/entity-grid'
-import { AppLayout } from '../components/AppLayout'
 import { AccountWebinarCard } from '@widgets/account-webinar-card'
 import { OpenScheduleButton } from '@features/open-schedule'
 
@@ -45,6 +44,5 @@ const Webinars: InertiaPage<WebinarsResponseDTO> = ({
     </Container>
   )
 }
-Webinars.layout = (page) => <AppLayout>{page}</AppLayout>
 
 export default Webinars

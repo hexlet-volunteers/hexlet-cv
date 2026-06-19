@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@mantine/core'
-import { DashboardCard } from './DashboardCard/DashboardCard'
+import { DashboardCard } from './DashboardCard'
 import {
   IconBook,
   IconSparkles,
@@ -12,7 +12,7 @@ import { usePage } from '@inertiajs/react'
 /**
  * Отображает набор карточек активности пользователя в личном кабинете.
  */
-export const ActivityCards: React.FC = () => {
+export const AccountActivityCards: React.FC = () => {
   const { props } = usePage()
   const data = props.activityCards
   const { t } = useTranslation()

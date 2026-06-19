@@ -1,5 +1,5 @@
 import { useDisclosure } from '@mantine/hooks'
-import { useContext, createContext } from 'react'
+import { AccountNavigationContext } from './AccountNavigationContext'
 
 /**
  * Описывает пропсы провайдера навигации.
@@ -8,24 +8,15 @@ type TProps = {
   /** Дочерние компоненты, которым нужно состояние навигации. */
   children: React.ReactNode
 }
-const NavigationContext = createContext({
-  opened: false,
-  toggle: () => {},
-})
 
 /**
  * Предоставляет состояние открытия мобильной навигации в личном кабинете.
  */
-export const NavigationProvider: React.FC<TProps> = ({ children }) => {
+export const AccountNavigationProvider: React.FC<TProps> = ({ children }) => {
   const [opened, { toggle }] = useDisclosure(false)
   return (
-    <NavigationContext.Provider value={{ opened, toggle }}>
+    <AccountNavigationContext.Provider value={{ opened, toggle }}>
       {children}
-    </NavigationContext.Provider>
+    </AccountNavigationContext.Provider>
   )
 }
-
-/**
- * Возвращает состояние и методы управления навигацией личного кабинета.
- */
-export const useNavbar = () => useContext(NavigationContext)
