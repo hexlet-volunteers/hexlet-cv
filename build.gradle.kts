@@ -1,5 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.api.tasks.SourceSetContainer
 
 plugins {
     application
@@ -26,6 +27,16 @@ repositories {
     mavenCentral()
     maven { url = uri("https://jitpack.io") } // нужен для inertia4j
 }
+
+val frontendDir = layout.projectDirectory.dir("frontend")
+val frontendDistDir = frontendDir.dir("dist")
+val frontendStaticLocations = listOf(
+    "classpath:/META-INF/resources/",
+    "classpath:/resources/",
+    "classpath:/static/",
+    "classpath:/public/",
+    "file:${frontendDistDir.asFile.absolutePath}/"
+).joinToString(",")
 
 dependencies {
     // Spring Boot
@@ -113,6 +124,16 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(24)
     }
+}
+
+val sourceSets = the<SourceSetContainer>()
+
+tasks.named<JavaExec>("run") {
+    classpath = sourceSets["main"].runtimeClasspath + files(frontendDistDir)
+    workingDir = projectDir
+
+    systemProperty("inertia.template-path", "index.html")
+    systemProperty("spring.web.resources.static-locations", frontendStaticLocations)
 }
 
 // sonar {

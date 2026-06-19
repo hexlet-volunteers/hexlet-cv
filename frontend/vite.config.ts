@@ -1,6 +1,43 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import type { IncomingMessage } from 'http'
+import type { Plugin } from 'vite'
+
+const inertiaPagePlaceholder = '@PageObject@'
+
+const devInitialPage = {
+  component: 'Home',
+  props: {
+    articles: [],
+    trainingPrograms: [],
+    performanceReview: [],
+    ourTeam: [],
+  },
+  url: '/',
+  version: null,
+}
+
+function escapeHtmlAttribute(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+}
+
+function inertiaDevInitialPagePlugin(): Plugin {
+  return {
+    name: 'inertia-dev-initial-page',
+    apply: 'serve',
+    transformIndexHtml(html) {
+      return html.replace(
+        inertiaPagePlaceholder,
+        escapeHtmlAttribute(JSON.stringify(devInitialPage)),
+      )
+    },
+  }
+}
 
 const backendProxy = {
   target: 'http://localhost:8080',
@@ -17,7 +54,7 @@ const backendProxy = {
 }
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), inertiaDevInitialPagePlugin()],
   preview: {
     host: true,
     allowedHosts: ['.onrender.com'],
