@@ -48,12 +48,19 @@ export default [
       },
     },
     plugins: {
-      fsd: fsdPlugin,
       'react-hooks': reactHooks,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+    },
+  },
 
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    plugins: {
+      fsd: fsdPlugin,
+    },
+    rules: {
       'fsd/forbidden-imports': 'error',
       'fsd/no-relative-imports': 'error',
       'fsd/no-public-api-sidestep': 'error',

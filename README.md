@@ -13,6 +13,20 @@ use [ https://github.com/Inertia4J/inertia4j ]
 
 ## Local Run
 
+### Node.js Version
+
+Frontend requires Node.js `>=20.19 <21`.
+
+Recommended local flow:
+
+1. `cd frontend`
+2. `nvm install`
+3. `nvm use`
+
+If you use a different version manager, switch Node.js to the version from `frontend/.nvmrc`.
+
+CI uses the version from `frontend/.nvmrc`.
+
 ### Production-like backend-only mode
 
 `make run`
@@ -39,6 +53,86 @@ In this mode Vite serves the HTML document itself and injects a mock Inertia ini
 - `frontend/index.html` keeps the literal `@PageObject@`; in `vite serve` it is replaced by a mock page, and in `vite build` it stays untouched for backend template rendering
 
 If you run `./gradlew run` directly, `frontend/dist` must already exist and be up to date.
+
+### Smoke Tests
+
+Before the first local e2e run, install Chromium for Playwright:
+
+```bash
+cd frontend
+npm install
+npm run test:e2e:install
+```
+
+Or via Makefile:
+
+```bash
+cd frontend
+make test-e2e-install
+```
+
+Smoke tests verify local run-mode invariants: who serves the HTML document, whether assets load, whether `@PageObject@` is replaced, and whether the page renders without critical client errors.
+
+Smoke specs live in `frontend/e2e/smoke`.
+Strict smoke helpers live in `frontend/e2e/smoke/helpers.ts`. They track page errors, console errors, and request/response activity for run-mode diagnostics.
+
+GitHub Actions runs e2e in a separate workflow: `E2E`.
+
+```bash
+cd frontend
+make test-e2e-backend-only
+make test-e2e-dev-backend
+make test-e2e-dev-msw
+make test-e2e-modes
+```
+
+### E2E Strategy
+
+#### Product e2e with MSW
+
+This is the default mode for future frontend product scenarios.
+
+- Put specs in `frontend/e2e/pages`
+- Name files as `*.msw.spec.ts`
+- Run them through `cd frontend && make test-e2e-dev-msw`
+- Use MSW for stable data setup and edge cases
+- Do not require a running backend
+- Do not use `frontend/e2e/smoke/helpers.ts` as the default wrapper for product tests
+- Prefer user-facing assertions through roles, text, URL, and visible state
+- Add separate neutral helpers or fixtures later if product scenarios need them
+
+Example:
+
+```ts
+import { expect, test } from '@playwright/test'
+
+test('example page flow', async ({ page }) => {
+  await page.goto('/')
+
+  await expect(page.getByRole('heading', { name: /home/i })).toBeVisible()
+  await expect(page.getByText(/welcome/i)).toBeVisible()
+})
+```
+
+For example, a future spec can live at `frontend/e2e/pages/example.msw.spec.ts`.
+
+#### Backend integration e2e
+
+Use this mode only when the test must verify the real backend contract: Inertia payloads, shared props, form submits, backend validation, or server-driven page data.
+
+- Put specs in `frontend/e2e/integration`
+- Name files as `*.backend.spec.ts`
+- Run them through `cd frontend && make test-e2e-dev-backend`
+- Keep `backend-only` focused mainly on smoke verification of the production-like local run
+
+If a test fails with an error like `Executable doesn't exist at .../ms-playwright/...`, run:
+
+```bash
+cd frontend
+npm run test:e2e:install
+```
+
+Backend, root, and frontend CI workflows do not run Playwright e2e, so faster checks stay separate from the smoke suite.
 
 ### Verification
 
