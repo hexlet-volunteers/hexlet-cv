@@ -5,8 +5,15 @@ import { authMiddleware } from '@mocks/middleware/auth'
 
 const middlewares = [authMiddleware]
 
-type GetHandler = (ctx: ReturnType<typeof createCtx>, request: Request) => HttpResponse<DefaultBodyType>
-type PostHandler<TBody> = (ctx: ReturnType<typeof createCtx>, request: Request, body: TBody) => HttpResponse<DefaultBodyType>
+type GetHandler = (
+  ctx: ReturnType<typeof createCtx>,
+  request: Request,
+) => HttpResponse<DefaultBodyType>
+type PostHandler<TBody> = (
+  ctx: ReturnType<typeof createCtx>,
+  request: Request,
+  body: TBody,
+) => HttpResponse<DefaultBodyType>
 
 async function readBody<TBody>(request: Request): Promise<TBody> {
   const contentType = (request.headers.get('content-type') ?? '').toLowerCase()
@@ -14,7 +21,6 @@ async function readBody<TBody>(request: Request): Promise<TBody> {
   if (contentType.includes('application/json')) {
     try {
       return (await request.json()) as TBody
-    // eslint-disable-next-line @stylistic/brace-style
     } catch {
       return {} as TBody
     }

@@ -1,6 +1,9 @@
-/* eslint-disable indent */
 import { HttpResponse } from 'msw'
-import { parseCookies, serializeCookies, type CookieOptions } from '@mocks/helpers/cookies'
+import {
+  parseCookies,
+  serializeCookies,
+  type CookieOptions,
+} from '@mocks/helpers/cookies'
 
 const DEFAULT_LOCALE = 'ru'
 const LOCALES = new Set(['ru', 'en'])
@@ -15,7 +18,10 @@ export type MockAuthUser = {
 
 export type MswCtx = ReturnType<typeof createCtx>
 
-export function createCtx(request: Request, opts?: { cookies?: Record<string, string> }) {
+export function createCtx(
+  request: Request,
+  opts?: { cookies?: Record<string, string> },
+) {
   const url = new URL(request.url)
 
   const cookies = opts?.cookies ?? parseCookies(request.headers.get('cookie'))
@@ -26,7 +32,9 @@ export function createCtx(request: Request, opts?: { cookies?: Record<string, st
   const hasLocale = Boolean(first && LOCALES.has(first))
   const locale = hasLocale ? first : DEFAULT_LOCALE
 
-  const pathNoLocale = normalizePath((hasLocale ? parts.slice(1) : parts).join('/'))
+  const pathNoLocale = normalizePath(
+    (hasLocale ? parts.slice(1) : parts).join('/'),
+  )
   const canonicalPath = `/${locale}${pathNoLocale}`
 
   const setCookieQueue: string[] = []
@@ -37,15 +45,17 @@ export function createCtx(request: Request, opts?: { cookies?: Record<string, st
 
   const isHttps = url.protocol === 'https:'
   const hostname = url.hostname
-  const envDomain = import.meta.env?.VITE_MSW_COOKIE_DOMAIN as string | undefined
+  const envDomain = import.meta.env?.VITE_MSW_COOKIE_DOMAIN as
+    | string
+    | undefined
 
-  const cookieDomain
-    = envDomain
-      ?? (hostname === 'hexlet.io' || hostname.endsWith('.hexlet.io')
-        ? '.hexlet.io'
-        : hostname === 'hexlet.ru' || hostname.endsWith('.hexlet.ru')
-          ? '.hexlet.ru'
-          : undefined)
+  const cookieDomain =
+    envDomain ??
+    (hostname === 'hexlet.io' || hostname.endsWith('.hexlet.io')
+      ? '.hexlet.io'
+      : hostname === 'hexlet.ru' || hostname.endsWith('.hexlet.ru')
+        ? '.hexlet.ru'
+        : undefined)
 
   const baseCookieOpts: CookieOptions = {
     path: '/',
@@ -60,7 +70,7 @@ export function createCtx(request: Request, opts?: { cookies?: Record<string, st
       serializeCookies(name, value, {
         ...baseCookieOpts,
         ...opts,
-      })
+      }),
     )
   }
 
@@ -70,7 +80,7 @@ export function createCtx(request: Request, opts?: { cookies?: Record<string, st
         ...baseCookieOpts,
         ...opts,
         maxAge: 0,
-      })
+      }),
     )
   }
 
@@ -78,7 +88,7 @@ export function createCtx(request: Request, opts?: { cookies?: Record<string, st
     component: string,
     props: Record<string, unknown>,
     status = 200,
-    urlOverride?: string
+    urlOverride?: string,
   ) => {
     const queuedCookies = setCookieQueue.splice(0)
     const finalUrl = urlOverride ?? `${canonicalPath}${url.search}`
@@ -94,7 +104,9 @@ export function createCtx(request: Request, opts?: { cookies?: Record<string, st
       ['x-inertia', 'true'],
       ['content-type', 'application/json; charset=utf-8'],
       ['vary', 'Accept'],
-      ...queuedCookies.map(cookie => ['set-cookie', cookie] as [string, string]),
+      ...queuedCookies.map(
+        (cookie) => ['set-cookie', cookie] as [string, string],
+      ),
     ]
 
     return new HttpResponse(JSON.stringify(payload), { status, headers })
@@ -105,7 +117,9 @@ export function createCtx(request: Request, opts?: { cookies?: Record<string, st
 
     const headers: Array<[string, string]> = [
       ['location', to],
-      ...queuedCookies.map(cookie => ['set-cookie', cookie] as [string, string]),
+      ...queuedCookies.map(
+        (cookie) => ['set-cookie', cookie] as [string, string],
+      ),
     ]
 
     return new HttpResponse(null, { status, headers })
