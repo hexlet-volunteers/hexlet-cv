@@ -39,7 +39,7 @@ public class LearningProgressController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getProgress(@PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<String> getProgress(@PageableDefault(size = 10) Pageable pageable) {
         log.debug("Get progress request");
         var user = userUtils.getCurrentUser();
 
@@ -59,7 +59,7 @@ public class LearningProgressController {
 
     @GetMapping("/program/{programProgressId}/lessons")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getLessonProgress(@PathVariable Long programProgressId,
+    public ResponseEntity<String> getLessonProgress(@PathVariable Long programProgressId,
                                     @PageableDefault(size = 10) Pageable pageable) {
         var user = userUtils.getCurrentUser();
         log.debug("[CONTROLLER] Getting lessons for programProgressId: {}, user: {}, pageable: {}",
@@ -80,7 +80,7 @@ public class LearningProgressController {
     }
 
     @PostMapping("/program/start")
-    public ResponseEntity<?> startProgram(@RequestParam Long programId) {
+    public ResponseEntity<String> startProgram(@RequestParam Long programId) {
         var user = userUtils.getCurrentUser();
         log.debug("[CONTROLLER] Program start {} by user {}", programId, user.getEmail());
 
@@ -89,7 +89,7 @@ public class LearningProgressController {
     }
 
     @PostMapping("/lesson/start")
-    public ResponseEntity<?> startLesson(@RequestParam Long programProgressId,
+    public ResponseEntity<String> startLesson(@RequestParam Long programProgressId,
                               @RequestParam Long lessonId) {
 
         var user = userUtils.getCurrentUser();
@@ -102,20 +102,20 @@ public class LearningProgressController {
     }
 
     @PostMapping("/lesson/{lessonProgressId}/complete")
-    public ResponseEntity<?> completeLesson(@PathVariable Long lessonProgressId,
+    public ResponseEntity<String> completeLesson(@PathVariable Long lessonProgressId,
                                  @RequestParam Long programProgressId) {
         userLessonProgressService.completeLesson(lessonProgressId);
         return inertia.redirect("/account/my-progress/program/" + programProgressId + "/lessons");
     }
 
     @PostMapping("/program/{programProgressId}/complete")
-    public ResponseEntity<?> completeProgram(@PathVariable Long programProgressId) {
+    public ResponseEntity<String> completeProgram(@PathVariable Long programProgressId) {
         userProgramProgressService.completeProgram(programProgressId);
         return inertia.redirect("/account/my-progress");
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> defaultSection() {
+    public ResponseEntity<String> defaultSection() {
         log.debug("[CONTROLLER] GET /account/my-progress/ - Redirect to the main page");
         return inertia.redirect("/account/my-progress");
     }

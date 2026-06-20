@@ -16,7 +16,7 @@ public class AccountPageRenderer {
     private final Inertia inertia;
     private final AccountSharedPropsResolver accountSharedPropsResolver;
 
-    public ResponseEntity<?> render(String component, String activeMenuKey, Map<String, Object> pageProps) {
+    public ResponseEntity<String> render(String component, String activeMenuKey, Map<String, Object> pageProps) {
         Map<String, Object> sharedProps = accountSharedPropsResolver.resolve(activeMenuKey);
         Map<String, Object> allProps = new HashMap<>();
         allProps.putAll(sharedProps);

@@ -32,7 +32,7 @@ public class KnowledgeController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getKnowledgeHome() {
+    public ResponseEntity<String> getKnowledgeHome() {
         log.debug("[KNOWLEDGE CONTROLLER] Get knowledge home request");
 
         var recentArticles = knowledgeService.getRecentArticles(RECENT_KNOWLEDGE_ITEMS_LIMIT);
@@ -47,7 +47,7 @@ public class KnowledgeController {
 
     @GetMapping("/articles")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getArticles(@RequestParam(required = false) String category,
+    public ResponseEntity<String> getArticles(@RequestParam(required = false) String category,
                               @PageableDefault Pageable pageable) {
         log.debug("[KNOWLEDGE CONTROLLER] Get all articles, category: {}, page: {}",
                 category, pageable.getPageNumber());
@@ -60,7 +60,7 @@ public class KnowledgeController {
 
     @GetMapping("/articles/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getArticleById(@PathVariable Long id) {
+    public ResponseEntity<String> getArticleById(@PathVariable Long id) {
         log.debug("[KNOWLEDGE CONTROLLER] Get article by id: {}", id);
 
         var article = knowledgeService.getArticleById(id);
@@ -74,7 +74,7 @@ public class KnowledgeController {
 
     @GetMapping("/interviews")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getAllInterviews(@RequestParam(required = false) String category,
+    public ResponseEntity<String> getAllInterviews(@RequestParam(required = false) String category,
                                    @PageableDefault Pageable pageable) {
         log.debug("[KNOWLEDGE CONTROLLER] Get all interviews, category: {}, page: {}",
                 category, pageable.getPageNumber());
@@ -87,7 +87,7 @@ public class KnowledgeController {
 
     @GetMapping("/interviews/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getInterviewById(@PathVariable Long id) {
+    public ResponseEntity<String> getInterviewById(@PathVariable Long id) {
         log.debug("[KNOWLEDGE CONTROLLER] Get interview by id: {}", id);
 
         var interview = knowledgeService.getInterviewById(id);
@@ -100,7 +100,7 @@ public class KnowledgeController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> defaultRedirect() {
+    public ResponseEntity<String> defaultRedirect() {
         log.debug("[KNOWLEDGE CONTROLLER] Redirect from /account/knowledge/ to /account/knowledge");
         return inertia.redirect("/account/knowledge");
     }
