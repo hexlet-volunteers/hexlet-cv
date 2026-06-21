@@ -1,4 +1,4 @@
-import { AppLayout } from '../AppLayout'
+import { AppLayout } from '../components/AppLayout'
 import { Container, ScrollArea, ThemeIcon } from '@mantine/core'
 import { IconHeart } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'

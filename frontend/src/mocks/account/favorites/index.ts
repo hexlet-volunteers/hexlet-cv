@@ -58,7 +58,7 @@ const baseProps = (ctx: MswCtx) => ({
 export const favoritesHandlers = [
   defineGet('*/account/favorites', (ctx) =>
     ctx.inertiaPage(
-      'Account/components/Favorites/Index',
+      'Account/Favorites/Index',
       {
         ...baseProps(ctx),
         list: mockFavoritesList,
