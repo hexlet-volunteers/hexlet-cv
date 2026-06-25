@@ -60,3 +60,10 @@ build
 .settings
 .class
 .PVS-Studio/
+
+# IDE
+.vscode/
+.specstory/
+
+# Configs
+config.json
