@@ -12,6 +12,7 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
 
 app:
   security:

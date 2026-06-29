@@ -11,11 +11,13 @@ const performanceReview: PerformanceCardDto[] = [
     title: 'Тестирование навыков',
   },
   {
-    description: 'Оценка по KPI и вкладу в проекты, плюс развёрнутая обратная связь от менторов.',
+    description:
+      'Оценка по KPI и вкладу в проекты, плюс развёрнутая обратная связь от менторов.',
     title: 'Перформанс‑ревью',
   },
   {
-    description: 'Сопоставление с вилками и требованиями - прозрачный отчёт и шаги роста.',
+    description:
+      'Сопоставление с вилками и требованиями - прозрачный отчёт и шаги роста.',
     title: 'Грейд и рынок',
   },
 ]
@@ -26,25 +28,33 @@ const trainingPrograms: TrainingCardDto[] = [
     title: 'Как искать работу',
   },
   {
-    description: 'Портфолио, бриф, коммуникации, ценообразование, договорённости.',
+    description:
+      'Портфолио, бриф, коммуникации, ценообразование, договорённости.',
     title: 'Как работать на фрилансе',
   },
   {
-    description: 'Рынки, площадки, подготовка профилей и откликов на английском.',
+    description:
+      'Рынки, площадки, подготовка профилей и откликов на английском.',
     title: 'Как искать валютную работу',
   },
 ]
 
 const articles: IArticle[] = [
-  { readingTime: 1,
+  {
+    readingTime: 1,
     tags: ['Про собеседование', 'Создаем резюме'],
-    title: 'Сопроводительное письмо и резюме для IT: примеры и советы' },
-  { readingTime: 3,
+    title: 'Сопроводительное письмо и резюме для IT: примеры и советы',
+  },
+  {
+    readingTime: 3,
     tags: ['Про автоклики'],
-    title: 'Как настроить автоотклики на hh: быстрый поиск работы с ИИ' },
-  { readingTime: 5,
+    title: 'Как настроить автоотклики на hh: быстрый поиск работы с ИИ',
+  },
+  {
+    readingTime: 5,
     tags: ['Проходим собеседование'],
-    title: 'Как пройти собеседование: частые ошибки и вопросы' },
+    title: 'Как пройти собеседование: частые ошибки и вопросы',
+  },
 ]
 
 const ourTeam: OurTeamCardDto[] = [
@@ -91,12 +101,8 @@ const baseProps = (ctx: MswCtx) => ({
 })
 
 export const handlers = [
-  defineGet(/\/(\?.*)?$/, ctx =>
-    ctx.inertiaPage(
-      'Home',
-      baseProps(ctx),
-      200,
-      `/${ctx.locale}/`
-    )
+  defineGet(/\/employment(\?.*)?$/, (ctx) =>
+    ctx.inertiaPage('Home', baseProps(ctx), 200, `/${ctx.locale}/employment`),
   ),
+  defineGet(/\/(\?.*)?$/, (ctx) => ctx.redirect(`/${ctx.locale}/employment`)),
 ]

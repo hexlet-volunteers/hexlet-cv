@@ -63,7 +63,7 @@ export function Header(props: Props) {
       >
         {link.label}
       </Anchor>
-    )
+    ),
   )
 
   return (
@@ -71,11 +71,12 @@ export function Header(props: Props) {
       <Group py={10} justify="center" gap={70} bg="black">
         <Anchor
           key="Home"
-          href="/" // В данный момент ссылка на главную страницу
+          href="/ru/employment" // В данный момент ссылка на главную страницу
           variant="transparent"
           underline="never"
           size="md"
           fw={500}
+          component={Link}
         >
           <Group gap="xs">
             <ThemeIcon variant="white" size="lg" radius="md">

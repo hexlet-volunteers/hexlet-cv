@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       get '/404', to: 'errors#not_found', as: :not_found_errors
       match '/500', to: 'errors#server_error', via: :all
 
-      root 'home#index'
+      root to: redirect('/%{locale}/employment')
       resource :locale, only: [] do
         member do
           get :switch

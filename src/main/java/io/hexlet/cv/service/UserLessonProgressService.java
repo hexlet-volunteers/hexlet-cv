@@ -8,6 +8,10 @@ import io.hexlet.cv.repository.LessonRepository;
 import io.hexlet.cv.repository.UserLessonProgressRepository;
 import io.hexlet.cv.repository.UserProgramProgressRepository;
 import io.hexlet.cv.repository.UserRepository;
+
+
+import io.hexlet.cv.util.UserUtils;
+import org.springframework.security.access.AccessDeniedException;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -30,6 +34,7 @@ public class UserLessonProgressService {
     private final LessonRepository lessonRepository;
     private final UserRepository userRepository;
     private final Clock clock;
+    private final UserUtils userUtils;
 
     public Page<UserLessonProgressDTO> getLessonProgress(Long userId, Long programProgressId, Pageable pageable) {
         log.debug("Getting lessons for user{}, programProgress {} (pageable={})", userId, programProgressId, pageable);
@@ -77,8 +82,13 @@ public class UserLessonProgressService {
 
     @Transactional
     public void completeLesson(Long progressId) {
+        Long userId = userUtils.getCurrentUser().getId();
         var progress = userLessonProgressRepository.findById(progressId)
                 .orElseThrow(() -> new ResourceNotFoundException("lesson.progress.not.found" + progressId));
+
+        if (!progress.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("User cannot access this lesson");
+        }
 
         LocalDateTime now = LocalDateTime.now(clock);
         progress.setIsCompleted(true);

@@ -7,6 +7,7 @@ import io.hexlet.cv.model.learning.UserProgramProgress;
 import io.hexlet.cv.repository.ProgramRepository;
 import io.hexlet.cv.repository.UserProgramProgressRepository;
 import io.hexlet.cv.repository.UserRepository;
+import io.hexlet.cv.util.UserUtils;
 import jakarta.transaction.Transactional;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +30,7 @@ public class UserProgramProgressService {
     private final UserRepository userRepository;
     private final ProgramRepository programRepository;
     private final Clock clock;
+    private final UserUtils userUtils;
 
     public Page<UserProgramProgressDTO> getUserProgress(Long userId, Pageable pageable) {
         log.debug("Getting progress for user {} (pageable={})", userId, pageable);
@@ -74,8 +77,14 @@ public class UserProgramProgressService {
     @Transactional
     public void completeProgram(Long progressId) {
         log.debug("Completing program progress {}", progressId);
+
+        Long userId = userUtils.getCurrentUser().getId();
         var progress = programProgressRepository.findById(progressId)
                 .orElseThrow(() -> new ResourceNotFoundException("program.progress.not.found"));
+
+        if (!progress.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("User cannot access this program");
+        }
 
         LocalDateTime now = LocalDateTime.now(clock);
         int totalLessons = progress.getProgram().getLessons().size();

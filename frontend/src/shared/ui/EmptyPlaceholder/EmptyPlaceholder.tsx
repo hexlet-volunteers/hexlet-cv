@@ -11,7 +11,9 @@ export const EmptyPlaceholder: React.FC<EmptyPlaceholderProps> = (props) => {
   const { buttonLink, buttonLabel, title, icon: Icon } = props
   return (
     <Stack align="center">
-      <Title order={2}>{title}</Title>
+      <Title order={2} ta="center">
+        {title}
+      </Title>
 
       {Icon && (
         <Text c="dimmed">

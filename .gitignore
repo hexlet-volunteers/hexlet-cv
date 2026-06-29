@@ -70,3 +70,5 @@ config.json
 
 # Docs
 docs/*review*.md
+docs/*analysis*.md
+docs/*merge-conflict*.md

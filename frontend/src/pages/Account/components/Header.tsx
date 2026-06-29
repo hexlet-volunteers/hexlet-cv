@@ -2,6 +2,7 @@ import { Autocomplete, Group, Burger } from '@mantine/core'
 import classes from './Header.module.css'
 import { IconSearch } from '@tabler/icons-react'
 import { useNavbar } from './NavigationProvider.tsx'
+import { Link } from '@inertiajs/react'
 
 /**
  * Описывает пропсы header-а личного кабинета.
@@ -22,7 +23,14 @@ export const Header = (props: HeaderProps) => {
   return (
     <header className={classes.header}>
       <div className={classes.inner}>
-        <Group>Личный кабинет</Group>
+        <Group>
+          <Link
+            href="/ru/employment"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            Личный кабинет
+          </Link>
+        </Group>
         <Group>
           <Autocomplete
             className={classes.search}

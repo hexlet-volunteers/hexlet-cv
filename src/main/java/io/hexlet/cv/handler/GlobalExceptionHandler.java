@@ -15,10 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -30,7 +32,6 @@ public class GlobalExceptionHandler {
                                 HttpServletRequest request,
                                 RedirectAttributes redirectAttributes,
                                 HttpStatus status) {
-
         // Обработка AJAX-запроса (Inertia)
         if ("true".equals(request.getHeader("X-Inertia"))) {
             redirectAttributes.addFlashAttribute("errors", errors);
@@ -124,6 +125,18 @@ public class GlobalExceptionHandler {
 
         Map<String, String> errors = Map.of("password", ex.getMessage());
         return commonHandle(errors, request, redirectAttributes, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Object handleAccessDenied(AccessDeniedException ex,
+                                     HttpServletRequest request,
+                                     RedirectAttributes redirectAttributes) {
+        Map<String, String> errors = Map.of("Access denied error", ex.getMessage());
+        if ("true".equals(request.getHeader("X-Inertia"))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("errors", errors));
+        }
+        return commonHandle(errors, request, redirectAttributes, HttpStatus.FORBIDDEN);
     }
 
 // это просто ошибки все остальное
