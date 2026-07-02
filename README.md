@@ -11,21 +11,46 @@ The platform will help users to create professional CV promptly and get link of 
 
 use [ https://github.com/Inertia4J/inertia4j ] 
 
+## Local environment
+
+The recommended way to manage local runtime versions is `asdf`.
+
+The project uses:
+
+- Node.js `20.19.5` for the frontend
+- Java 24 for the backend
+
+Runtime versions are defined in `.tool-versions`.
+
+Install the required plugins once:
+
+```bash
+asdf plugin add nodejs
+asdf plugin add java
+```
+
+Install the project versions:
+
+```bash
+asdf install
+```
+
+Verify the active versions:
+
+```bash
+node --version
+npm --version
+java --version
+asdf current
+```
+
+Gradle is managed by the project Gradle Wrapper, so do not install or pin Gradle through `asdf`.
+
+```bash
+./gradlew --version
+```
+
 ## Local Run
-
-### Node.js Version
-
-Frontend requires Node.js `>=20.19 <21`.
-
-Recommended local flow:
-
-1. `cd frontend`
-2. `nvm install`
-3. `nvm use`
-
-If you use a different version manager, switch Node.js to the version from `frontend/.nvmrc`.
-
-CI uses the version from `frontend/.nvmrc`.
 
 ### Production-like backend-only mode
 
@@ -53,6 +78,19 @@ In this mode Vite serves the HTML document itself and injects a mock Inertia ini
 - `frontend/index.html` keeps the literal `@PageObject@`; in `vite serve` it is replaced by a mock page, and in `vite build` it stays untouched for backend template rendering
 
 If you run `./gradlew run` directly, `frontend/dist` must already exist and be up to date.
+
+### Docker
+
+Docker builds are self-contained and do not use local `asdf`, Node.js, Java, or Gradle installations.
+
+The Makefile reads versions from `.tool-versions` and passes them to Docker as build args.
+
+Direct `docker build` also works through Dockerfile defaults, but these defaults should be kept in sync with `.tool-versions`.
+
+```bash
+make docker-build
+make docker-run
+```
 
 ### Smoke Tests
 

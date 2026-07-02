@@ -1,5 +1,8 @@
+ARG NODE_VERSION=20.19.5
+ARG JAVA_MAJOR_VERSION=24
+
 # ---- Stage 1: Frontend build ----
-FROM node:20 AS frontend-build
+FROM node:${NODE_VERSION} AS frontend-build
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
 RUN npm ci
@@ -24,14 +27,16 @@ SCRIPT
 RUN npx vite build
 
 # ---- Stage 2: Backend build ----
-FROM gradle:8.14-jdk-21-and-24 AS build
+FROM eclipse-temurin:${JAVA_MAJOR_VERSION}-jdk AS build
 WORKDIR /app
 
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
+COPY gradlew ./gradlew
 COPY gradle ./gradle
+RUN chmod +x ./gradlew
 
 # Скачиваем зависимости
-RUN gradle dependencies --no-daemon || true
+RUN ./gradlew dependencies --no-daemon || true
 
 # Копируем конфиг checkstyle и исходники
 COPY config ./config
@@ -49,10 +54,10 @@ RUN sed -i 's|<div id="app">[^<]*</div>|<div id="app" data-page='"'"'@PageObject
     /app/src/main/resources/templates/app.html && \
     grep -qE 'script[^>]*type=.*module' /app/src/main/resources/templates/app.html || (echo "ERROR: Script tags missing in app.html - frontend will not load" && exit 1)
 
-RUN gradle bootJar --no-daemon
+RUN ./gradlew bootJar --no-daemon -x test
 
 # ---- Stage 3: Runtime ----
-FROM eclipse-temurin:24-jre-alpine
+FROM eclipse-temurin:${JAVA_MAJOR_VERSION}-jre-alpine
 WORKDIR /app
 
 # Создаем пользователя (безопасность)
