@@ -7,10 +7,12 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -131,6 +133,10 @@ public class User implements UserDetails {
 
    // @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
    // private List<ResumeWork> resumeWorks = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, orphanRemoval = true)
+    private NewsletterSettings newsletterSettings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
