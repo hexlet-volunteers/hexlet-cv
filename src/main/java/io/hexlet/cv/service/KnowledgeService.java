@@ -6,8 +6,13 @@ import io.hexlet.cv.handler.exception.ResourceNotFoundException;
 import io.hexlet.cv.mapper.KnowledgeMapper;
 import io.hexlet.cv.repository.KnowledgeArticleRepository;
 import io.hexlet.cv.repository.KnowledgeInterviewRepository;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import io.hexlet.cv.util.ControllerUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +28,7 @@ public class KnowledgeService {
     private final KnowledgeInterviewRepository knowledgeInterviewRepository;
     private final KnowledgeArticleRepository knowledgeArticleRepository;
     private final KnowledgeMapper knowledgeMapper;
+    private final ControllerUtils utils;
 
     @Transactional
     public Page<KnowledgeArticleDto> getArticles(String category, Pageable pageable) {
@@ -87,5 +93,29 @@ public class KnowledgeService {
                 .limit(limit)
                 .map(knowledgeMapper::toInterviewDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Map<String, Object> buildArticlesPageProps(String category, Pageable pageable) {
+        var articlesPage = getArticles(category, pageable);
+        Map<String, Object> pageProps = new HashMap<>();
+        pageProps.put("articles", articlesPage.getContent());
+        pageProps.put("pagination", utils.createPaginationMap(articlesPage, pageable));
+        if (category != null && !category.isBlank()) {
+            pageProps.put("selectedCategory", category);
+        }
+        return pageProps;
+    }
+
+    @Transactional
+    public Map<String, Object> buildInterviewsPageProps(String category, Pageable pageable) {
+        Map<String, Object> pageProps = new HashMap<>();
+        var interviewsPage = getInterviews(category, pageable);
+        pageProps.put("interviews", interviewsPage.getContent());
+        pageProps.put("pagination", utils.createPaginationMap(interviewsPage, pageable));
+        if (category != null && !category.isBlank()) {
+            pageProps.put("selectedCategory", category);
+        }
+        return pageProps;
     }
 }

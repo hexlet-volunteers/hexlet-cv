@@ -18,12 +18,12 @@ app:
   security:
     cookie:
       access:
-        httpOnly: false
+        httpOnly: true
         secure: false
-        sameSite: None          # можно откуда угодно
+        sameSite: Lax
         maxAgeSeconds: 900       # 15 минут
       refresh:
-        httpOnly: false
+        httpOnly: true
         secure: false
-        sameSite: None
+        sameSite: Lax
         maxAgeSeconds: 2592000   # 30 дней

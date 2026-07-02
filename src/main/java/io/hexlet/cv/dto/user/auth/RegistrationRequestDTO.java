@@ -8,6 +8,8 @@ import io.hexlet.cv.validator.PasswordNotSimilarToUser;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,4 +34,8 @@ public class RegistrationRequestDTO {
 
     @NotBlank(message = "{user.lastName.notBlank}")
     private String lastName;
+
+    @NotNull(message = "{user.terms.required}")
+    @AssertTrue(message = "{user.terms.accepted}")
+    private Boolean terms;
 }

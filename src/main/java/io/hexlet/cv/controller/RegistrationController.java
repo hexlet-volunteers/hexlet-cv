@@ -38,7 +38,7 @@ public class RegistrationController {
 
         var props = flashPropsService.buildProps(request);
 
-        return inertia.render("Users/SignUp", props);
+        return inertia.render("Users/SignUp/Index", props);
     }
 
     @PostMapping(path = "/users")

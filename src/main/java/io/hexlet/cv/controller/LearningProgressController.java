@@ -5,6 +5,8 @@ import io.hexlet.cv.dto.learning.UserLessonProgressDTO;
 import io.hexlet.cv.dto.learning.UserProgramProgressDTO;
 import io.hexlet.cv.service.UserLessonProgressService;
 import io.hexlet.cv.service.UserProgramProgressService;
+import io.hexlet.cv.util.AccountPageRenderer;
+import io.hexlet.cv.util.ControllerUtils;
 import io.hexlet.cv.util.UserUtils;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,37 +34,32 @@ public class LearningProgressController {
     private final UserProgramProgressService userProgramProgressService;
     private final UserLessonProgressService userLessonProgressService;
     private final UserUtils userUtils;
+    private final AccountPageRenderer accountPageRenderer;
+    private final ControllerUtils utils;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Object getProgress(@PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<String> getProgress(@PageableDefault(size = 10) Pageable pageable) {
         log.debug("Get progress request");
         var user = userUtils.getCurrentUser();
 
         Page<UserProgramProgressDTO> progressPage = userProgramProgressService.getUserProgress(user.getId(),
                 pageable);
 
-        Map<String, Object> props = Map.of(
+        Map<String, Object> pageProps = Map.of(
                 "progress", progressPage.getContent(),
-                "pagination", Map.of(
-                        "currentPage", progressPage.getNumber(),
-                        "totalPages", progressPage.getTotalPages(),
-                        "totalElements", progressPage.getTotalElements(),
-                        "pageSize", pageable.getPageSize()
-                ),
-                "activeMainSection", "account",
-                "activeSubSection", "my-progress"
-        );
+                "pagination", utils.createPaginationMap(progressPage, pageable));
 
         log.debug("[CONTROLLER] Rendering Account/Learning/MyProgress/Index with {} "
                         + "programs and pagination",
                 progressPage.getContent().size());
-        return inertia.render("Account/Learning/MyProgress/Index", props);
+        return accountPageRenderer.render("Account/Learning/MyProgress/Index",
+                "myProgress", pageProps);
     }
 
     @GetMapping("/program/{programProgressId}/lessons")
     @ResponseStatus(HttpStatus.OK)
-    public Object getLessonProgress(@PathVariable Long programProgressId,
+    public ResponseEntity<String> getLessonProgress(@PathVariable Long programProgressId,
                                     @PageableDefault(size = 10) Pageable pageable) {
         var user = userUtils.getCurrentUser();
         log.debug("[CONTROLLER] Getting lessons for programProgressId: {}, user: {}, pageable: {}",
@@ -69,26 +67,20 @@ public class LearningProgressController {
 
         Page<UserLessonProgressDTO> lessonsProgressPage = userLessonProgressService
                 .getLessonProgress(user.getId(), programProgressId, pageable);
-        Map<String, Object> props = Map.of(
-                "lessonsProgress", lessonsProgressPage.getContent(),
-                "pagination", Map.of(
-                        "currentPage", lessonsProgressPage.getNumber(),
-                        "totalPages", lessonsProgressPage.getTotalPages(),
-                        "totalElements", lessonsProgressPage.getTotalElements(),
-                        "pageSize", pageable.getPageSize()
-                ),
-                "programProgressId", programProgressId,
-                "activeMainSection", "account",
-                "activeSubSection", "my-progress"
-        );
+
+        Map<String, Object> pageProps = Map.of(
+            "lessonsProgress", lessonsProgressPage.getContent(),
+            "pagination", utils.createPaginationMap(lessonsProgressPage, pageable),
+            "programProgressId", programProgressId);
 
         log.debug("[CONTROLLER] Rendering a Lessons page {} lessons snd pagination",
                 lessonsProgressPage.getContent().size());
-        return inertia.render("Account/Learning/MyProgress/Lessons", props);
+        return accountPageRenderer.render("Account/Learning/MyProgress/Lessons",
+                "myProgress", pageProps);
     }
 
     @PostMapping("/program/start")
-    public Object startProgram(@RequestParam Long programId) {
+    public ResponseEntity<String> startProgram(@RequestParam Long programId) {
         var user = userUtils.getCurrentUser();
         log.debug("[CONTROLLER] Program start {} by user {}", programId, user.getEmail());
 
@@ -97,7 +89,7 @@ public class LearningProgressController {
     }
 
     @PostMapping("/lesson/start")
-    public Object startLesson(@RequestParam Long programProgressId,
+    public ResponseEntity<String> startLesson(@RequestParam Long programProgressId,
                               @RequestParam Long lessonId) {
 
         var user = userUtils.getCurrentUser();
@@ -110,20 +102,20 @@ public class LearningProgressController {
     }
 
     @PostMapping("/lesson/{lessonProgressId}/complete")
-    public Object completeLesson(@PathVariable Long lessonProgressId,
+    public ResponseEntity<String> completeLesson(@PathVariable Long lessonProgressId,
                                  @RequestParam Long programProgressId) {
         userLessonProgressService.completeLesson(lessonProgressId);
         return inertia.redirect("/account/my-progress/program/" + programProgressId + "/lessons");
     }
 
     @PostMapping("/program/{programProgressId}/complete")
-    public Object completeProgram(@PathVariable Long programProgressId) {
+    public ResponseEntity<String> completeProgram(@PathVariable Long programProgressId) {
         userProgramProgressService.completeProgram(programProgressId);
         return inertia.redirect("/account/my-progress");
     }
 
     @GetMapping("/")
-    public Object defaultSection() {
+    public ResponseEntity<String> defaultSection() {
         log.debug("[CONTROLLER] GET /account/my-progress/ - Redirect to the main page");
         return inertia.redirect("/account/my-progress");
     }

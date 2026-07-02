@@ -38,7 +38,7 @@ public class LoginController {
 
         var props = flashPropsService.buildProps(request);
 
-        return inertia.render("Users/SignIn", props);
+        return inertia.render("Users/SignIn/Index", props);
     }
 
     @PostMapping(path = "/users/sign_in")

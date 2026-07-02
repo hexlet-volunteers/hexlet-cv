@@ -139,8 +139,7 @@ public class KnowledgeControllerTest {
                 .contains("Published Interview 2")
                 .doesNotContain("Unpublished Article")
                 .doesNotContain("Unpublished Interview");
-        assertThat(response).contains("\"activeMainSection\":\"account\"");
-        assertThat(response).contains("\"activeSubSection\":\"knowledge\"");
+        assertThat(response).contains("\"activeMenuKey\":\"knowledge\"");
     }
 
     @Test
@@ -160,8 +159,7 @@ public class KnowledgeControllerTest {
                 .andExpect(jsonPath("$.props.pagination.totalPages").value(2))
                 .andExpect(jsonPath("$.props.pagination.pageSize").value(10))
                 .andExpect(jsonPath("$.props.selectedCategory").doesNotExist())
-                .andExpect(jsonPath("$.props.activeMainSection").value("account"))
-                .andExpect(jsonPath("$.props.activeSubSection").value("knowledge-articles"));
+                .andExpect(jsonPath("$.props.account.activeMenuKey").value("knowledgeArticles"));
     }
 
     @Test
@@ -181,8 +179,7 @@ public class KnowledgeControllerTest {
         assertThat(response)
                 .contains("\"title\":\"Test Article\"")
                 .contains("\"category\":\"SQL\"")
-                .contains("\"activeMainSection\":\"account\"")
-                .contains("\"activeSubSection\":\"knowledge-articles\"")
+                .contains("\"activeMenuKey\":\"knowledgeArticles\"")
                 .doesNotContain("Another Article");
     }
 
@@ -239,8 +236,7 @@ public class KnowledgeControllerTest {
                 .andExpect(jsonPath("$.props.pagination.totalPages").value(3))
                 .andExpect(jsonPath("$.props.pagination.pageSize").value(5))
                 .andExpect(jsonPath("$.props.selectedCategory").doesNotExist())
-                .andExpect(jsonPath("$.props.activeMainSection").value("account"))
-                .andExpect(jsonPath("$.props.activeSubSection").value("knowledge-interviews"));
+                .andExpect(jsonPath("$.props.account.activeMenuKey").value("knowledgeInterviews"));
     }
 
     @Test
@@ -261,8 +257,7 @@ public class KnowledgeControllerTest {
                 .contains("\"title\":\"Test Interview\"")
                 .contains("\"category\":\"Java\"")
                 .contains("\"questionsCount\":10")
-                .contains("\"activeMainSection\":\"account\"")
-                .contains("\"activeSubSection\":\"knowledge-interviews\"")
+                .contains("\"activeMenuKey\":\"knowledgeInterviews\"")
                 .doesNotContain("Another Interview");
     }
 

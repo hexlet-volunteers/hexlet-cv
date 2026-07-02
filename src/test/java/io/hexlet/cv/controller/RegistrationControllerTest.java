@@ -349,6 +349,7 @@ public class RegistrationControllerTest {
         dto.setPassword("test_password123");
         dto.setFirstName("firstName");
         dto.setLastName("lastName");
+        dto.setTerms(true);
         return dto;
     }
 }
