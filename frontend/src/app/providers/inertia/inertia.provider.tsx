@@ -9,7 +9,6 @@ export const initInertia = (page?: Page) => {
   createInertiaApp({
     page: page ? page : undefined,
     resolve: (name) => {
-      console.log('Inertia ищет компонент:', name)
       const pages = import.meta.glob('../../../pages/**/*.tsx', { eager: true })
       const page = pages[`../../../pages/${name}.tsx`]
       if (!page) throw new Error(`Page not found: ${name}`)
