@@ -9,7 +9,7 @@
 | Слой | Технологии |
 |---|---|
 | Backend | Java 24, Spring Boot, Spring Security (JWT-куки), JPA, Gradle |
-| Frontend | React 18, TypeScript, Vite, Mantine, i18next, MSW (dev-моки) |
+| Frontend | React 18, TypeScript, Vite, Mantine, MSW (dev-моки) |
 | Интеграция | Inertia.js (текущая) → миграция на REST + TanStack Query ([#1111](https://github.com/hexlet-volunteers/hexlet-cv/issues/1111)) |
 | Контракт API | **Design First**: TypeSpec → OpenAPI → генерация BE (OpenAPI Generator) и FE-клиента ([эпик #1106](https://github.com/hexlet-volunteers/hexlet-cv/issues/1106)) |
 
