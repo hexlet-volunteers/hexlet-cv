@@ -1,11 +1,22 @@
-import { MantineProvider } from '@mantine/core'
+import { MantineProvider, createTheme } from '@mantine/core'
 import '@mantine/core/styles.css'
-import { cssVariablesResolver } from './theme/cssVariablesResolver'
-import { theme } from './theme/theme'
 
-export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Чистая светлая тема «Хекслет Карьера» (Mantine во главе). Тёмный — только сайдбар.
+const theme = createTheme({
+  primaryColor: 'blue',
+  defaultRadius: 'md',
+  fontFamily: 'Inter, -apple-system, Segoe UI, Roboto, sans-serif',
+})
+
+export const UIProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   return (
-    <MantineProvider theme={theme} cssVariablesResolver={cssVariablesResolver} defaultColorScheme="dark">
+    <MantineProvider
+      theme={theme}
+      defaultColorScheme="light"
+      forceColorScheme="light"
+    >
       {children}
     </MantineProvider>
   )

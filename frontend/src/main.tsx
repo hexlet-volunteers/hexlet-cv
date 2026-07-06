@@ -1,28 +1,16 @@
-import { initInertia } from '@inertia/inertia.provider'
-import { enableMocking } from '@mocks/enableMocking'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { RouterProvider } from 'react-router'
+import { UIProvider } from '@ui/ui.provider'
+import { router } from '@app/router'
 
-async function getInitialPage() {
-  const res = await fetch(window.location.href, {
-    headers: {
-      'X-Inertia': 'true',
-      'X-Requested-With': 'XMLHttpRequest',
-      Accept: 'application/json',
-    },
-  })
-
-  if (!res.ok) {
-    throw new Error(`Failed to load initial Inertia page: ${res.status}`)
-  }
-
-  return res.json()
+const el = document.getElementById('root')
+if (el) {
+  createRoot(el).render(
+    <StrictMode>
+      <UIProvider>
+        <RouterProvider router={router} />
+      </UIProvider>
+    </StrictMode>,
+  )
 }
-
-async function bootstrap() {
-  const mockEnabled = await enableMocking()
-
-  const page = mockEnabled ? await getInitialPage() : null
-
-  initInertia(page)
-}
-
-bootstrap()
