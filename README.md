@@ -105,3 +105,4 @@ npm run build
 ## Деплой
 
 Инструкция по развёртыванию на Render: [docs/RENDER_DEPLOY.md](docs/RENDER_DEPLOY.md). 
+
