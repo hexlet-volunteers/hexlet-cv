@@ -5,9 +5,7 @@ export default defineConfig({
   plugins: [react()],
   preview: {
     host: true,
-    allowedHosts: [
-      '.onrender.com',
-    ],
+    allowedHosts: ['.onrender.com'],
   },
   resolve: {
     alias: {
@@ -16,7 +14,6 @@ export default defineConfig({
       '@providers': '/src/app/providers',
       '@inertia': '/src/app/providers/inertia',
       '@ui': '/src/app/providers/ui',
-      '@i18n': '/src/app/providers/i18n',
       '@pages': '/src/pages',
       '@shared': '/src/shared',
       '@entities': '/src/entities',
