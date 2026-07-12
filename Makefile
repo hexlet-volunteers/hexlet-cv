@@ -31,4 +31,7 @@ check:
 lint:
 	./gradlew checkstyleMain checkstyleTest
 
-.PHONY: test
+typespec-compile:
+	npm --prefix api run compile
+
+.PHONY: test typespec-compile
