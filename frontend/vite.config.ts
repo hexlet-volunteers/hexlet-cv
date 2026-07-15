@@ -5,9 +5,7 @@ export default defineConfig({
   plugins: [react()],
   preview: {
     host: true,
-    allowedHosts: [
-      '.onrender.com',
-    ],
+    allowedHosts: ['.onrender.com'],
   },
   resolve: {
     alias: {

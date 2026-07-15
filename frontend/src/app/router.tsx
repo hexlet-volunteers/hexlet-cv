@@ -46,6 +46,10 @@ export const router = createBrowserRouter([
           '1200',
         ),
       },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
     ],
   },
   {
@@ -200,5 +204,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  { path: '*', element: <NotFound /> },
 ])
