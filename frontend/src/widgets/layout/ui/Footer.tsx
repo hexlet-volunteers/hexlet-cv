@@ -12,7 +12,6 @@ import {
   rem,
 } from '@mantine/core'
 import { Logo } from '@shared/ui/Logo'
-import { FloatingFooter } from './FloatingFooter'
 import { Link } from 'react-router'
 
 interface SocialIcon {
@@ -206,7 +205,6 @@ export function Footer() {
             © 2012–2026 Хекслет · Программирование — это просто
           </Text>
         </Group>
-        <FloatingFooter />
       </Container>
     </Box>
   )
