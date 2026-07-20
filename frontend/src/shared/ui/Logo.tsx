@@ -1,4 +1,4 @@
-import { Group, ActionIcon, Text, Stack, rem } from '@mantine/core'
+import { Group, ThemeIcon, Text, Stack, rem } from '@mantine/core'
 
 interface LogoProps {
   variant?: 'light' | 'dark'
@@ -9,7 +9,7 @@ export const Logo = ({ variant = 'dark' }: LogoProps) => {
 
   return (
     <Group gap="xs" align="center">
-      <ActionIcon
+      <ThemeIcon
         variant="filled"
         color="rgb(17, 110, 245)"
         size="lg"
@@ -18,7 +18,7 @@ export const Logo = ({ variant = 'dark' }: LogoProps) => {
         <Text ff="'JetBrains Mono', monospace" fw={700} c="white" fz={13}>
           &gt;_
         </Text>
-      </ActionIcon>
+      </ThemeIcon>
       <Stack gap={0}>
         <Text fw={700} lh="xs" fz={14.5} c={logoTextColor}>
           Хекслет

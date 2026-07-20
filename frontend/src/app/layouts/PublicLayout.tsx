@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router'
 import { Box, Group, Button, Text, Container, Anchor } from '@mantine/core'
-import { Footer } from './Footer'
+import { Footer } from '@widgets/footer'
 
 export function PublicLayout() {
   return (
