@@ -6,6 +6,10 @@ import {
 } from '@tabler/icons-react'
 import { type NavSection, type SocialIcon } from './types'
 
+/**
+ * Список поддерживаемых социальных сетей со ссылками на официальные аккаунты.
+ * Используется в компоненте `FooterSocialLinks` для рендеринга кнопок-иконок.
+ */
 export const socialIcons: SocialIcon[] = [
   {
     id: 'tg',
@@ -33,6 +37,10 @@ export const socialIcons: SocialIcon[] = [
   },
 ]
 
+/**
+ * Структура главного навигационного меню подвала, разбитая по тематическим колонкам.
+ * Используется в компоненте `FooterNavigation` для генерации ссылок.
+ */
 export const sections: NavSection[] = [
   {
     title: 'Продукт',

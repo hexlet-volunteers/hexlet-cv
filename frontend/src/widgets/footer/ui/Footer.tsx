@@ -13,6 +13,15 @@ import { Link } from 'react-router'
 import { FooterNavigation } from './FooterNavigation'
 import { FooterSocialLinks } from './FooterSocialLinks'
 
+/**
+ * Компонент подвала (Footer) для основного макета сайта.
+ *
+ * Отображает логотип со ссылкой на главную страницу, краткое описание сервиса,
+ * блок социальных сетей, навигационные ссылки и информацию об авторских правах.
+ * Адаптирован под мобильные и десктопные устройства с помощью сетки Mantine Grid.
+ *
+ * @returns {JSX.Element} Семантический элемент `<footer>` с разметкой подвала.
+ */
 export function Footer() {
   return (
     <Box component="footer" pt={52} bg="rgb(23, 23, 30)">
