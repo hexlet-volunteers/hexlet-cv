@@ -1,5 +1,6 @@
 import { Link, Outlet } from 'react-router'
 import { Box, Group, Button, Text, Container, Anchor } from '@mantine/core'
+import { Footer } from '@widgets/footer'
 
 export function PublicLayout() {
   return (
@@ -50,37 +51,7 @@ export function PublicLayout() {
         </Container>
       </Box>
       <Outlet />
-      <Box bg="dark.8" c="gray.4" mt={80} py={48}>
-        <Container size="lg">
-          <Group justify="space-between" align="flex-start">
-            <Box>
-              <Group gap={8}>
-                <Text ff="monospace" fw={700} c="blue.4">
-                  &gt;_
-                </Text>
-                <Text fw={700} c="white">
-                  Хекслет Карьера
-                </Text>
-              </Group>
-              <Text size="sm" mt="xs">
-                Вакансии и матчинг · Резюме с AI-ревью · Трекер откликов ·
-                AI-собеседования
-              </Text>
-            </Box>
-            <Group gap="xl">
-              <Anchor component={Link} to="/blog" c="gray.4">
-                Блог
-              </Anchor>
-              <Anchor component={Link} to="/legal" c="gray.4">
-                Правовая информация
-              </Anchor>
-              <Anchor href="/admin" c="gray.4">
-                Админка ↗
-              </Anchor>
-            </Group>
-          </Group>
-        </Container>
-      </Box>
+      <Footer />
     </Box>
   )
 }

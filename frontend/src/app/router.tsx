@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router'
-import { PublicLayout, AppLayout, AdminLayout } from '@widgets/layout'
+import { PublicLayout, AppLayout, AdminLayout } from './layouts'
 import { Landing } from '@pages/public/Landing'
 import { Login } from '@pages/public/Login'
 import { Register } from '@pages/public/Register'
@@ -45,6 +45,10 @@ export const router = createBrowserRouter([
           'Страница отдельной статьи блога.',
           '1200',
         ),
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },
@@ -152,6 +156,10 @@ export const router = createBrowserRouter([
           '1202',
         ),
       },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
     ],
   },
   {
@@ -198,7 +206,10 @@ export const router = createBrowserRouter([
           '1197',
         ),
       },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
     ],
   },
-  { path: '*', element: <NotFound /> },
 ])

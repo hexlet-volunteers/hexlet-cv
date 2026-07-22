@@ -1,7 +1,7 @@
 import { AppShell, Burger, Group, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Outlet } from 'react-router'
-import { Sidebar } from './Sidebar'
+import { Sidebar } from '@widgets/sidebar'
 
 export function AppLayout() {
   const [opened, { toggle }] = useDisclosure()
