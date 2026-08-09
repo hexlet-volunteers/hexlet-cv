@@ -1,3 +1,3 @@
-export { default as loadYandexMetrica } from './analytics/yandexMetrica'
-
-export { default as loadMarketingScripts } from './marketing/marketing'
+export type { Tracker } from './tracking/types'
+export { analyticsTracker } from './tracking/analyticsTracker'
+export { marketingTracker } from './tracking/marketingTracker'
