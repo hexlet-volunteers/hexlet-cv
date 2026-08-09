@@ -1,6 +1,7 @@
 import { Link, Outlet } from 'react-router'
 import { Box, Group, Button, Text, Container, Anchor } from '@mantine/core'
 import { Footer } from '@widgets/footer'
+import { CookieConsent } from '@widgets/cookieConsent'
 
 export function PublicLayout() {
   return (
@@ -51,6 +52,7 @@ export function PublicLayout() {
         </Container>
       </Box>
       <Outlet />
+      <CookieConsent />
       <Footer />
     </Box>
   )
