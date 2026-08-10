@@ -1,16 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocalStorage } from '@mantine/hooks'
-import { loadYandexMetrica, loadMarketingScripts } from '@shared/lib'
 import { Button, Paper, Text, Group, Checkbox, Stack } from '@mantine/core'
-
-/**
- * Структура объекта настроек согласия пользователя на использование файлов cookie.
- */
-interface CookieConsentSettings {
-  necessary: boolean
-  analytics: boolean
-  marketing: boolean
-}
 
 /**
  * Виджет согласия на использование файлов cookie согласно требованиям 152-ФЗ.
@@ -22,13 +11,7 @@ interface CookieConsentSettings {
  */
 
 export const CookieConsent = () => {
-  const [consent, setConsent] = useLocalStorage<CookieConsentSettings | null>({
-    key: 'cookieConsent',
-    defaultValue: null,
-  })
   const [isVisible, setIsVisible] = useState(false)
-  const [analyticsChecked, setAnalyticsChecked] = useState(false)
-  const [marketingChecked, setMarketingChecked] = useState(false)
 
   useEffect(() => {
     if (consent === null) {
