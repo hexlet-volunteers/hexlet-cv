@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import { PublicLayout, AppLayout, AdminLayout } from './layouts'
-import { Landing } from '@pages/public/Landing'
+import { Landing } from '@pages/landing'
 import { Login } from '@pages/public/Login'
 import { Register } from '@pages/public/Register'
 import { NotFound } from '@pages/public/NotFound'
