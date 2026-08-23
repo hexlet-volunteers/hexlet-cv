@@ -1,0 +1,7 @@
+fix: chore: clear erroneous executable bits on non-scripts
+
+- git: clear executable bit on 86 non-script source/config files
+
+Fixes #1276
+
+Signed-off-by: Vedant Madane <6527493+VedantMadane@users.noreply.github.com>
