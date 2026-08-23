@@ -3,7 +3,6 @@ package io.hexlet.cv.controller;
 import io.github.inertia4j.spring.Inertia;
 import io.hexlet.cv.service.KnowledgeService;
 import io.hexlet.cv.util.AccountPageRenderer;
-import io.hexlet.cv.util.ControllerUtils;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
