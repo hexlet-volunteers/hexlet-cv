@@ -11,6 +11,7 @@ versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugi
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow-plugin" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube-plugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless-plugin" }
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapiGenerator" }
 
 
 [versions]
@@ -47,6 +48,8 @@ inertia4j-spring = "1.0.4"
 postgresql = "42.7.3"
 
 jackson-jsr310 = "2.18.2"
+
+openapiGenerator = "7.25.0"
 
 
 

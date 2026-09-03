@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.spring.dependency.management)
     alias(libs.plugins.shadow)
     alias(libs.plugins.sonarqube)
+    alias(libs.plugins.openapi.generator)
 }
 
 group = "io.hexlet.blog"
@@ -124,3 +125,41 @@ java {
 //         property("sonar.host.url", "https://sonarcloud.io")
 //     }
 // }
+
+tasks.register<Exec>("installTypeSpecDependencies") {
+    workingDir("api")
+    commandLine("npm", "ci")
+}
+
+tasks.register<Exec>("compileTypeSpec") {
+    dependsOn(tasks.named("installTypeSpecDependencies"))
+    commandLine("npm", "--prefix", "api", "run", "compile")
+}
+
+tasks.openApiGenerate {
+    dependsOn(tasks.named("compileTypeSpec"))
+    generatorName.set("spring")
+    inputSpec.set(layout.buildDirectory.file("openapi/openapi.yaml").get().asFile.path)
+    outputDir.set(layout.buildDirectory.dir("generated-sources/openapi"))
+    apiPackage.set("io.hexlet.cv.controller")
+    modelPackage.set("io.hexlet.cv.dto")
+    configOptions.set(
+        mapOf(
+            "interfaceOnly" to "true",
+            "useSpringBoot3" to "true",
+            "openApiNullable" to "false",
+            "useRecords" to "true",
+            "useTags" to "true"
+        ),
+    )
+}
+
+tasks.compileJava {
+    dependsOn(tasks.openApiGenerate)
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated-sources/openapi/src/main/java"))
+    }
+}

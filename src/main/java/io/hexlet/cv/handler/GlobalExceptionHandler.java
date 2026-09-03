@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -170,6 +171,26 @@ public class GlobalExceptionHandler {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("errors", errors));
         }
         return commonHandle(errors, request, redirectAttributes, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Object handlePropertyReferenceException(
+            PropertyReferenceException ex,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
+        Map<String, String> errors = Map.of(
+                "error",
+                "Invalid sort parameter"
+        );
+
+        return commonHandle(
+                errors,
+                request,
+                redirectAttributes,
+                HttpStatus.BAD_REQUEST
+        );
     }
 
 // это просто ошибки все остальное

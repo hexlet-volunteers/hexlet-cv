@@ -1,5 +1,6 @@
 import "@typespec/http";
 import "@typespec/rest";
+import "./stories.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.Rest;
