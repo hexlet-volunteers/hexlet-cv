@@ -67,7 +67,6 @@ public class SecurityConfig {
                         .requestMatchers(AdminPaths.adminZonePatterns()).hasRole("ADMIN")
                         .requestMatchers("/account/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/dashboard", "/test").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/dashboard", "/test").permitAll()
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/stories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
