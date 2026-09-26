@@ -6,7 +6,9 @@ import io.hexlet.cv.audit.AuditLogger;
 import io.hexlet.cv.audit.AuditReason;
 import io.hexlet.cv.audit.AuditSubject;
 import io.hexlet.cv.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +45,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Configuration
 @EnableWebSecurity
@@ -65,7 +69,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AdminPaths.adminZonePatterns()).hasRole("ADMIN")
                         .requestMatchers("/account/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/dashboard", "/test", "/", "/api/v1/stories",
+                                "/users/*", "/users/sign_up", "/users/sign_in").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(rs -> rs
@@ -102,8 +111,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationEntryPoint jsonAuthEntryPoint(ObjectMapper om, AuditLogger auditLogger) {
+    public AuthenticationEntryPoint jsonAuthEntryPoint(
+            ObjectMapper om,
+            AuditLogger auditLogger,
+            RequestMappingHandlerMapping requestMappingHandlerMapping
+    ) {
         return (request, response, authException) -> {
+            if (!isKnownPath(request, requestMappingHandlerMapping)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
             auditLogger.logFailure(AuditEventType.UNAUTHORIZED, AuditSubject.current(),
                     resolveUnauthorizedReason(authException), request);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -274,6 +292,14 @@ public class SecurityConfig {
                 }
                 out.add(new SimpleGrantedAuthority(role));
             }
+        }
+    }
+
+    private static boolean isKnownPath(HttpServletRequest request, RequestMappingHandlerMapping mapping) {
+        try {
+            return mapping.getHandler(request) != null;
+        } catch (Exception ex) {
+            return false;
         }
     }
 }
