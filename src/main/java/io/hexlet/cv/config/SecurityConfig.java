@@ -6,7 +6,9 @@ import io.hexlet.cv.audit.AuditLogger;
 import io.hexlet.cv.audit.AuditReason;
 import io.hexlet.cv.audit.AuditSubject;
 import io.hexlet.cv.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,6 +45,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Configuration
 @EnableWebSecurity
@@ -110,8 +113,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationEntryPoint jsonAuthEntryPoint(ObjectMapper om, AuditLogger auditLogger) {
+    public AuthenticationEntryPoint jsonAuthEntryPoint(
+            ObjectMapper om,
+            AuditLogger auditLogger,
+            RequestMappingHandlerMapping requestMappingHandlerMapping
+    ) {
         return (request, response, authException) -> {
+            if (!isKnownPath(request, requestMappingHandlerMapping)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
             auditLogger.logFailure(AuditEventType.UNAUTHORIZED, AuditSubject.current(),
                     resolveUnauthorizedReason(authException), request);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -282,6 +294,14 @@ public class SecurityConfig {
                 }
                 out.add(new SimpleGrantedAuthority(role));
             }
+        }
+    }
+
+    private static boolean isKnownPath(HttpServletRequest request, RequestMappingHandlerMapping mapping) {
+        try {
+            return mapping.getHandler(request) != null;
+        } catch (Exception ex) {
+            return false;
         }
     }
 }
