@@ -69,13 +69,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AdminPaths.adminZonePatterns()).hasRole("ADMIN")
                         .requestMatchers("/account/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/dashboard", "/test").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/stories").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users/sign_up", "/users/sign_in").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users", "/users/sign_in", "/users/sign_out").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/dashboard", "/test", "/", "/api/v1/stories",
+                                "/users/*", "/users/sign_up", "/users/sign_in").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
