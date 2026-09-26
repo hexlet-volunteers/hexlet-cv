@@ -64,18 +64,18 @@ class NotFoundHandlingTest extends AuditLogCaptureSupport {
     }
 
     @Test
-    void shouldReturnUnauthorizedForUnknownPathWithoutAuth() throws Exception {
+    void shouldReturnNotFoundForUnknownPath() throws Exception {
         mockMvc.perform(get(UNKNOWN_PATH))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    void shouldWriteAuditEventForUnauthorizedScanOfUnknownPath() throws Exception {
+    void shouldNotWriteAuditEventForUnknownPath() throws Exception {
         mockMvc.perform(get(UNKNOWN_PATH));
 
         assertThat(capturedLines())
-                .as("попытка анонимного доступа к любому закрытому пути обязана попасть в аудит")
-                .anyMatch(line -> line.contains(AuditEventType.UNAUTHORIZED.name()));
+                .as("скан несуществующих путей не должен засорять журнал аудита")
+                .isEmpty();
     }
 
     @Test
