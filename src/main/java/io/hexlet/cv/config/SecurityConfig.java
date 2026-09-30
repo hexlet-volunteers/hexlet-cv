@@ -8,7 +8,6 @@ import io.hexlet.cv.audit.AuditSubject;
 import io.hexlet.cv.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
