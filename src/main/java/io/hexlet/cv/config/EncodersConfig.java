@@ -80,6 +80,8 @@ public class EncodersConfig {
     /**
      * Access-токен: tokenVersion (глобальный kill switch) и живость сессии — одним запросом.
      * Заменяет tokenVersionValid() на access-декодере.
+     *
+     * @return валидатор, проверяющий tokenVersion и живость сессии.
      */
     private OAuth2TokenValidator<Jwt> accessSessionValid() {
         return jwt -> {
@@ -109,6 +111,8 @@ public class EncodersConfig {
     /**
      * Refresh-токен обязан нести jti и familyId. Обязательный валидатор, не опциональный:
      * без него токены старого формата дойдут до TokenService и дадут 500 вместо 401.
+     *
+     * @return валидатор, проверяющий наличие jti и familyId.
      */
     private OAuth2TokenValidator<Jwt> refreshClaimsPresent() {
         return jwt -> {

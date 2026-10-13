@@ -33,6 +33,11 @@ public class RefreshTokenStore {
      * Одной транзакцией: гасит предъявленный токен и сохраняет преемника.
      * false — предъявленный токен не был активен; преемник в этом случае
      * не сохраняется и наружу не уходит.
+     *
+     * @param presentedJti идентификатор предъявленного токена.
+     * @param successor токен-преемник, который нужно сохранить.
+     * @param now текущее время.
+     * @return true, если токен был активен и ротация выполнена; false — если токен уже погашен.
      */
     @Transactional
     public boolean rotate(UUID presentedJti, RefreshToken successor, Instant now) {
@@ -43,7 +48,13 @@ public class RefreshTokenStore {
         return true;
     }
 
-    /** Отдельная транзакция: обязана закоммититься до броска исключения вызывающим. */
+    /**
+     * Отдельная транзакция: обязана закоммититься до броска исключения вызывающим.
+     *
+     * @param familyId идентификатор семейства токенов.
+     * @param now текущее время.
+     * @return количество погашенных токенов.
+     */
     @Transactional
     public int revokeFamily(UUID familyId, Instant now) {
         return repository.revokeFamily(familyId, now);

@@ -20,9 +20,9 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "refresh_tokens", indexes = {
-        @Index(name = "idx_refresh_tokens_family", columnList = "family_id, revoked_at"),
-        @Index(name = "idx_refresh_tokens_user", columnList = "user_id"),
-        @Index(name = "idx_refresh_tokens_expires", columnList = "expires_at")
+    @Index(name = "idx_refresh_tokens_family", columnList = "family_id, revoked_at"),
+    @Index(name = "idx_refresh_tokens_user", columnList = "user_id"),
+    @Index(name = "idx_refresh_tokens_expires", columnList = "expires_at")
 })
 @Getter
 @Setter

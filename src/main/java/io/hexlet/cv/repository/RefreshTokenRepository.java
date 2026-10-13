@@ -16,6 +16,11 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID
      * Атомарно гасит токен, если он ещё активен.
      * Возвращает 1 — токен был активен и погашен; 0 — не найден либо уже погашен.
      * Единственная точка, отвечающая на вопрос «первое предъявление или повторное».
+     *
+     * @param jti идентификатор токена.
+     * @param successorJti идентификатор токена-преемника.
+     * @param now текущее время.
+     * @return количество обновлённых записей.
      */
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
@@ -28,7 +33,13 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID
                        @Param("successorJti") UUID successorJti,
                        @Param("now") Instant now);
 
-    /** Гасит всю цепочку: logout одной сессии либо реакция на детект кражи. */
+    /**
+     * Гасит всю цепочку: logout одной сессии либо реакция на детект кражи.
+     *
+     * @param familyId идентификатор семейства токенов.
+     * @param now текущее время.
+     * @return количество токенов в семействе, которые были активны и погашены.
+     */
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
            update RefreshToken t
@@ -38,7 +49,13 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID
            """)
     int revokeFamily(@Param("familyId") UUID familyId, @Param("now") Instant now);
 
-    /** «Выйти со всех устройств» / реакция на инцидент. */
+    /**
+     * «Выйти со всех устройств» / реакция на инцидент.
+     *
+     * @param userId идентификатор пользователя.
+     * @param now текущее время.
+     * @return количество токенов пользователя, которые были активны и погашены.
+     */
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
            update RefreshToken t

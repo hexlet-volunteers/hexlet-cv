@@ -21,6 +21,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Валидна ли сессия: пользователь существует, tokenVersion совпадает,
      * и в семействе есть хотя бы один неотозванный refresh-токен.
      * Одним запросом — вызывается на каждом запросе с access-cookie.
+     *
+     * @param email email пользователя.
+     * @param tokenVersion версия токена.
+     * @param familyId идентификатор семейства токенов.
+     * @return true, если сессия валидна.
      */
     @Query("""
            select count(u.id) > 0 from User u
