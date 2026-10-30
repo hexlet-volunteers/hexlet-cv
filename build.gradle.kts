@@ -165,3 +165,6 @@ sourceSets {
         java.srcDir(layout.buildDirectory.dir("generated-sources/openapi/src/main/java"))
     }
 }
+tasks.withType<Checkstyle>().configureEach {
+    exclude { it.file.path.contains("generated-sources") }
+}

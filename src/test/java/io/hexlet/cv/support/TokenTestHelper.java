@@ -34,7 +34,13 @@ public class TokenTestHelper {
         return issue(email, password).refresh();
     }
 
-    /** Refresh-токен старого формата (без jti/familyId) для тестов миграции. */
+    /**
+     * Refresh-токен старого формата (без jti/familyId) для тестов миграции.
+     *
+     * @param email email пользователя.
+     * @param tokenVersion версия токена.
+     * @return строку refresh-токена старого формата (без jti/familyId).
+     */
     public String legacyRefreshToken(String email, long tokenVersion) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()

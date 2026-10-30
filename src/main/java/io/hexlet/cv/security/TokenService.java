@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 /**
  * Ротация refresh-токенов с детектом повторного использования.
  *
- * @Transactional здесь нет намеренно: отзыв семейства при детекте повтора должен
+ * {@code @Transactional} здесь нет намеренно: отзыв семейства при детекте повтора должен
  * закоммититься до броска BadCredentialsException. Транзакционные границы — в
  * RefreshTokenStore.
  */
@@ -34,7 +34,13 @@ public class TokenService {
     private final JwtProperties jwtProperties;
     private final RefreshTokenStore store;
 
-    /** Логин и регистрация: новая сессия — новое семейство. */
+    /**
+     * Логин и регистрация: новая сессия — новое семейство.
+     *
+     * @param email email пользователя.
+     * @param password пароль пользователя.
+     * @return выданные токены.
+     */
     public Tokens authenticateAndGenerate(String email, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         return startNewSession(requireUser(email));
@@ -71,7 +77,11 @@ public class TokenService {
         throw new BadCredentialsException("Refresh token already used");
     }
 
-    /** Logout: гасит только предъявленную сессию, остальные устройства остаются живыми. */
+    /**
+     * Logout: гасит только предъявленную сессию, остальные устройства остаются живыми.
+     *
+     * @param refreshToken предъявленный refresh-токен.
+     */
     public void revokeByRefreshToken(String refreshToken) {
         UUID familyId = familyIdOrNull(refreshToken);
         if (familyId != null) {
@@ -79,7 +89,11 @@ public class TokenService {
         }
     }
 
-    /** Глобальный отзыв: реакция на инцидент, будущая смена пароля. См. 10.1. */
+    /**
+     * Глобальный отзыв: реакция на инцидент, будущая смена пароля. См. 10.1.
+     *
+     * @param userId идентификатор пользователя.
+     */
     public void revokeAllSessions(Long userId) {
         store.revokeAllForUser(userId, Instant.now());
     }
@@ -88,6 +102,9 @@ public class TokenService {
      * Токен старого формата (выдан до релиза ротации).
      * Фаза 1 — обменять на новую сессию, не разлогинивая человека.
      * Фаза 2 — отклонить. См. раздел 5.
+     *
+     * @param user пользователь, которому принадлежит токен.
+     * @return выданные токены.
      */
     private Tokens handleLegacyToken(User user) {
         if (jwtProperties.isEnforceSessionClaims()) {
@@ -107,6 +124,10 @@ public class TokenService {
      * Гонка честного клиента: предъявленный токен погашен только что, и его преемник
      * ещё активен — значит цепочка не разветвлялась. При краже предъявляется токен
      * из середины цепочки, чей преемник давно погашен. См. 3.5.
+     *
+     * @param presentedJti идентификатор предъявленного токена.
+     * @param now текущее время.
+     * @return true, если это гонка честного клиента.
      */
     private boolean isBenignRace(UUID presentedJti, Instant now) {
         long grace = jwtProperties.getRefreshRaceGraceSeconds();
@@ -151,7 +172,12 @@ public class TokenService {
                 .orElseThrow(() -> new BadCredentialsException("Unknown token subject"));
     }
 
-    /** null вместо исключения: отсутствующий или битый claim — не 500, а путь к 401. */
+    /**
+     * null вместо исключения: отсутствующий или битый claim — не 500, а путь к 401.
+     *
+     * @param raw строка, которую нужно преобразовать в UUID.
+     * @return UUID, если строка валидна; null — если строка null или не парсится.
+     */
     private UUID parseUuidOrNull(String raw) {
         if (raw == null) {
             return null;
