@@ -21,3 +21,4 @@ jobs:
           cache: 'npm'
       - run: make ci-setup
       - run: make check
+      - run: make lint

@@ -29,7 +29,7 @@ check:
 	./gradlew clean test
 
 lint:
-	./gradlew checkstyleMain checkstyleTest
+	./gradlew spotlessCheck checkstyleMain checkstyleTest
 
 typespec-compile:
 	npm --prefix api run compile
