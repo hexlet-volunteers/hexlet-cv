@@ -57,6 +57,7 @@
 | Issue | Документ |
 |---|---|
 | #1215 — ротация и отзыв refresh-токенов | [docs/specs/1215-refresh-token-rotation.md](docs/specs/1215-refresh-token-rotation.md) |
+| #1307 — переезд cv.hexlet.io на новый стек | [docs/specs/migration-cv-hexlet-io.md](docs/specs/migration-cv-hexlet-io.md) |
 
 ## Быстрый старт
 
@@ -122,6 +123,8 @@ npm run build
 | [M5 — Подготовка к собесам](https://github.com/hexlet-volunteers/hexlet-cv/milestone/8) | [AI-собес, моки, вопросы #1127](https://github.com/hexlet-volunteers/hexlet-cv/issues/1127) |
 | [M6 — Аналитика и профиль](https://github.com/hexlet-volunteers/hexlet-cv/milestone/9) | [Аналитика #1128](https://github.com/hexlet-volunteers/hexlet-cv/issues/1128) · [Зарплаты и грейды #1129](https://github.com/hexlet-volunteers/hexlet-cv/issues/1129) · [Рефералы #1130](https://github.com/hexlet-volunteers/hexlet-cv/issues/1130) · [Профиль #1131](https://github.com/hexlet-volunteers/hexlet-cv/issues/1131) |
 | [M7 — Админка](https://github.com/hexlet-volunteers/hexlet-cv/milestone/10) | [Админка #1132](https://github.com/hexlet-volunteers/hexlet-cv/issues/1132) |
+
+Переезд действующего cv.hexlet.io (Rails на Heroku) на этот стек — отдельный эпик [#1307](https://github.com/hexlet-volunteers/hexlet-cv/issues/1307), план в [docs/specs/migration-cv-hexlet-io.md](docs/specs/migration-cv-hexlet-io.md).
 
 Все задачи содержат юз-кейс, критерии приёмки и скриншот экрана из дизайна.
 
