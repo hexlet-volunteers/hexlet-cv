@@ -121,6 +121,21 @@ public class ApiResumeControllerTest {
     }
 
     @Test
+    void staleCookieDoesNotBreakPublicPagesButProtectedStayClosed() throws Exception {
+        var stale = new Cookie("access_token", "stale.or.revoked.token");
+
+        mockMvc.perform(get("/api/resumes").cookie(stale)).andExpect(status().isOk());
+        mockMvc.perform(get("/api/resumes/{id}", published.getId()).cookie(stale)).andExpect(status().isOk());
+        mockMvc.perform(get("/api/account/resumes").cookie(stale)).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void validCookieStillIdentifiesUserOnPublicPages() throws Exception {
+        mockMvc.perform(get("/api/auth/me").cookie(tokenFor(author))).andExpect(status().isOk());
+        mockMvc.perform(get("/api/resumes").cookie(tokenFor(author))).andExpect(status().isOk());
+    }
+
+    @Test
     void accountRequiresLogin() throws Exception {
         mockMvc.perform(get("/api/account/resumes"))
                 .andExpect(status().isUnauthorized());

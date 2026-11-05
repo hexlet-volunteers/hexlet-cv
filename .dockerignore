@@ -1,5 +1,11 @@
 .git
+**/node_modules
+frontend/dist
+build
+.gradle
+src/main/resources/static
+src/main/resources/certs
 vendor
-node_modules
 log
+logs
 tmp

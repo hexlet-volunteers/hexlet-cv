@@ -36,6 +36,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -43,6 +44,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -77,16 +79,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AdminPaths.adminZonePatterns()).hasRole("ADMIN")
                         .requestMatchers("/account/**").authenticated()
-                        .requestMatchers(HttpMethod.GET,
-                                "/dashboard", "/test", "/", "/api/v1/stories",
-                                "/users/*", "/users/sign_up", "/users/sign_in",
-                                "/api/resumes", "/api/resumes/*", "/api/users/*", "/api/auth/csrf",
-                                "/ru", "/ru/**", "/en", "/en/**",
-                                "/resumes", "/resumes/*", "/profiles/*", "/sitemap.xml", "/robots.txt").permitAll()
-                        .requestMatchers(HttpMethod.POST,
-                                "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh",
-                                "/api/auth/login", "/api/auth/register", "/api/auth/logout",
-                                "/api/auth/password/forgot", "/api/auth/password/reset").permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_GET).permitAll()
+                        .requestMatchers(HttpMethod.POST, PUBLIC_POST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -110,9 +104,10 @@ public class SecurityConfig {
                                 .policyDirectives(
                                         "default-src 'self'; "
                                                 + "script-src 'self'; "
-                                                + "style-src 'self' 'unsafe-inline'; "
+                                                // Шрифты фронта (Manrope, JetBrains Mono) — с Google Fonts
+                                                + "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
                                                 + "img-src 'self' data:; "
-                                                + "font-src 'self'; "
+                                                + "font-src 'self' https://fonts.gstatic.com; "
                                                 + "connect-src 'self'; "
                                                 + "frame-ancestors 'none'; "
                                                 + "base-uri 'self'; "
@@ -265,6 +260,42 @@ public class SecurityConfig {
         return new ProviderManager(daoAuthProvider);
     }
 
+    /** Адреса, доступные без входа. Используются и в правилах доступа, и при чтении токена. */
+    static final String[] PUBLIC_GET = {
+        "/dashboard", "/test", "/", "/api/v1/stories",
+        "/users/*", "/users/sign_up", "/users/sign_in",
+        "/api/resumes", "/api/resumes/*", "/api/users/*", "/api/auth/csrf",
+        "/ru", "/ru/**", "/en", "/en/**",
+        "/resumes", "/resumes/*", "/profiles/*", "/sitemap.xml", "/robots.txt",
+        // Собранный фронт: статика и маршруты SPA (данные защищены на уровне API)
+        "/assets/**", "/vite.svg", "/favicon.ico", "/mockServiceWorker.js",
+        "/login", "/register", "/password/**", "/app", "/app/**",
+        "/blog", "/blog/*", "/legal"
+    };
+
+    static final String[] PUBLIC_POST = {
+        "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh",
+        "/api/auth/login", "/api/auth/register", "/api/auth/logout",
+        "/api/auth/password/forgot", "/api/auth/password/reset"
+    };
+
+    private static final AntPathMatcher PATHS = new AntPathMatcher();
+
+    static boolean isPublic(HttpServletRequest request) {
+        var path = request.getRequestURI().substring(request.getContextPath().length());
+        var patterns = switch (request.getMethod()) {
+            case "GET", "HEAD" -> PUBLIC_GET;
+            case "POST" -> PUBLIC_POST;
+            default -> new String[0];
+        };
+        for (var pattern : patterns) {
+            if (PATHS.match(pattern, path)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static final Set<String> SAFE_METHODS = Set.of("GET", "HEAD", "OPTIONS", "TRACE");
 
     private static boolean isStateChangingApiRequest(HttpServletRequest request) {
@@ -284,27 +315,40 @@ public class SecurityConfig {
             "/api/auth/password/forgot", "/api/auth/password/reset");
 
     @Bean
-    public BearerTokenResolver cookieTokenResolver() {
+    public BearerTokenResolver cookieTokenResolver(JwtDecoder jwtDecoder) {
         return request -> {
             // На входе, регистрации, обновлении токена и сбросе пароля access-токен не нужен.
-            // Если его читать, протухшая кука (например, после отзыва сессий при смене пароля)
-            // даёт 401 ещё до контроллера, и войти заново нельзя, пока не почистишь куки.
             var path = request.getRequestURI().substring(request.getContextPath().length());
             if (CREDENTIAL_ENDPOINTS.contains(path)
                     || path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/")) {
                 return null;
             }
-            var cookies = request.getCookies();
-            if (cookies == null) {
-                return null;
-            }
-            for (var c : cookies) {
-                if ("access_token".equals(c.getName())) {
-                    return c.getValue();
+            var token = accessTokenCookie(request);
+            // На публичных адресах протухший или отозванный токен не повод для 401: такой
+            // запрос обслуживаем как гостевой. Иначе после истечения сессии не открывались бы
+            // ни каталог, ни страница входа, пока не почистишь куки.
+            if (token != null && isPublic(request)) {
+                try {
+                    jwtDecoder.decode(token);
+                } catch (JwtException e) {
+                    return null;
                 }
             }
-            return null;
+            return token;
         };
+    }
+
+    private static String accessTokenCookie(HttpServletRequest request) {
+        var cookies = request.getCookies();
+        if (cookies == null) {
+            return null;
+        }
+        for (var c : cookies) {
+            if ("access_token".equals(c.getName())) {
+                return c.getValue();
+            }
+        }
+        return null;
     }
 
     @Bean
