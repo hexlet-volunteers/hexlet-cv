@@ -5,6 +5,7 @@ import io.hexlet.cv.audit.AuditEventType;
 import io.hexlet.cv.audit.AuditLogger;
 import io.hexlet.cv.audit.AuditReason;
 import io.hexlet.cv.audit.AuditSubject;
+import io.hexlet.cv.security.oauth.GithubLoginHandlers;
 import io.hexlet.cv.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,7 +58,8 @@ public class SecurityConfig {
                                  BearerTokenResolver cookieTokenResolver,
                                  Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthConverter,
                                  AuthenticationEntryPoint jsonAuthEntryPoint,
-                                 AccessDeniedHandler auditingAccessDeniedHandler)
+                                 AccessDeniedHandler auditingAccessDeniedHandler,
+                                 GithubLoginHandlers githubLogin)
             throws Exception {
         http
                 .cors(Customizer.withDefaults())
@@ -110,6 +112,7 @@ public class SecurityConfig {
                                                 + "object-src 'none'"
                                 )
                         ));
+        githubLogin.applyTo(http);
         return http.build();
     }
 
@@ -264,7 +267,8 @@ public class SecurityConfig {
             // Если его читать, протухшая кука (например, после отзыва сессий при смене пароля)
             // даёт 401 ещё до контроллера, и войти заново нельзя, пока не почистишь куки.
             var path = request.getRequestURI().substring(request.getContextPath().length());
-            if (CREDENTIAL_ENDPOINTS.contains(path)) {
+            if (CREDENTIAL_ENDPOINTS.contains(path)
+                    || path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/")) {
                 return null;
             }
             var cookies = request.getCookies();

@@ -5,6 +5,7 @@ import {
   Anchor,
   Button,
   Container,
+  Divider,
   Paper,
   PasswordInput,
   Stack,
@@ -12,7 +13,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import { useAuth } from '@features/auth'
+import { GithubButton, githubErrors, useAuth } from '@features/auth'
 import { ApiError, type FieldErrors } from '@shared/api'
 
 /** Куда вернуть после входа: только внутренние пути, чтобы `?next=` не увёл на чужой сайт. */
@@ -43,7 +44,8 @@ export function Login() {
     }
   }
 
-  const common = errors.error ?? errors.auth
+  const oauthError = githubErrors[params.get('error') ?? '']
+  const common = errors.error ?? errors.auth ?? oauthError
 
   return (
     <Container size={420} py={80}>
@@ -54,6 +56,8 @@ export function Login() {
         <form onSubmit={submit} noValidate>
           <Stack>
             {common && <Alert color="red">{common}</Alert>}
+            <GithubButton />
+            <Divider label="или по email" labelPosition="center" />
             <TextInput
               label="Email"
               placeholder="you@example.com"

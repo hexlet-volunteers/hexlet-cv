@@ -46,6 +46,16 @@ public class TokenService {
         return startNewSession(requireUser(email));
     }
 
+    /**
+     * Новая сессия для пользователя, которого уже проверил внешний провайдер (вход через GitHub).
+     *
+     * @param user пользователь
+     * @return пара access/refresh-токенов
+     */
+    public Tokens startSessionFor(User user) {
+        return startNewSession(user);
+    }
+
     public RefreshResult refresh(String refreshToken) {
         Jwt jwt = decodeOrReject(refreshToken);
         User user = requireUser(jwt.getSubject());

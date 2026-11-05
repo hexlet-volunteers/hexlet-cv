@@ -6,6 +6,7 @@ import {
   Button,
   Checkbox,
   Container,
+  Divider,
   Group,
   Paper,
   PasswordInput,
@@ -14,7 +15,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import { useAuth, type RegisterInput } from '@features/auth'
+import { GithubButton, useAuth, type RegisterInput } from '@features/auth'
 import { ApiError, type FieldErrors } from '@shared/api'
 
 const empty: RegisterInput = {
@@ -66,6 +67,8 @@ export function Register() {
         <form onSubmit={submit} noValidate>
           <Stack>
             {common && <Alert color="red">{common}</Alert>}
+            <GithubButton label="Продолжить через GitHub" />
+            <Divider label="или по email" labelPosition="center" />
             <Group grow align="flex-start">
               <TextInput
                 label="Имя"
