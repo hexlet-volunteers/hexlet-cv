@@ -5,6 +5,7 @@ import { Login } from '@pages/public/Login'
 import { Register } from '@pages/public/Register'
 import { NotFound } from '@pages/public/NotFound'
 import { ResumeCatalog, ResumePage, UserProfile } from '@pages/public/Resumes'
+import { ForgotPassword, ResetPassword } from '@pages/public/Password'
 import { MyResumes, ResumeEditor } from '@pages/app/MyResumes'
 import { Overview } from '@pages/app/Overview'
 import { Vacancies } from '@pages/app/Vacancies'
@@ -24,9 +25,11 @@ export const router = createBrowserRouter([
       { index: true, element: <Landing /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
+      { path: 'password/forgot', element: <ForgotPassword /> },
+      { path: 'password/reset', element: <ResetPassword /> },
       { path: 'resumes', element: <ResumeCatalog /> },
       { path: 'resumes/:id', element: <ResumePage /> },
-      { path: 'users/:id', element: <UserProfile /> },
+      { path: 'profiles/:id', element: <UserProfile /> },
       {
         path: 'legal',
         element: stub(

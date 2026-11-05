@@ -5,6 +5,7 @@ import io.hexlet.cv.audit.AuditEventType;
 import io.hexlet.cv.audit.AuditLogger;
 import io.hexlet.cv.audit.AuditReason;
 import io.hexlet.cv.audit.AuditSubject;
+import io.hexlet.cv.security.oauth.GithubLoginHandlers;
 import io.hexlet.cv.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,7 +58,8 @@ public class SecurityConfig {
                                  BearerTokenResolver cookieTokenResolver,
                                  Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthConverter,
                                  AuthenticationEntryPoint jsonAuthEntryPoint,
-                                 AccessDeniedHandler auditingAccessDeniedHandler)
+                                 AccessDeniedHandler auditingAccessDeniedHandler,
+                                 GithubLoginHandlers githubLogin)
             throws Exception {
         http
                 .cors(Customizer.withDefaults())
@@ -71,10 +73,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/dashboard", "/test", "/", "/api/v1/stories",
                                 "/users/*", "/users/sign_up", "/users/sign_in",
-                                "/api/resumes", "/api/resumes/*", "/api/users/*").permitAll()
+                                "/api/resumes", "/api/resumes/*", "/api/users/*",
+                                "/ru", "/ru/**", "/en", "/en/**",
+                                "/resumes", "/resumes/*", "/profiles/*", "/sitemap.xml", "/robots.txt").permitAll()
                         .requestMatchers(HttpMethod.POST,
                                 "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh",
-                                "/api/auth/login", "/api/auth/register", "/api/auth/logout").permitAll()
+                                "/api/auth/login", "/api/auth/register", "/api/auth/logout",
+                                "/api/auth/password/forgot", "/api/auth/password/reset").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -108,6 +113,7 @@ public class SecurityConfig {
                                                 + "object-src 'none'"
                                 )
                         ));
+        githubLogin.applyTo(http);
         return http.build();
     }
 
@@ -250,9 +256,22 @@ public class SecurityConfig {
         return new ProviderManager(daoAuthProvider);
     }
 
+    private static final Set<String> CREDENTIAL_ENDPOINTS = Set.of(
+            "/users", "/users/sign_in", "/api/auth/refresh",
+            "/api/auth/login", "/api/auth/register",
+            "/api/auth/password/forgot", "/api/auth/password/reset");
+
     @Bean
     public BearerTokenResolver cookieTokenResolver() {
         return request -> {
+            // На входе, регистрации, обновлении токена и сбросе пароля access-токен не нужен.
+            // Если его читать, протухшая кука (например, после отзыва сессий при смене пароля)
+            // даёт 401 ещё до контроллера, и войти заново нельзя, пока не почистишь куки.
+            var path = request.getRequestURI().substring(request.getContextPath().length());
+            if (CREDENTIAL_ENDPOINTS.contains(path)
+                    || path.startsWith("/oauth2/") || path.startsWith("/login/oauth2/")) {
+                return null;
+            }
             var cookies = request.getCookies();
             if (cookies == null) {
                 return null;

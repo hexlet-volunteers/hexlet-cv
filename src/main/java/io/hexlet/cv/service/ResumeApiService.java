@@ -6,14 +6,19 @@ import io.hexlet.cv.dto.resume.OwnResumeDTO;
 import io.hexlet.cv.dto.resume.PublicProfileDTO;
 import io.hexlet.cv.dto.resume.ResumeDetailsDTO;
 import io.hexlet.cv.dto.resume.ResumeEducationDTO;
+import io.hexlet.cv.dto.resume.ResumeEducationFormDTO;
 import io.hexlet.cv.dto.resume.ResumeFormDTO;
 import io.hexlet.cv.dto.resume.ResumeSummaryDTO;
 import io.hexlet.cv.dto.resume.ResumeWorkDTO;
+import io.hexlet.cv.dto.resume.ResumeWorkFormDTO;
 import io.hexlet.cv.handler.exception.ResourceNotFoundException;
 import io.hexlet.cv.model.Resume;
+import io.hexlet.cv.model.ResumeEducation;
+import io.hexlet.cv.model.ResumeWork;
 import io.hexlet.cv.model.User;
 import io.hexlet.cv.repository.ResumeRepository;
 import io.hexlet.cv.repository.UserRepository;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import lombok.AllArgsConstructor;
@@ -114,6 +119,32 @@ public class ResumeApiService {
         resume.setContactTelegram(form.getContactTelegram());
         resume.setContactPhone(form.getContactPhone());
         resume.setState(form.isPublished() ? PUBLISHED : DRAFT);
+
+        // Списки приходят целиком: старые записи удаляются (orphanRemoval), новые создаются.
+        resume.getWorks().clear();
+        for (var w : form.getWorks() == null ? List.<ResumeWorkFormDTO>of() : form.getWorks()) {
+            var work = new ResumeWork();
+            work.setResume(resume);
+            work.setCompany(w.getCompany().trim());
+            work.setPosition(w.getPosition());
+            work.setBeginDate(w.getBeginDate());
+            work.setEndDate(Boolean.TRUE.equals(w.getCurrent()) ? null : w.getEndDate());
+            work.setCurrent(Boolean.TRUE.equals(w.getCurrent()));
+            work.setDescription(w.getDescription());
+            resume.getWorks().add(work);
+        }
+        resume.getEducations().clear();
+        for (var e : form.getEducations() == null ? List.<ResumeEducationFormDTO>of() : form.getEducations()) {
+            var education = new ResumeEducation();
+            education.setResume(resume);
+            education.setInstitution(e.getInstitution().trim());
+            education.setFaculty(e.getFaculty());
+            education.setBeginDate(e.getBeginDate());
+            education.setEndDate(Boolean.TRUE.equals(e.getCurrent()) ? null : e.getEndDate());
+            education.setCurrent(Boolean.TRUE.equals(e.getCurrent()));
+            education.setDescription(e.getDescription());
+            resume.getEducations().add(education);
+        }
     }
 
     static ResumeSummaryDTO toSummary(Resume r) {
@@ -122,24 +153,35 @@ public class ResumeApiService {
     }
 
     private static ResumeDetailsDTO toDetails(Resume r) {
-        var works = r.getWorks().stream()
-                .map(w -> new ResumeWorkDTO(w.getCompany(), w.getPosition(), w.getBeginDate(), w.getEndDate(),
-                        w.getCurrent(), w.getDescription()))
-                .toList();
-        var educations = r.getEducations().stream()
-                .map(e -> new ResumeEducationDTO(e.getInstitution(), e.getFaculty(), e.getBeginDate(),
-                        e.getEndDate(), e.getCurrent(), e.getDescription()))
-                .toList();
         return new ResumeDetailsDTO(r.getId(), r.getName(), r.getSummary(), r.getSkillsDescription(),
                 r.getProjectsDescription(), r.getAwardsDescription(), r.getAboutMyself(), r.getGithubUrl(),
                 r.getHexletUrl(), r.getContactTelegram(), r.getCity(), r.getRelocation(), r.getEnglishFluency(),
-                r.getUpdatedAt(), AuthorDTO.from(r.getUser()), works, educations);
+                r.getUpdatedAt(), AuthorDTO.from(r.getUser()), works(r), educations(r));
     }
 
     private static OwnResumeDTO toOwn(Resume r) {
         return new OwnResumeDTO(r.getId(), r.getName(), r.getSummary(), r.getSkillsDescription(),
                 r.getProjectsDescription(), r.getAwardsDescription(), r.getAboutMyself(), r.getGithubUrl(),
                 r.getCity(), r.getRelocation(), r.getEnglishFluency(), r.getContactEmail(), r.getContactTelegram(),
-                r.getContactPhone(), PUBLISHED.equals(r.getState()), r.getUpdatedAt());
+                r.getContactPhone(), PUBLISHED.equals(r.getState()), r.getUpdatedAt(), works(r), educations(r));
+    }
+
+    // Сортировка: текущее место первым, дальше от новых к старым.
+    private static List<ResumeWorkDTO> works(Resume r) {
+        return r.getWorks().stream()
+                .sorted(Comparator.comparing(ResumeWork::getBeginDate,
+                        Comparator.nullsLast(Comparator.reverseOrder())))
+                .map(w -> new ResumeWorkDTO(w.getCompany(), w.getPosition(), w.getBeginDate(), w.getEndDate(),
+                        w.getCurrent(), w.getDescription()))
+                .toList();
+    }
+
+    private static List<ResumeEducationDTO> educations(Resume r) {
+        return r.getEducations().stream()
+                .sorted(Comparator.comparing(ResumeEducation::getBeginDate,
+                        Comparator.nullsLast(Comparator.reverseOrder())))
+                .map(e -> new ResumeEducationDTO(e.getInstitution(), e.getFaculty(), e.getBeginDate(),
+                        e.getEndDate(), e.getCurrent(), e.getDescription()))
+                .toList();
     }
 }

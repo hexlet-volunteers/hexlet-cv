@@ -5,7 +5,7 @@ import { fullName } from './lib/format'
 import { PageState } from './ui/PageState'
 import { ResumeCard } from './ui/ResumeCard'
 
-/** Публичный профиль — замена `/ru/users/:id` старого сайта. */
+/** Публичный профиль — замена `/ru/users/:id` старого сайта (туда ведёт редирект). */
 export function UserProfile() {
   const { id } = useParams()
   const { data: p, error, loading } = useApi(() => api<PublicProfile>(`/api/users/${id}`), [id])

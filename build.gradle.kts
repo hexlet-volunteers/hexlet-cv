@@ -35,6 +35,8 @@ dependencies {
     implementation(libs.springBootStarterValidation)
     implementation(libs.springBootStarterActuator)
     implementation(libs.springBootStarterSecurity)
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation(libs.springBootStarterOauth2ResourceServer)
     implementation(libs.springBootDevtools)
     implementation(libs.springBootConfigProcessor)

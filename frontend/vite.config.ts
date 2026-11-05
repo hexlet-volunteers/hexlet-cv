@@ -29,6 +29,9 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
       },
+      // Вход через GitHub: старт OAuth и callback обрабатывает бэкенд
+      '/oauth2': { target: 'http://localhost:8080', xfwd: true },
+      '^/login/oauth2/': { target: 'http://localhost:8080', xfwd: true },
       '^/[a-z]{2}(/|$)': {
         target: 'http://localhost:8080',
         changeOrigin: true,

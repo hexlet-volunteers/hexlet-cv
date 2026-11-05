@@ -1,9 +1,12 @@
 package io.hexlet.cv.dto.resume;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -55,6 +58,14 @@ public class ResumeFormDTO {
 
     @Size(max = 255)
     private String contactPhone;
+
+    @Valid
+    @Size(max = 30)
+    private List<ResumeWorkFormDTO> works = new ArrayList<>();
+
+    @Valid
+    @Size(max = 30)
+    private List<ResumeEducationFormDTO> educations = new ArrayList<>();
 
     /** Опубликовать резюме в каталоге. */
     private boolean published;
