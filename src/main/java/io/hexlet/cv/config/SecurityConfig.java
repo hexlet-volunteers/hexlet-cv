@@ -70,9 +70,11 @@ public class SecurityConfig {
                         .requestMatchers("/account/**").authenticated()
                         .requestMatchers(HttpMethod.GET,
                                 "/dashboard", "/test", "/", "/api/v1/stories",
-                                "/users/*", "/users/sign_up", "/users/sign_in").permitAll()
+                                "/users/*", "/users/sign_up", "/users/sign_in",
+                                "/api/resumes", "/api/resumes/*", "/api/users/*").permitAll()
                         .requestMatchers(HttpMethod.POST,
-                                "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh").permitAll()
+                                "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh",
+                                "/api/auth/login", "/api/auth/register", "/api/auth/logout").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

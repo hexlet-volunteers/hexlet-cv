@@ -9,6 +9,7 @@ import { type HeaderLink } from './types'
  * маршруты приложения (например, `/blog`).
  */
 export const links: HeaderLink[] = [
+  { label: 'Резюме', link: '/resumes' },
   { label: 'Возможности', link: '/#features' },
   { label: 'Как это работает', link: '/#how' },
   { label: 'Тарифы', link: '/#pricing' },

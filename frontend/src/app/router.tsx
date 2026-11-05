@@ -4,6 +4,8 @@ import { Landing } from '@pages/public/Landing'
 import { Login } from '@pages/public/Login'
 import { Register } from '@pages/public/Register'
 import { NotFound } from '@pages/public/NotFound'
+import { ResumeCatalog, ResumePage, UserProfile } from '@pages/public/Resumes'
+import { MyResumes, ResumeEditor } from '@pages/app/MyResumes'
 import { Overview } from '@pages/app/Overview'
 import { Vacancies } from '@pages/app/Vacancies'
 import { Tracker } from '@pages/app/Tracker'
@@ -22,6 +24,9 @@ export const router = createBrowserRouter([
       { index: true, element: <Landing /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
+      { path: 'resumes', element: <ResumeCatalog /> },
+      { path: 'resumes/:id', element: <ResumePage /> },
+      { path: 'users/:id', element: <UserProfile /> },
       {
         path: 'legal',
         element: stub(
@@ -60,6 +65,9 @@ export const router = createBrowserRouter([
       { path: 'vacancies', element: <Vacancies /> },
       { path: 'tracker', element: <Tracker /> },
       { path: 'resume', element: <Resume /> },
+      { path: 'resumes', element: <MyResumes /> },
+      { path: 'resumes/new', element: <ResumeEditor /> },
+      { path: 'resumes/:id', element: <ResumeEditor /> },
       {
         path: 'onboarding',
         element: stub(

@@ -52,7 +52,7 @@ const sections: NavSection[] = [
   {
     title: 'Документы',
     items: [
-      { label: 'Резюме', to: '/app/resume', badge: '78', badgeColor: 'gray' },
+      { label: 'Резюме', to: '/app/resumes' },
       { label: 'Письма', to: '/app/letters' },
       {
         label: 'Профиль',
