@@ -74,7 +74,8 @@ public class SecurityConfig {
                                 "/dashboard", "/test", "/", "/api/v1/stories",
                                 "/users/*", "/users/sign_up", "/users/sign_in",
                                 "/api/resumes", "/api/resumes/*", "/api/users/*",
-                                "/ru", "/ru/**", "/en", "/en/**").permitAll()
+                                "/ru", "/ru/**", "/en", "/en/**",
+                                "/resumes", "/resumes/*", "/profiles/*", "/sitemap.xml", "/robots.txt").permitAll()
                         .requestMatchers(HttpMethod.POST,
                                 "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh",
                                 "/api/auth/login", "/api/auth/register", "/api/auth/logout",
