@@ -15,7 +15,7 @@ export function ResumeCard({ resume, showAuthor = true }: { resume: ResumeSummar
       </Anchor>
       <Group gap={6} mt={4}>
         {showAuthor && (
-          <Anchor component={Link} to={`/users/${resume.author.id}`} fz="sm" c="dimmed">
+          <Anchor component={Link} to={`/profiles/${resume.author.id}`} fz="sm" c="dimmed">
             {fullName(resume.author)}
           </Anchor>
         )}

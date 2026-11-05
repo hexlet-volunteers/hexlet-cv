@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
       { path: 'register', element: <Register /> },
       { path: 'resumes', element: <ResumeCatalog /> },
       { path: 'resumes/:id', element: <ResumePage /> },
-      { path: 'users/:id', element: <UserProfile /> },
+      { path: 'profiles/:id', element: <UserProfile /> },
       {
         path: 'legal',
         element: stub(

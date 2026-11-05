@@ -41,7 +41,7 @@ export function ResumePage() {
         {r.name}
       </Title>
       <Group gap="xs" mt="xs">
-        <Anchor component={Link} to={`/users/${r.author.id}`} fw={600}>
+        <Anchor component={Link} to={`/profiles/${r.author.id}`} fw={600}>
           {fullName(r.author)}
         </Anchor>
         {r.city && <Badge variant="light">{r.city}</Badge>}

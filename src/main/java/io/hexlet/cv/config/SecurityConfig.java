@@ -71,7 +71,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/dashboard", "/test", "/", "/api/v1/stories",
                                 "/users/*", "/users/sign_up", "/users/sign_in",
-                                "/api/resumes", "/api/resumes/*", "/api/users/*").permitAll()
+                                "/api/resumes", "/api/resumes/*", "/api/users/*",
+                                "/ru", "/ru/**", "/en", "/en/**").permitAll()
                         .requestMatchers(HttpMethod.POST,
                                 "/users", "/users/sign_in", "/users/sign_out", "/api/auth/refresh",
                                 "/api/auth/login", "/api/auth/register", "/api/auth/logout").permitAll()
