@@ -15,7 +15,10 @@ import { Cta } from './ui/Cta'
  * ничего друг о друге не знают: каждая закрывает свою задачу из эпика, так что
  * их можно дорабатывать по отдельности.
  */
-export function Landing() {
+export { NewLanding as Landing } from './ui/redesign/NewLanding'
+
+/** Прежняя главная по прототипу — оставлена для сравнения. */
+export function LandingLegacy() {
   return (
     <Box>
       <Hero />
