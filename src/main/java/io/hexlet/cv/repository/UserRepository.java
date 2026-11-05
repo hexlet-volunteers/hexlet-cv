@@ -13,6 +13,10 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByResetPasswordToken(String resetPasswordToken);
+
+    Optional<User> findByProviderAndUid(String provider, String uid);
+
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update User u set u.tokenVersion = u.tokenVersion + 1 where u.email = :email")
     void incrementTokenVersion(@Param("email") String email);

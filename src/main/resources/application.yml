@@ -39,6 +39,10 @@ server:
     include-exception: false
 
 app:
+  # Адрес сайта для ссылок в письмах (сброс пароля). В проде задаётся через APP_PUBLIC_URL.
+  public-url: ${APP_PUBLIC_URL:http://localhost:5173}
+  mail:
+    from: ${APP_MAIL_FROM:noreply@hexlet.io}
   audit:
     # Читается напрямую logback-spring.xml, аппендер поднимается только в профиле prod
     file:

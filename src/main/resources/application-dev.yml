@@ -19,6 +19,10 @@ rsa:
   public-key: ${RSA_PUBLIC_KEY_PATH:classpath:certs/public.pem}
 
 app:
+  mail:
+    # SMTP в dev не настроен: ссылка на сброс пароля пишется в лог.
+    log-links: true
+  public-url: http://localhost:5173
   security:
     cookie:
       access:

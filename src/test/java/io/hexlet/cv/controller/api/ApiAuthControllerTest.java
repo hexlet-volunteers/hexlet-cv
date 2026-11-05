@@ -84,6 +84,17 @@ public class ApiAuthControllerTest {
     }
 
     @Test
+    void staleAccessCookieDoesNotBlockLogin() throws Exception {
+        createUser();
+
+        mockMvc.perform(post("/api/auth/login")
+                        .cookie(new Cookie("access_token", "stale.or.broken.token"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(Map.of("email", EMAIL, "password", PASSWORD))))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void loginWithWrongPasswordIsRejected() throws Exception {
         createUser();
 

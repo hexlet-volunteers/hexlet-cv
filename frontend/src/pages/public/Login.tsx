@@ -73,6 +73,9 @@ export function Login() {
               error={errors.password}
               required
             />
+            <Anchor component={Link} to="/password/forgot" size="sm" mt={-8}>
+              Забыли пароль?
+            </Anchor>
             <Button type="submit" fullWidth loading={loading}>
               Войти
             </Button>

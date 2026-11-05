@@ -6,8 +6,11 @@ import io.hexlet.cv.audit.AuditReason;
 import io.hexlet.cv.audit.AuditSubject;
 import io.hexlet.cv.audit.LoginFailureRateDetector;
 import io.hexlet.cv.dto.api.CurrentUserDTO;
+import io.hexlet.cv.dto.user.auth.ForgotPasswordRequestDTO;
 import io.hexlet.cv.dto.user.auth.LoginRequestDTO;
 import io.hexlet.cv.dto.user.auth.RegistrationRequestDTO;
+import io.hexlet.cv.dto.user.auth.ResetPasswordRequestDTO;
+import io.hexlet.cv.handler.exception.ClientException;
 import io.hexlet.cv.handler.exception.InvalidPasswordException;
 import io.hexlet.cv.handler.exception.UserAlreadyExistsException;
 import io.hexlet.cv.handler.exception.UserNotFoundException;
@@ -15,11 +18,13 @@ import io.hexlet.cv.repository.UserRepository;
 import io.hexlet.cv.security.TokenCookieService;
 import io.hexlet.cv.security.TokenService;
 import io.hexlet.cv.service.LoginService;
+import io.hexlet.cv.service.PasswordResetService;
 import io.hexlet.cv.service.RegistrationService;
 import io.hexlet.cv.util.UserUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,6 +56,7 @@ public class ApiAuthController {
     private final UserUtils userUtils;
     private final AuditLogger auditLogger;
     private final LoginFailureRateDetector loginFailureRateDetector;
+    private final PasswordResetService passwordResetService;
 
     @PostMapping("/login")
     public CurrentUserDTO login(@Valid @RequestBody LoginRequestDTO dto,
@@ -108,6 +114,34 @@ public class ApiAuthController {
             auditLogger.logFailure(AuditEventType.LOGOUT, subject, AuditReason.TOKEN_MISSING, request);
         } else {
             auditLogger.logSuccess(AuditEventType.LOGOUT, subject, request);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Запрос ссылки на сброс пароля. Ответ всегда 204, даже для незарегистрированного email.
+     *
+     * @param dto адрес из формы
+     * @return пустой ответ
+     */
+    @PostMapping("/password/forgot")
+    public ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO dto) {
+        passwordResetService.requestReset(dto.getEmail());
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Новый пароль по токену из письма.
+     *
+     * @param dto токен и новый пароль
+     * @return 204 или 400 с ошибкой в поле {@code token}
+     */
+    @PostMapping("/password/reset")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequestDTO dto) {
+        try {
+            passwordResetService.reset(dto.getToken(), dto.getPassword());
+        } catch (ClientException e) {
+            return ResponseEntity.badRequest().body(Map.of("errors", Map.of("token", e.getMessage())));
         }
         return ResponseEntity.noContent().build();
     }
