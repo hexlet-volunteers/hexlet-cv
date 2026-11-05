@@ -23,7 +23,10 @@ import {
   type FieldErrors,
   type OwnResume,
   type ResumeForm,
+  type WorkForm,
+  type EducationForm,
 } from '@shared/api'
+import { ExperienceFields } from './ui/ExperienceFields'
 
 const empty: ResumeForm = {
   name: '',
@@ -40,17 +43,60 @@ const empty: ResumeForm = {
   contactTelegram: '',
   contactPhone: '',
   published: false,
+  works: [],
+  educations: [],
 }
 
-function fromResume(r: OwnResume): ResumeForm {
-  const form = { ...empty }
-  for (const key of Object.keys(empty) as (keyof ResumeForm)[]) {
-    const value = r[key as keyof OwnResume]
-    if (value !== null && value !== undefined) {
-      ;(form as Record<string, unknown>)[key] = value
-    }
+const emptyWork: WorkForm = {
+  company: '',
+  position: '',
+  beginDate: '',
+  endDate: '',
+  current: false,
+  description: '',
+}
+
+const emptyEducation: EducationForm = {
+  institution: '',
+  faculty: '',
+  beginDate: '',
+  endDate: '',
+  current: false,
+  description: '',
+}
+
+/** null из API превращаем в пустые строки, чтобы поля формы оставались управляемыми. */
+const clean = <T extends object>(base: T, value: object): T => {
+  const result = { ...base }
+  for (const key of Object.keys(base) as (keyof T)[]) {
+    const v = (value as T)[key]
+    if (v !== null && v !== undefined) result[key] = v
   }
-  return form
+  return result
+}
+
+/** Пустые даты не отправляем: бэкенд ждёт либо дату, либо null. */
+const toPayload = (form: ResumeForm) => ({
+  ...form,
+  works: form.works.map((w) => ({
+    ...w,
+    beginDate: w.beginDate || null,
+    endDate: w.endDate || null,
+  })),
+  educations: form.educations.map((e) => ({
+    ...e,
+    beginDate: e.beginDate || null,
+    endDate: e.endDate || null,
+  })),
+})
+
+function fromResume(r: OwnResume): ResumeForm {
+  const { works = [], educations = [], ...rest } = r
+  return {
+    ...clean({ ...empty, works: [], educations: [] }, rest),
+    works: works.map((w) => clean(emptyWork, w)),
+    educations: educations.map((e) => clean(emptyEducation, e)),
+  }
 }
 
 function Editor() {
@@ -94,7 +140,7 @@ function Editor() {
         isNew ? '/api/account/resumes' : `/api/account/resumes/${id}`,
         {
           method: isNew ? 'POST' : 'PUT',
-          body: form,
+          body: toPayload(form),
         },
       )
       setSaved(true)
@@ -175,6 +221,38 @@ function Editor() {
             />
           </Stack>
         </Card>
+
+        <ExperienceFields
+          title="Опыт работы"
+          addLabel="Добавить место работы"
+          name="works"
+          items={form.works}
+          empty={emptyWork}
+          errors={errors}
+          fields={[
+            { key: 'company', label: 'Компания', required: true },
+            {
+              key: 'position',
+              label: 'Должность',
+              placeholder: 'Junior-разработчик',
+            },
+          ]}
+          onChange={(works) => setForm((f) => ({ ...f, works }))}
+        />
+
+        <ExperienceFields
+          title="Образование"
+          addLabel="Добавить учёбу"
+          name="educations"
+          items={form.educations}
+          empty={emptyEducation}
+          errors={errors}
+          fields={[
+            { key: 'institution', label: 'Учебное заведение', required: true },
+            { key: 'faculty', label: 'Факультет или курс' },
+          ]}
+          onChange={(educations) => setForm((f) => ({ ...f, educations }))}
+        />
 
         <Card withBorder radius="md" p="lg">
           <SimpleGrid cols={{ base: 1, sm: 2 }}>

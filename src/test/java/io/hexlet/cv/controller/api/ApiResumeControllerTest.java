@@ -19,6 +19,7 @@ import io.hexlet.cv.repository.UserRepository;
 import io.hexlet.cv.support.TokenTestHelper;
 import jakarta.servlet.http.Cookie;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -183,6 +184,54 @@ public class ApiResumeControllerTest {
 
         assertThat(resumeRepository.findById(published.getId()).orElseThrow().getName())
                 .isEqualTo("Zeta Java Developer");
+    }
+
+    @Test
+    void authorSavesWorkAndEducation() throws Exception {
+        var body = Map.of(
+                "name", "Zeta Java Developer",
+                "published", true,
+                "works", List.of(
+                        Map.of("company", "Old Corp", "position", "Стажёр",
+                                "beginDate", "2022-01-01", "endDate", "2023-01-01"),
+                        Map.of("company", "New Corp", "position", "Junior", "beginDate", "2024-03-01",
+                                "endDate", "2025-01-01", "current", true)),
+                "educations", List.of(Map.of("institution", "УрФУ", "faculty", "ИРИТ-РтФ")));
+
+        mockMvc.perform(put("/api/account/resumes/{id}", published.getId())
+                        .cookie(tokenFor(author))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(body)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.works.length()").value(2))
+                .andExpect(jsonPath("$.works[0].company").value("New Corp"))
+                .andExpect(jsonPath("$.works[0].endDate").doesNotExist())
+                .andExpect(jsonPath("$.educations[0].institution").value("УрФУ"));
+
+        mockMvc.perform(get("/api/resumes/{id}", published.getId()))
+                .andExpect(jsonPath("$.works.length()").value(2))
+                .andExpect(jsonPath("$.educations.length()").value(1));
+
+        // Повторное сохранение заменяет список, а не дописывает его.
+        mockMvc.perform(put("/api/account/resumes/{id}", published.getId())
+                        .cookie(tokenFor(author))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(Map.of("name", "Zeta Java Developer", "published", true,
+                                "works", List.of(Map.of("company", "Only Corp"))))))
+                .andExpect(jsonPath("$.works.length()").value(1))
+                .andExpect(jsonPath("$.educations.length()").value(0));
+    }
+
+    @Test
+    void workWithoutCompanyIsRejected() throws Exception {
+        var body = Map.of("name", "Zeta", "works", List.of(Map.of("position", "Junior")));
+
+        mockMvc.perform(put("/api/account/resumes/{id}", published.getId())
+                        .cookie(tokenFor(author))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(body)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors['works[0].company']").exists());
     }
 
     private Cookie tokenFor(User user) {

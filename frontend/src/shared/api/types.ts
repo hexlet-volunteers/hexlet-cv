@@ -78,6 +78,25 @@ export interface PublicProfile {
   resumes: ResumeSummary[]
 }
 
+/** Место работы или учёбы в форме: даты в формате `YYYY-MM-DD`, пустая строка — не указано. */
+export interface WorkForm {
+  company: string
+  position: string
+  beginDate: string
+  endDate: string
+  current: boolean
+  description: string
+}
+
+export interface EducationForm {
+  institution: string
+  faculty: string
+  beginDate: string
+  endDate: string
+  current: boolean
+  description: string
+}
+
 /** Поля формы резюме в кабинете. */
 export interface ResumeForm {
   name: string
@@ -94,6 +113,8 @@ export interface ResumeForm {
   contactTelegram: string
   contactPhone: string
   published: boolean
+  works: WorkForm[]
+  educations: EducationForm[]
 }
 
 export interface OwnResume extends Partial<

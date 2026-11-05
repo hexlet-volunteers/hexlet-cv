@@ -94,10 +94,11 @@ public class Resume {
     @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ResumeComment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    // Опыт и образование редактируются вместе с резюме, поэтому сохраняются каскадом.
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResumeEducation> educations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResumeWork> works = new ArrayList<>();
 
 

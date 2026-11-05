@@ -1,6 +1,7 @@
 package io.hexlet.cv.dto.resume;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 // Резюме для автора: все поля формы, включая контакты, и статус публикации.
 public record OwnResumeDTO(
@@ -19,5 +20,7 @@ public record OwnResumeDTO(
         String contactTelegram,
         String contactPhone,
         boolean published,
-        LocalDateTime updatedAt) {
+        LocalDateTime updatedAt,
+        List<ResumeWorkDTO> works,
+        List<ResumeEducationDTO> educations) {
 }
