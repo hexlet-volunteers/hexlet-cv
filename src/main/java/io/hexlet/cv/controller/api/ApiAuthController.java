@@ -146,6 +146,16 @@ public class ApiAuthController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Выдаёт CSRF-куку {@code XSRF-TOKEN}, если её ещё нет. Тело пустое: куку ставит фильтр безопасности.
+     *
+     * @return пустой ответ
+     */
+    @GetMapping("/csrf")
+    public ResponseEntity<Void> csrf() {
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/me")
     public CurrentUserDTO me() {
         return CurrentUserDTO.from(userUtils.getCurrentUser());

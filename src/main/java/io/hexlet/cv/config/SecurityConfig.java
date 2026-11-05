@@ -41,6 +41,7 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenResolv
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -63,7 +64,13 @@ public class SecurityConfig {
             throws Exception {
         http
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                // CSRF проверяется для изменяющих запросов к REST API (#1056): сессия живёт в куках,
+                // и без токена сторонний сайт мог бы отправить запрос от имени пользователя.
+                // Старые Inertia-маршруты не трогаем — они уходят вместе с Inertia (#1111).
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(csrfTokenRepository())
+                        .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
+                        .requireCsrfProtectionMatcher(SecurityConfig::isStateChangingApiRequest))
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jsonAuthEntryPoint)
                         .accessDeniedHandler(auditingAccessDeniedHandler))
@@ -73,7 +80,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/dashboard", "/test", "/", "/api/v1/stories",
                                 "/users/*", "/users/sign_up", "/users/sign_in",
-                                "/api/resumes", "/api/resumes/*", "/api/users/*",
+                                "/api/resumes", "/api/resumes/*", "/api/users/*", "/api/auth/csrf",
                                 "/ru", "/ru/**", "/en", "/en/**",
                                 "/resumes", "/resumes/*", "/profiles/*", "/sitemap.xml", "/robots.txt").permitAll()
                         .requestMatchers(HttpMethod.POST,
@@ -183,6 +190,7 @@ public class SecurityConfig {
                 "X-Requested-With",
                 "X-Inertia",
                 "X-Inertia-Version",
+                "X-XSRF-TOKEN",
                 "Accept",
                 "Origin",
                 "Access-Control-Request-Method",
@@ -222,6 +230,7 @@ public class SecurityConfig {
                 "X-Requested-With",
                 "X-Inertia",
                 "X-Inertia-Version",
+                "X-XSRF-TOKEN",
                 "Accept",
                 "Origin",
                 "Access-Control-Request-Method",
@@ -254,6 +263,19 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(DaoAuthenticationProvider daoAuthProvider) {
         return new ProviderManager(daoAuthProvider);
+    }
+
+    private static final Set<String> SAFE_METHODS = Set.of("GET", "HEAD", "OPTIONS", "TRACE");
+
+    private static boolean isStateChangingApiRequest(HttpServletRequest request) {
+        var path = request.getRequestURI().substring(request.getContextPath().length());
+        return path.startsWith("/api/") && !SAFE_METHODS.contains(request.getMethod());
+    }
+
+    static CookieCsrfTokenRepository csrfTokenRepository() {
+        var repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        repository.setCookieCustomizer(cookie -> cookie.path("/").secure(true).sameSite("Strict"));
+        return repository;
     }
 
     private static final Set<String> CREDENTIAL_ENDPOINTS = Set.of(
