@@ -43,6 +43,8 @@
 | #1313 | Прод-окружение в РФ и автодеплой из `main` | #1233 |
 | #1314 | Как определять студентов Хекслета для тарифа «Студентам» | — |
 | #1315 | План переключения домена и отката | #1311, #1312, #1313 |
+| #1317 | Вход через GitHub: у части старых пользователей нет пароля | — |
+| #1318 | Страницы резюме для поисковиков, sitemap.xml, robots.txt | #1310 |
 
 ## Перенос данных
 
@@ -58,8 +60,9 @@
 |---|---|
 | `/ru`, `/ru?q=…&page=…` | каталог резюме с тем же поиском |
 | `/ru/resumes/:id` | публичная страница резюме `:id` |
-| `/ru/users/:id` | публичный профиль `:id` |
+| `/ru/users/:id` | публичный профиль `/profiles/:id` (`/users/{id}` пока занят Inertia) |
 | `/ru/users/sign_in`, `/ru/users/sign_up` | `/login`, `/register` |
+| `/ru/users/password/new` | `/password/forgot` |
 | `/ru/vacancies` | `/` до появления раздела вакансий |
 | `/en/...` | те же правила |
 
@@ -74,6 +77,14 @@
 5. Переключение DNS cv.hexlet.io на новое окружение.
 6. Мониторинг ошибок и 404 первые дни.
 7. Откат: DNS обратно на Heroku, база Heroku не удаляется минимум месяц.
+
+## Переменные окружения прода
+
+| Переменная | Зачем |
+|---|---|
+| `APP_PUBLIC_URL` | адрес сайта для ссылок в письмах, canonical и sitemap |
+| `SPRING_MAIL_HOST`, `SPRING_MAIL_PORT`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD`, `APP_MAIL_FROM` | письма сброса пароля |
+| `APP_OAUTH_GITHUB_CLIENT_ID`, `APP_OAUTH_GITHUB_CLIENT_SECRET` | вход через GitHub; callback `<APP_PUBLIC_URL>/login/oauth2/code/github` |
 
 ## Открытые вопросы
 
