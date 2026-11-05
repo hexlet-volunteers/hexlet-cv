@@ -24,6 +24,11 @@ export default defineConfig({
   server: {
     open: true,
     proxy: {
+      // REST API бэкенда (make run → :8080)
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
       '^/[a-z]{2}(/|$)': {
         target: 'http://localhost:8080',
         changeOrigin: true,

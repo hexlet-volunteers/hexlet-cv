@@ -82,6 +82,8 @@ echo "VITE_MSW=true" > .env.local
 npm run dev                      # http://localhost:5173
 ```
 
+С бэкендом: запустите `make run` (порт 8080), Vite проксирует `/api/**` на него. Для dev-профиля нужны JWT-ключи в `src/main/resources/certs/` (команды в `.env.example`). Вход, регистрация, каталог резюме (`/resumes`) и «Мои резюме» (`/app/resumes`) работают с реальным API, остальные экраны пока на моках.
+
 ## Проверки и тесты
 
 ```bash
