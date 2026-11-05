@@ -125,3 +125,74 @@ export interface OwnResume extends Partial<
   published: boolean
   updatedAt: string | null
 }
+
+/** Трекер откликов (#1155). Даты — `YYYY-MM-DD`, время — `YYYY-MM-DD HH:mm`. */
+export type ApplicationStage =
+  | 'SAVED'
+  | 'APPLIED'
+  | 'SCREENING'
+  | 'INTERVIEW'
+  | 'OFFER'
+  | 'REJECTED'
+
+export type ApplicationEventType =
+  | 'CREATED'
+  | 'STAGE_CHANGED'
+  | 'REPLY'
+  | 'INTERVIEW'
+  | 'LETTER'
+  | 'NOTE'
+
+export interface ApplicationAlert {
+  type: 'SILENCE' | 'DEADLINE'
+  days: number
+}
+
+export interface ApplicationSummary {
+  id: number
+  company: string
+  position: string
+  salary?: string
+  source?: string
+  stage: ApplicationStage
+  rejectedAtStage?: ApplicationStage
+  resume?: { id: number; name: string }
+  deadline?: string
+  nextStepTitle?: string
+  nextStepAt?: string
+  lastEventAt: string
+  createdAt?: string
+  alerts: ApplicationAlert[]
+}
+
+export interface ApplicationDetails extends ApplicationSummary {
+  vacancyUrl?: string
+  events: {
+    id: number
+    type: ApplicationEventType
+    text: string
+    occurredAt: string
+  }[]
+}
+
+export interface ApplicationList {
+  items: ApplicationSummary[]
+  counts: Record<'ALL' | ApplicationStage, number>
+  rejections: {
+    total: number
+    byStage: Partial<Record<ApplicationStage, number>>
+  }
+}
+
+export interface ApplicationForm {
+  company: string
+  position: string
+  salary?: string
+  vacancyUrl?: string
+  source?: string
+  stage?: ApplicationStage
+  resumeId?: number | null
+  deadline?: string | null
+  nextStepTitle?: string
+  nextStepAt?: string | null
+}
