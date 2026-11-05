@@ -78,3 +78,5 @@ certs/
 # Тестовые key-фикстуры (не секреты) — issue #1222
 !src/test/resources/certs/
 !src/test/resources/certs/*.pem
+# Собранный фронт кладётся сюда при сборке образа
+src/main/resources/static/

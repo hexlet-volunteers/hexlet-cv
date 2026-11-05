@@ -3,6 +3,7 @@ package io.hexlet.cv.controller.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -68,6 +69,7 @@ public class ApiResumeControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
                 .apply(springSecurity())
+                .defaultRequest(get("/").with(csrf()))
                 .build();
 
         author = createUser("api-author@example.com");
@@ -116,6 +118,21 @@ public class ApiResumeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resumes.length()").value(1))
                 .andExpect(jsonPath("$.resumes[*].id", not(hasItem(draft.getId().intValue()))));
+    }
+
+    @Test
+    void staleCookieDoesNotBreakPublicPagesButProtectedStayClosed() throws Exception {
+        var stale = new Cookie("access_token", "stale.or.revoked.token");
+
+        mockMvc.perform(get("/api/resumes").cookie(stale)).andExpect(status().isOk());
+        mockMvc.perform(get("/api/resumes/{id}", published.getId()).cookie(stale)).andExpect(status().isOk());
+        mockMvc.perform(get("/api/account/resumes").cookie(stale)).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void validCookieStillIdentifiesUserOnPublicPages() throws Exception {
+        mockMvc.perform(get("/api/auth/me").cookie(tokenFor(author))).andExpect(status().isOk());
+        mockMvc.perform(get("/api/resumes").cookie(tokenFor(author))).andExpect(status().isOk());
     }
 
     @Test

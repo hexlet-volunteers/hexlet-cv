@@ -3,7 +3,8 @@
  *
  * Токены живут в HttpOnly-куках, поэтому фронт их не видит: запросы идут с
  * `credentials: 'include'`, а при 401 клиент один раз просит новый access-токен
- * через `/api/auth/refresh` и повторяет запрос.
+ * через `/api/auth/refresh` и повторяет запрос. На изменяющих запросах отправляет
+ * CSRF-токен из куки `XSRF-TOKEN` в заголовке `X-XSRF-TOKEN`.
  */
 
 /** Ошибки бэкенда приходят как `{ errors: { поле: сообщение } }`. */
@@ -22,11 +23,35 @@ export class ApiError extends Error {
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
+const SAFE: Method[] = ['GET']
+
+/** CSRF-токен из куки `XSRF-TOKEN` — бэкенд проверяет его на всех изменяющих запросах (#1056). */
+function csrfToken() {
+  const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
+  return match ? decodeURIComponent(match[1]) : null
+}
+
+/** Если куки ещё нет (первый запрос в сессии), бэкенд выдаст её на `/api/auth/csrf`. */
+async function ensureCsrfToken() {
+  if (!csrfToken()) {
+    await fetch('/api/auth/csrf', { credentials: 'include' }).catch(
+      () => undefined,
+    )
+  }
+  return csrfToken()
+}
+
 async function send(method: Method, path: string, body?: unknown) {
+  const headers: Record<string, string> = {}
+  if (body !== undefined) headers['Content-Type'] = 'application/json'
+  if (!SAFE.includes(method)) {
+    const token = await ensureCsrfToken()
+    if (token) headers['X-XSRF-TOKEN'] = token
+  }
   return fetch(path, {
     method,
     credentials: 'include',
-    headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
+    headers,
     body: body === undefined ? undefined : JSON.stringify(body),
   })
 }

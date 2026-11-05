@@ -79,6 +79,18 @@ public class SpaShell {
                 .replace("<div id=\"root\"></div>", "<div id=\"root\">" + bodyHtml + "</div>");
     }
 
+    /**
+     * Оболочка без содержимого для страниц, которые рисует только фронт (вход, кабинет).
+     *
+     * @param noindex запретить индексацию
+     * @return HTML-документ
+     */
+    public String plain(boolean noindex) {
+        return noindex
+                ? template.replace("</head>", "  <meta name=\"robots\" content=\"noindex\" />\n  </head>")
+                : template;
+    }
+
     public static String escape(String value) {
         return value == null ? "" : HtmlUtils.htmlEscape(value, StandardCharsets.UTF_8.name());
     }

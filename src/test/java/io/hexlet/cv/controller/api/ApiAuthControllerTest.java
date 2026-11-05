@@ -2,6 +2,7 @@ package io.hexlet.cv.controller.api;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,6 +60,7 @@ public class ApiAuthControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
                 .apply(springSecurity())
+                .defaultRequest(get("/").with(csrf()))
                 .build();
         cleanup();
     }
@@ -92,6 +94,17 @@ public class ApiAuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(Map.of("email", EMAIL, "password", PASSWORD))))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void stateChangingApiRequestWithoutCsrfTokenIsForbidden() throws Exception {
+        createUser();
+        var noCsrf = MockMvcBuilders.webAppContextSetup(wac).apply(springSecurity()).build();
+
+        noCsrf.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(Map.of("email", EMAIL, "password", PASSWORD))))
+                .andExpect(status().isForbidden());
     }
 
     @Test
