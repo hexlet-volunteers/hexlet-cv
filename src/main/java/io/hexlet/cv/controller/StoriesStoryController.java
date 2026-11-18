@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.data.util.TypeInformation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,6 +22,9 @@ public class StoriesStoryController implements StoriesApi {
 
     private static final Set<String> ALLOWED_SORT = Set.of("displayOrder", "id", "authorName");
     private static final String DEFAULT_SORT = "displayOrder";
+
+    private static final String DIRECTION_ASC = "asc";
+    private static final String DIRECTION_DESC = "desc";
 
     private final StoriesStoryService storiesStoryService;
 
@@ -35,7 +40,7 @@ public class StoriesStoryController implements StoriesApi {
     }
 
     private Sort parseSort(List<String> sortParams) {
-        if (sortParams == null || sortParams.isEmpty()) {
+        if (CollectionUtils.isEmpty(sortParams)) {
             return Sort.by(Sort.Direction.ASC, DEFAULT_SORT);
         }
 
@@ -43,7 +48,7 @@ public class StoriesStoryController implements StoriesApi {
 
         for (int i = 0; i < sortParams.size(); i++) {
             String param = sortParams.get(i);
-            if (param == null || param.isBlank() || isDirection(param)) {
+            if (!StringUtils.hasText(param) || isDirection(param)) {
                 continue;
             }
 
@@ -54,13 +59,11 @@ public class StoriesStoryController implements StoriesApi {
             Sort.Direction direction = Sort.Direction.ASC;
 
             if (parts.length > 1) {
-                // Случай "displayOrder,desc"
-                direction = "desc".equalsIgnoreCase(parts[1].trim())
+                direction = DIRECTION_DESC.equalsIgnoreCase(parts[1].trim())
                         ? Sort.Direction.DESC
                         : Sort.Direction.ASC;
             } else if (i + 1 < sortParams.size() && isDirection(sortParams.get(i + 1))) {
-                // Случай, когда передали ["displayOrder", "desc"] отдельными элементами
-                direction = "desc".equalsIgnoreCase(sortParams.get(i + 1).trim())
+                direction = DIRECTION_DESC.equalsIgnoreCase(sortParams.get(i + 1).trim())
                         ? Sort.Direction.DESC
                         : Sort.Direction.ASC;
             }
@@ -72,7 +75,11 @@ public class StoriesStoryController implements StoriesApi {
     }
 
     private boolean isDirection(String value) {
-        return "asc".equalsIgnoreCase(value.trim()) || "desc".equalsIgnoreCase(value.trim());
+        if (!StringUtils.hasText(value)) {
+            return false;
+        }
+        String trimmed = value.trim();
+        return DIRECTION_ASC.equalsIgnoreCase(trimmed) || DIRECTION_DESC.equalsIgnoreCase(trimmed);
     }
 
     private void validateProperty(String property) {
